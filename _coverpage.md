@@ -10,5 +10,5 @@
 
   [![star](https://gitee.com/MartinHub/MartinHub-notes/badge/star.svg?theme=dark)](https://gitee.com/MartinHub/MartinHub-notes/stargazers) [![fork](https://gitee.com/MartinHub/MartinHub-notes/badge/fork.svg?theme=dark)](https://gitee.com/MartinHub/MartinHub-notes/members)
 
-[Gitee](https://gitee.com/MartinHub/MartinHub-notes.git) 
-[开始阅读](http://martinhub.gitee.io/martinhub-notes/#/README.md)
+[Gitee](https://gitee.com/MartinHub) 
+[开始阅读](README.md)

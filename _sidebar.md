@@ -1,5 +1,42 @@
-<!-- docs/_sidebar.md -->
+[**学习笔记**](README.md)
 
-* [首页](zh-cn/)
-* [指南](zh-cn/guide)
+- **大数据相关** 
+  - [Hadoop](./大数据相关技术栈/01-Hadoop/README.md)
+  - [Zookeeper]()
+  - [HDFS]()
+  - [Hive]()
+  - [HBase]()
+  - [Phoenix]()
+  - [Scala]()
+  - [Spark]()
+  - [Flink]()
+  - [Kafka]()
+  - [Flume]()
+  - [Sqoop]()
+  - [Oozie]()
+  - [Azkaban]()
 
+
+- **Java相关** 
+  - [Spring Boot]()
+  - [SparingCloud]()
+  - [SpringSecurity]()
+  - [MyBatis-Plus]()
+  - [Swagger-UI]()
+  - [JWT]()
+  - [Druid]()
+  - [RabbitMq]()
+  - [Lombok]()
+- **数据库相关** 
+  - [MySQL]()
+  - [Redis]()
+  - [Elasticsearch]()
+- **Linux相关** 
+  - [Linux基础]()
+  - [Docker]()
+- **算法相关** 
+  - [Leetcode]()
+- **前端技术** 
+  - [Vue]()
+- **IT书籍** 
+  - [loading........]()

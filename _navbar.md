@@ -1,4 +1,4 @@
-- [笔记仓库](https://gitee.com/martinhub/MartinHub-notes)
-- [笔记文档](http://martinhub.gitee.io/MartinHub-notes)
+- [CSDN](https://blog.csdn.net/weixin_40824913)
+- **公众号 - [ MartinHub ]** 
 
 
