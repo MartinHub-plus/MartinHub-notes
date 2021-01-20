@@ -1,6 +1,6 @@
 [**学习笔记**](README.md)
 
-- :pencil2: **大数据相关** 
+- :computer: **大数据相关** 
   - [Hadoop](./大数据相关技术栈/01-Hadoop/README.md)
   - [Zookeeper]()
   - [HDFS](./大数据相关技术栈/03-HDFS/README.md)
