@@ -1,5 +1,7 @@
 [**学习笔记**](README.md)
 
+
+
 - **大数据相关** 
   - [Hadoop](./大数据相关技术栈/01-Hadoop/README.md)
   - [Zookeeper]()
@@ -30,21 +32,17 @@
   - [RabbitMq]()
   - [Lombok]()
 
--  **数据库相关** 
+- **数据库相关** 
   - [MySQL]()
   - [Redis]()
   - [Elasticsearch]()
-
--  **Linux相关** 
+- **Linux相关** 
   - [Linux基础]()
   - [Docker]()
   - [Nginx]()
-
--  **算法相关** 
+- **算法相关** 
   - [Leetcode]()
-
--  **前端技术** 
+- **前端技术** 
   - [Vue]()
-
--  **IT书籍** 
+- **IT书籍** 
   - [loading........]()
