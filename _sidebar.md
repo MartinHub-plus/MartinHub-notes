@@ -1,10 +1,5 @@
-[**MartinHub**](README.md)
+[**MartinHub的学习笔记**](README.md)
 
----
-
-- **前言**
-  - [热爱生活]()
-  - [热爱技术]()
 - **大数据相关**
   - [Hadoop](./大数据相关技术栈/01-Hadoop/README.md)
   - [Zookeeper]()
