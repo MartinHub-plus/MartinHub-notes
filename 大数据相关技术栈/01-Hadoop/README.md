@@ -73,7 +73,7 @@ rsync 和 scp 区别：用 rsync 做文件的复制要比 scp 的速度快，rsy
   rsync  -rvl   $pdir/$fname       $user@hadoop$host:$pdir
   命令   选项参数 要拷贝的文件路径/名称  目的用户@主机:目的路径
 ```
-![图片](https://uploader.shimo.im/f/lKk1G9FuSFWjSm6I.png!thumbnail?fileGuid=wYjjTWvqRXdc6yxD)
+![img](./images/image1.png)
 
 **3. xsync 集群分发脚本**
 
@@ -115,7 +115,7 @@ done
 
 1. **集群部署规划**
 
-![图片](https://uploader.shimo.im/f/giz94X9pgrNkrUCt.png!thumbnail?fileGuid=wYjjTWvqRXdc6yxD)
+![img](./images/image2.png)
 
 **2. 配置集群**
 
@@ -261,7 +261,7 @@ Host key verification failed
 
 （1）免密登录原理
 
-![图片](https://uploader.shimo.im/f/imncAXqDKdK5bXB5.png!thumbnail?fileGuid=wYjjTWvqRXdc6yxD)
+![img](./images/image3.png)
 
 （2）生成公钥和私钥：
 
@@ -283,7 +283,7 @@ hadoop104 服务器上。
 
 **3. .ssh 文件夹下（~/.ssh）的文件功能解释**
 
-![图片](https://uploader.shimo.im/f/gLxzohJYJWqb9fG8.png!thumbnail?fileGuid=wYjjTWvqRXdc6yxD)
+![图片](./images/image4.png)
 
 #### 2.3.5  群起集群
 

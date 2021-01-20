@@ -1,9 +1,9 @@
 [**学习笔记**](README.md)
 
-- **大数据相关** 
+- :pencil2: **大数据相关** 
   - [Hadoop](./大数据相关技术栈/01-Hadoop/README.md)
   - [Zookeeper]()
-  - [HDFS]()
+  - [HDFS](./大数据相关技术栈/03-HDFS/README.md)
   - [Hive]()
   - [HBase]()
   - [Phoenix]()
@@ -17,7 +17,9 @@
   - [Azkaban]()
 
 
-- **Java相关** 
+- :coffee: **Java相关** 
+
+  - [Java基础]()
   - [Spring Boot]()
   - [SparingCloud]()
   - [SpringSecurity]()
@@ -27,16 +29,22 @@
   - [Druid]()
   - [RabbitMq]()
   - [Lombok]()
-- **数据库相关** 
+
+- :floppy_disk: **数据库相关** 
   - [MySQL]()
   - [Redis]()
   - [Elasticsearch]()
-- **Linux相关** 
+
+- :cloud: **Linux相关** 
   - [Linux基础]()
   - [Docker]()
-- **算法相关** 
+  - [Nginx]()
+
+- :wrench: **算法相关** 
   - [Leetcode]()
-- **前端技术** 
+
+- :bulb: **前端技术** 
   - [Vue]()
-- **IT书籍** 
+
+- :watermelon: **IT书籍** 
   - [loading........]()
