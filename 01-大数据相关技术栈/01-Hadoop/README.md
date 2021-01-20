@@ -107,9 +107,7 @@ done
  chmod 777 xsync
 ```
 调用脚本形式：xsync 文件名称
-*注意：如果将xsync放到/home/martinhub/bin目录下仍然不能实现全局使用，可以将xsync*
-
-*移动到/usr/local/bin 目录下。*
+**注意** ：如果将xsync放到/home/martinhub/bin目录下仍然不能实现全局使用，可以将xsync移动到/usr/local/bin 目录下。
 
 #### 集群配置
 
