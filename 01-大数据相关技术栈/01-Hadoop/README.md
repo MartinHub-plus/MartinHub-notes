@@ -1,6 +1,6 @@
-## 一、 Hadoop 目录结构
+## Hadoop 目录结构
 
-```plain
+```shell
 bin    
 etc
 include
@@ -12,7 +12,7 @@ README.txt
 sbin
 share
 ```
-### 1.1 重要目录
+### - 重要目录
 
 （1）bin 目录：存放对 Hadoop 相关服务（HDFS,YARN）进行操作的脚本
 
@@ -24,13 +24,13 @@ share
 
 （5）share 目录：存放 Hadoop 的依赖 jar 包、文档、和官方案例
 
-## 二、Hadoop  运行模式
+## Hadoop  运行模式
 
-### 2.1 本地模式
+### - 本地模式
 
-### 2.2 伪分布式模式
+### - 伪分布式模式
 
-### 2.3 完全分布式模式(重点)
+### - 完全分布式模式(重点)
 
 **分析：**
 
@@ -52,11 +52,11 @@ share
 
 9）群起并测试集群
 
-#### 2.3.1 编写集群分发脚本 xsync
+#### 编写集群分发脚本 xsync
 
 **1. scp（secure copy）安全拷贝**
 
-```plain
+```shell
 （1）scp 定义：
      scp 可以实现服务器与服务器之间的数据拷贝。
 （2）基本语法
@@ -66,7 +66,7 @@ share
     scp  -r  /opt/module root@hadoop102:/opt/module
 ```
 **2. rsync 远程同步工具**
-```plain
+```shell
 rsync 主要用于备份和镜像。具有速度快、避免复制相同内容和支持符号链接的优点。
 rsync 和 scp 区别：用 rsync 做文件的复制要比 scp 的速度快，rsync 只对差异文件做更新。scp 是把所有文件都复制过去
 基本语法:
@@ -79,7 +79,7 @@ rsync 和 scp 区别：用 rsync 做文件的复制要比 scp 的速度快，rsy
 
 需求：循环复制文件到所有节点的相同目录下
 
-```plain
+```shell
 #!/bin/bash
 #1 获取输入参数个数，如果没有参数，直接退出
 pcount=$#
@@ -103,7 +103,7 @@ rsync -rvl $pdir/$fname $user@hadoop$host:$pdir
 done
 ```
 修改脚本 xsync 具有执行权限
-```plain
+```shell
  chmod 777 xsync
 ```
 调用脚本形式：xsync 文件名称
@@ -111,7 +111,7 @@ done
 
 *移动到/usr/local/bin 目录下。*
 
-#### 2.3.2 集群配置
+#### 集群配置
 
 1. **集群部署规划**
 
@@ -123,11 +123,11 @@ done
 
 配置 core-site.xml
 
-```plain
+```shell
 [martinhub@hadoop102 hadoop]$ vi core-site.xml
 ```
 在该文件中编写如下配置:
-```plain
+```shell
 <!-- 指定 HDFS 中 NameNode 的地址 -->
 <property>
   <name>fs.defaultFS</name>
@@ -142,16 +142,16 @@ done
 （2）HDFS 配置文件
 配置 hadoop-env.sh：
 
-```plain
+```shell
 [martinhub@hadoop102 hadoop]$ vi hadoop-env.sh
 export JAVA_HOME=/opt/module/jdk1.8.0_144
 ```
 配置 hdfs-site.xml：
-```plain
+```shell
 [martinhub@hadoop102 hadoop]$ vi hdfs-site.xml
 ```
 在该文件中编写如下配置:
-```plain
+```shell
 <property>
   <name>dfs.replication</name>
   <value>3</value>
@@ -165,16 +165,16 @@ export JAVA_HOME=/opt/module/jdk1.8.0_144
 （3）YARN 配置文件
 配置 yarn-env.sh:
 
-```plain
+```shell
 [martinhub@hadoop102 hadoop]$ vi yarn-env.sh
 export JAVA_HOME=/opt/module/jdk1.8.0_144
 ```
 配置 yarn-site.xml:
-```plain
+```shell
 [martinhub@hadoop102 hadoop]$ vi yarn-site.xml
 ```
 在该文件中增加如下配置:
-```plain
+```shell
 <!-- reducer 获取数据的方式 -->
 <property>
     <name>yarn.nodemanager.aux-services</name>
@@ -189,17 +189,17 @@ export JAVA_HOME=/opt/module/jdk1.8.0_144
 （4）MapReduce 配置文件
 配置 mapred-env.sh:
 
-```plain
+```shell
 [martinhub@hadoop102 hadoop]$ vi mapred-env.sh
 export JAVA_HOME=/opt/module/jdk1.8.0_144
 ```
 配置 mapred-site.xml:
-```plain
+```shell
 [martinhub@hadoop102  hadoop]$  cp  mapred-site.xml.template mapred-site.xml
 [martinhub@hadoop102  hadoop]$  vi mapred-site.xml
 ```
 在该文件中增加如下配置:
-```plain
+```shell
 <!-- 指定 mr 运行在 yarn 上 -->
 <property>
     <name>mapreduce.framework.name</name>
@@ -207,22 +207,22 @@ export JAVA_HOME=/opt/module/jdk1.8.0_144
 </property>
 ```
 **3．在集群上分发配置好的 Hadoop 配置文件**
-```plain
+```shell
 [martinhub@hadoop102 hadoop]$ xsync /opt/module/hadoop-2.7.2/
 ```
-#### 2.3.3 集群单点启动
+#### 集群单点启动
 
 （1）如果集群是第一次启动，需要 格式化 NameNode
 
-```plain
+```shell
 [martinhub@hadoop102 hadoop-2.7.2]$ hadoop namenode -format
 ```
 （2）在 hadoop102 上启动 NameNode
-```plain
+```shell
 [martinhub@hadoop102  hadoop-2.7.2]$  hadoop-daemon.sh  start namenode
 ```
 （3）在 hadoop102、hadoop103 以及 hadoop104 上分别启动 DataNode
-```plain
+```shell
 [martinhub@hadoop102  hadoop-2.7.2]$  hadoop-daemon.sh  start datanode
 [martinhub@hadoop102 hadoop-2.7.2]$ jps
 3461 NameNode
@@ -239,17 +239,17 @@ datanode
 3237 Jps
 3163 DataNode
 ```
-#### 2.3.4  SSH  无密登录
+#### SSH  无密登录
 
 **1. 配置 ssh**
 
 （1）基本语法
 
-```plain
+```shell
 ssh 另一台电脑的 ip 地址
 ```
 （2）ssh 连接时出现 Host key verification failed 的解决方法
-```plain
+```shell
 [martinhub@hadoop102 opt] $ ssh 192.168.1.103
 The authenticity of host '192.168.1.103 (192.168.1.103)' can'tbe established. RSA  key  fingerprint  is
 cf:1e:de:d7:d0:4c:2d:98:60:b4:fd:ae:b1:2d:ad:06.
@@ -265,13 +265,13 @@ Host key verification failed
 
 （2）生成公钥和私钥：
 
-```plain
+```shell
 [martinhub@hadoop102 .ssh]$ ssh-keygen -t rsa
 ```
 然后敲（三个回车），就会生成两个文件id_rsa（私钥）、id_rsa.pub（公钥）
 （3）将公钥拷贝到要免密登录的目标机器上
 
-```plain
+```shell
 [martinhub@hadoop102 .ssh]$ ssh-copy-id hadoop102
 [martinhub@hadoop102 .ssh]$ ssh-copy-id hadoop103
 [martinhub@hadoop102 .ssh]$ ssh-copy-id hadoop104
@@ -285,16 +285,16 @@ hadoop104 服务器上。
 
 ![图片](./images/image4.png)
 
-#### 2.3.5  群起集群
+#### 群起集群
 
 **1. 配置 slaves**
 
-```plain
+```shell
 /opt/module/hadoop-2.7.2/etc/hadoop/slaves
 [martinhub@hadoop102 hadoop]$ vi slaves
 ```
 在该文件中增加如下内容：
-```plain
+```shell
 hadoop102
 hadoop103
 hadoop104
@@ -304,11 +304,11 @@ hadoop104
 
 （1）如果集群是第一次启动，需要格式化 NameNode
 
-```plain
+```shell
 [martinhub@hadoop102 hadoop-2.7.2]$ bin/hdfs namenode -format
 ```
 （2）启动 HDFS
-```plain
+```shell
 [martinhub@hadoop102 hadoop-2.7.2]$ sbin/start-dfs.sh
 [martinhub@hadoop102 hadoop-2.7.2]$ jps
 4166 NameNode
@@ -323,7 +323,7 @@ hadoop104
 3364 Jps
 ```
 （3）启动 YARN
-```plain
+```shell
 [martinhub@hadoop103 hadoop-2.7.2]$ sbin/start-yarn.sh
 ```
 ***注意：NameNode 和 ResourceManger 如果不是同一台机器，不能在 NameNode 上启***
@@ -331,30 +331,30 @@ hadoop104
 
 ***jps 是 JDK 中的命令，不是 Linux 命令。不安装 JDK 不能使用 jps***
 
-#### 2.3.6 集群 启动/ 停止方式 总结
+#### 集群 启动/ 停止方式 总结
 
 **1. 各个服务组件逐一启动/停止**
 
 （1）分别启动/停止 HDFS 组件
 
-```plain
+```shell
 hadoop-daemon.sh start / stop namenode / datanode / secondarynamenode
 ```
 （2）启动/停止 YARN
-```plain
+```shell
 yarn-daemon.sh start / stop resourcemanager / nodemanager
 ```
 **2. 各个模块分开启动/停止（配置 ssh 是前提）常用**
 （1）整体启动/停止 HDFS
 
-```plain
+```powershell
 start-dfs.sh / stop-dfs.sh
 ```
 （2）整体启动/停止 YARN
-```plain
+```shell
 start-yarn.sh / stop-yarn.sh
 ```
-#### 2.3.7   集群时间同步
+#### 集群时间同步
 
 时间同步的方式：找一个机器，作为时间服务器，所有的机器与这台集群时间进行定时
 
@@ -366,7 +366,7 @@ start-yarn.sh / stop-yarn.sh
 
 （1）检查 ntp 是否安装
 
-```plain
+```shell
 [root@hadoop102 桌面]# rpm -qa|grep ntp
 ```
 ntp-4.2.6p5-10.el6.centos.x86_64
@@ -376,18 +376,18 @@ ntpdate-4.2.6p5-10.el6.centos.x86_64
 
 （2）修改 ntp 配置文件
 
-```plain
+```shell
 [root@hadoop102 桌面]# vi /etc/ntp.conf
 ```
 修改内容如下:
 a）修改 1 （授权 192.168.1.0 网段上的所有机器可以从这台机器上查询和同步时间）
 
-```plain
+```shell
 #restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap 为
 restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap
 ```
 b）修改 2（集群在局域网中，不使用其他的网络时间）
-```plain
+```shell
 server 0.centos.pool.ntp.org iburst
 server 1.centos.pool.ntp.org iburst
 server 2.centos.pool.ntp.org iburst
@@ -400,12 +400,12 @@ server 3.centos.pool.ntp.org iburst 为
 c）添加 3 （ 当该节点丢失网络连接，依然可以作为时间服务器为集群中的其他节点
 提供时间同步 ）
 
-```plain
+```powershell
 server 127.127.1.0
 fudge 127.127.1.0 stratum 10
 ```
 （3）修改/etc/sysconfig/ntpd 文件
-```plain
+```shell
 [root@hadoop102 桌面]# vim /etc/sysconfig/ntpd
 ```
 增加内容如下（让硬件时间与系统时间一起同步）
@@ -413,36 +413,36 @@ SYNC_HWCLOCK=yes
 
 （4）重新启动 ntpd
 
-```plain
+```shell
 [root@hadoop102 桌面]# service ntpd status
 ntpd 已停
 [root@hadoop102 桌面]# service ntpd start
 正在启动 ntpd： [确定]
 ```
 （5）执行：
-```plain
+```shell
 [root@hadoop102 桌面]# chkconfig ntpd on
 ```
 **2. 其他机器配置（必须 root 用户）**
 （1）在其他机器配置 10 分钟与时间服务器同步一次
 
-```plain
+```shell
 [root@hadoop103 桌面]# crontab -e
 ```
 编写定时任务如下：
-```plain
+```shell
 */10 * * * * /usr/sbin/ntpdate hadoop102
 ```
 （2）修改任意机器时间
-```plain
+```shell
 [root@hadoop103 桌面]# date -s "2017-9-11 11:11:11"
 ```
 （3）十分钟后查看机器是否与时间服务器同步
-```plain
+```shell
 [root@hadoop103 桌面]# date
 ```
 说明：测试的时候可以将 10 分钟调整为 1 分钟，节省时间。
-#### **2.3.8 为什么不能一直格式化 NameNode ?**
+#### **为什么不能一直格式化 NameNode ?**
 
 答：格式化 NameNode，会产生新的集群 id，导致 NameNode 和 DataNode 的集
 

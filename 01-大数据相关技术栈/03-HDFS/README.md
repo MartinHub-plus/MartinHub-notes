@@ -1,10 +1,10 @@
-## 一、HDFS的使用场景
+## HDFS的使用场景
 
 ​	适合一次写入，多次读出的场景，且不支持文件的修改。适合用来做数据分析，并不适合用来做网盘应用。
 
-## 二、HDFS  优缺点
+## HDFS  优缺点
 
-### 2.1 优点
+### - 优点
 
 **（1）高容错性**
 
@@ -20,7 +20,7 @@
 
 **（3）可构建在廉价机器上，通过多副本机制，提高可靠性**
 
-### **2.2** 缺点
+### - 缺点
 
 **1）不适合低延时数据访问，比如毫秒级的存储数据，是做不到的。**
 
@@ -38,7 +38,7 @@
 
 （2）仅支持数据append（追加），不支持文件的随机修改。
 
-## 三、 HDFS  组成架构
+## HDFS  组成架构
 
 **1）NameNode（nn）：**就是Master，它是一个主管、管理者。
 
@@ -86,7 +86,7 @@
 （3）如果块设置的太大，从磁盘传输数据的时间会明显大于定位这个块开始位置所需的时间。导致程序在处理这块数据时，会非常慢。
   总结：HDFS 块的大小 设置主要 取决于 磁盘传输速率。
 ```
-## 四、HFDS 的 的 Shell
+## HFDS 的 的 Shell
 
 ```plain
 [martinhub@hadoop102 hadoop-2.7.2]$ bin/hadoop fs
@@ -134,9 +134,9 @@
 
 ***台时，副本数才能达到 10。***
 
-## 五、HDFS 的数据流
+## HDFS 的数据流
 
-### 5.1  HDFS 写数据流程
+### - HDFS 写数据流程
 
 ```plain
 1）客户端通过 Distributed FileSystem 模块向 NameNode 请求上传文件，NameNode 检查目标文件是否已存在，父目录是否存在。
@@ -149,7 +149,7 @@
 Packet 为单位，dn1 收到一个 Packet 就会传给 dn2，dn2 传给 dn3；dn1 每传一个 packet 会放入一个应答队列等待应答。
 8）当一个 Block 传输完成之后，客户端再次请求 NameNode 上传第二个 Block 的服务器。（重复执行 3-7 步）
 ```
-### 5.2  HDFS 读数据流程
+### - HDFS 读数据流程
 
 ```plain
 1）客户端通过 Distributed FileSystem 向 NameNode 请求下载文件，NameNode 通过查询元数据，找到文件块所在的 DataNode 地址。
@@ -157,9 +157,9 @@ Packet 为单位，dn1 收到一个 Packet 就会传给 dn2，dn2 传给 dn3；d
 3）DataNode 开始传输数据给客户端（从磁盘里面读取数据输入流，以 Packet 为单位来做校验）。
 4）客户端以 Packet 为单位接收，先在本地缓存，然后写入目标文件。
 ```
-## 六、 NameNode 和 SecondaryNameNode
+## NameNode 和 SecondaryNameNode
 
-### 6.1 NN 和 和 2NN
+### - NN 和 和 2NN
 
 ```plain
 1. 第一阶段：NameNode 启动
@@ -182,7 +182,7 @@ Packet 为单位，dn1 收到一个 Packet 就会传给 dn2，dn2 传给 dn3；d
 
 **Edits：**记录客户端更新元数据信息的每一步操作（可通过 Edits 运算出元数据）。
 
-### 6.2 NameNode 故障处理
+### - NameNode 故障处理
 
 NameNode 故障后，可以采用如下两种方法恢复数据。
 
@@ -252,9 +252,9 @@ data name namesecondary
 ```plain
 [martinhub@hadoop102 hadoop-2.7.2]$ sbin/hadoop-daemon.sh start namenode
 ```
-## 七、Datanode
+## Datanode
 
-### 7.1 DataNode  工作机制
+### - DataNode  工作机制
 
 1）一个数据块在 DataNode 上以文件形式存储在磁盘上，包括两个文件，一个是数据本
 
