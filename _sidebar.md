@@ -1,6 +1,6 @@
-[**MartinHub的学习笔记**](README.md)
+[**MartinHub的学习笔记**]()
 
-- **大数据相关**
+- **大数据相关** 
   - [Hadoop](./大数据相关技术栈/01-Hadoop/README.md)
   - [Zookeeper]()
   - [HDFS](./大数据相关技术栈/03-HDFS/README.md)
@@ -15,7 +15,7 @@
   - [Sqoop]()
   - [Oozie]()
   - [Azkaban]()
-- ​ **Java相关** 
+- **Java相关** 
   - [Java基础]()
   - [Spring Boot]()
   - [SparingCloud]()
@@ -39,4 +39,4 @@
 - **前端技术** 
   - [Vue]()
 - **IT书籍** 
-  - [loading........]()
+  - [loading...........]()
