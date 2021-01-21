@@ -4,7 +4,7 @@
 
 ## 二、HDFS  优缺点
 
-### 优点
+### 1. 优点
 
 **（1）高容错性**
 
@@ -20,7 +20,7 @@
 
 **（3）可构建在廉价机器上，通过多副本机制，提高可靠性**
 
-### 缺点
+### 2. 缺点
 
 **1）不适合低延时数据访问，比如毫秒级的存储数据，是做不到的。**
 
@@ -287,7 +287,7 @@ hadoop fs -test -e filename
 
 ## 五、HDFS 的数据流
 
-### HDFS 写数据流程
+### 1. HDFS 写数据流程
 
 ```plain
 1）客户端通过 Distributed FileSystem 模块向 NameNode 请求上传文件，NameNode 检查目标文件是否已存在，父目录是否存在。
@@ -300,7 +300,7 @@ hadoop fs -test -e filename
 Packet 为单位，dn1 收到一个 Packet 就会传给 dn2，dn2 传给 dn3；dn1 每传一个 packet 会放入一个应答队列等待应答。
 8）当一个 Block 传输完成之后，客户端再次请求 NameNode 上传第二个 Block 的服务器。（重复执行 3-7 步）
 ```
-### HDFS 读数据流程
+### 2. HDFS 读数据流程
 
 ```plain
 1）客户端通过 Distributed FileSystem 向 NameNode 请求下载文件，NameNode 通过查询元数据，找到文件块所在的 DataNode 地址。
@@ -310,7 +310,7 @@ Packet 为单位，dn1 收到一个 Packet 就会传给 dn2，dn2 传给 dn3；d
 ```
 ## 六、NameNode 和 SecondaryNameNode
 
-### NN 和 和 2NN
+### 1. NN 和 和 2NN
 
 ```plain
 1. 第一阶段：NameNode 启动
@@ -333,7 +333,7 @@ Packet 为单位，dn1 收到一个 Packet 就会传给 dn2，dn2 传给 dn3；d
 
 **Edits：**记录客户端更新元数据信息的每一步操作（可通过 Edits 运算出元数据）。
 
-### NameNode 故障处理
+### 2. NameNode 故障处理
 
 NameNode 故障后，可以采用如下两种方法恢复数据。
 

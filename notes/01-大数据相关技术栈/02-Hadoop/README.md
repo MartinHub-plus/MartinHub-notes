@@ -16,7 +16,7 @@ README.txt
 sbin
 share
 ```
-### 重要目录
+### 1. 重要目录
 
 （1）bin 目录：存放对 Hadoop 相关服务（HDFS,YARN）进行操作的脚本
 
@@ -32,11 +32,11 @@ share
 
 ## 二、Hadoop  运行模式
 
-### 本地模式
+### 1. 本地模式
 
-### 伪分布式模式
+### 2. 伪分布式模式
 
-### 完全分布式模式(重点)
+### 3. 完全分布式模式(重点)
 
 **分析：**
 
@@ -62,13 +62,13 @@ share
 
 ## 三、Hadoop集群环境搭建
 
-### 集群规划
+### 1. 集群规划
 
 这里搭建一个 3 节点的 Hadoop 集群，其中三台主机均部署 `DataNode` 和 `NodeManager` 服务，但只有 hadoop001 上部署 `NameNode` 和 `ResourceManager` 服务。
 
 ![img](./images/hadoop集群规划.png)
 
-### 安装JDK
+### 2. 安装JDK
 
 ##### 下载并解压
 
@@ -113,7 +113,7 @@ Java(TM) SE Runtime Environment (build 1.8.0_201-b09)
 Java HotSpot(TM) 64-Bit Server VM (build 25.201-b09, mixed mode)
 ```
 
-### 配置免密登录
+### 3. 配置免密登录
 
 #### 生成密匙
 
@@ -140,7 +140,7 @@ ssh hadoop002
 ssh hadoop003
 ```
 
-### 集群搭建
+### 4. 集群搭建
 
 #### 下载并解压
 
@@ -427,7 +427,7 @@ hadoop jar /usr/app/hadoop-2.6.0-cdh5.15.2/share/hadoop/mapreduce/hadoop-mapredu
 
 ## 四、基于ZooKeeper搭建Hadoop高可用集群
 
-### 高可用简介
+### 1. 高可用简介
 
 Hadoop 高可用 (High Availability) 分为 HDFS 高可用和 YARN 高可用，两者的实现基本类似，但 HDFS NameNode 对数据存储及其一致性的要求比 YARN ResourceManger 高得多，所以它的实现也更加复杂，故下面先进行讲解：
 
@@ -474,19 +474,19 @@ YARN ResourceManager 的高可用与 HDFS NameNode 的高可用类似，但是 R
 
 ![img](./images/hadoop-rm-ha-overview.png)
 
-### 集群规划
+### 2. 集群规划
 
 按照高可用的设计目标：需要保证至少有两个 NameNode (一主一备)  和 两个 ResourceManager (一主一备)  ，同时为满足“过半写入则成功”的原则，需要至少要有 3 个 JournalNode 节点。这里使用三台主机进行搭建，集群规划如下：
 
 ![img](./images/hadoop高可用集群规划.png)
 
-### 前置条件
+### 3. 前置条件
 
 - 所有服务器都安装有 JDK
 - 搭建好 ZooKeeper 集群
 - 所有服务器之间都配置好 SSH 免密登录
 
-### 集群配置
+### 4. 集群配置
 
 #### 下载并解压
 
@@ -749,7 +749,7 @@ scp -r /usr/app/hadoop-2.6.0-cdh5.15.2/  hadoop003:/usr/app/
 
 
 
-### 启动集群
+### 5. 启动集群
 
 #### 5.1 启动ZooKeeper
 
@@ -811,7 +811,7 @@ start-yarn.sh
 yarn-daemon.sh start resourcemanager
 ```
 
-### 查看集群
+### 6. 查看集群
 
 #### 查看进程
 
@@ -870,7 +870,7 @@ hadoop003 上的 `ResourceManager` 则处于备用状态：
 
 ![img](./images/hadoop高可用集群2.png)
 
-### 集群的二次启动
+### 7. 集群的二次启动
 
 上面的集群初次启动涉及到一些必要初始化操作，所以过程略显繁琐。但是集群一旦搭建好后，想要再次启用它是比较方便的，步骤如下（首选需要确保 ZooKeeper 集群已经启动）：
 
