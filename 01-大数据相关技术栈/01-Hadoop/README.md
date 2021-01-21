@@ -1,5 +1,9 @@
 ## Hadoop 目录结构
 
+
+
+![img](./images/hadoop.jpg)
+
 ```shell
 bin    
 etc

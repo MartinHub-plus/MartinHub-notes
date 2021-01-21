@@ -2,6 +2,7 @@
 
 - **大数据相关** 
   - [架构 ](./01-大数据相关技术栈/00-架构/README.md)
+  - [大数据技术栈思维导图](./01-大数据相关技术栈/00-大数据技术栈思维导图/README.md)
   - [Hadoop](./01-大数据相关技术栈/01-Hadoop/README.md)
   - [Zookeeper](./01-大数据相关技术栈/02-Zookeeper/README.md)
   - [HDFS](./01-大数据相关技术栈/03-HDFS/README.md)
@@ -16,6 +17,7 @@
   - [Sqoop](./01-大数据相关技术栈/12-Sqoop/README.md)
   - [Oozie](./01-大数据相关技术栈/13-Oozie/README.md)
   - [Azkaban](./01-大数据相关技术栈/14-Azkaban/README.md)
+  - [Storm](./01-大数据相关技术栈/15-Storm/README.md)
   - [运维笔记](./01-大数据相关技术栈/运维笔记/README.md)
 - **Java相关** 
   - [Java基础](./02-Java相关技术栈/01-Java基础/README.md)
@@ -46,9 +48,9 @@
 - **前端技术** 
   - [Vue](./07-前端相关技术栈/01-Vue/README.md)
 - **IT 书籍** 
-  - [loading...........]()
+  - [loading...........](./08-IT书籍/README.md)
 - **面   经**
-  - [loading..........]()
+  - [loading..........](./09-面经/README.md)
 - **杂  记**
-  - [loading..........]()
+  - [loading..........](./10-杂记/README.md)
 
