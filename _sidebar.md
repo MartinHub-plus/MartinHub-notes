@@ -3,8 +3,8 @@
 - **大数据相关** 
   - [架构 ](./notes/01-大数据相关技术栈/00-架构/README.md)
   - [大数据技术栈思维导图](./notes/01-大数据相关技术栈/00-大数据技术栈思维导图/README.md)
-  - [Hadoop](./notes/01-大数据相关技术栈/01-Hadoop/README.md)
   - [Zookeeper](./notes/01-大数据相关技术栈/02-Zookeeper/README.md)
+  - [Hadoop](./notes/01-大数据相关技术栈/01-Hadoop/README.md)
   - [HDFS](./notes/01-大数据相关技术栈/03-HDFS/README.md)
   - [Hive](./notes/01-大数据相关技术栈/04-Hive/README.md)
   - [HBase](./notes/01-大数据相关技术栈/05-HBase/README.md)
