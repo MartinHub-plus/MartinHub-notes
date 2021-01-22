@@ -1,6 +1,6 @@
 ## 一、HDFS的使用场景
 
-​	适合一次写入，多次读出的场景，且不支持文件的修改。适合用来做数据分析，并不适合用来做网盘应用。
+&emsp;&emsp;适合一次写入，多次读出的场景，且不支持文件的修改。适合用来做数据分析，并不适合用来做网盘应用。
 
 ## 二、HDFS  优缺点
 
@@ -129,7 +129,7 @@
     [-touchz <path> ...]
     [-usage [cmd ...]]
 ```
-***设置的副本数只是记录在 NameNode 的元数据中，是否真的会有这么多副本，还得***
+&emsp;&emsp;&emsp;***设置的副本数只是记录在 NameNode 的元数据中，是否真的会有这么多副本，还得***
 ***看 DataNode 的数量。因为目前只有 3 台设备，最多也就 3 个副本，只有节点数的增加到 10***
 
 ***台时，副本数才能达到 10。***
@@ -328,14 +328,14 @@ Packet 为单位，dn1 收到一个 Packet 就会传给 dn2，dn2 传给 dn3；d
   （7）拷贝 fsimage.chkpoint 到 NameNode。
   （8）NameNode 将 fsimage.chkpoint 重新命名成 fsimage。
 ```
-**NN 和 和 2NN  工作机制详解：**
-**Fsimage：**NameNode 内存中元数据序列化后形成的文件。
+&emsp;&emsp;**NN 和 和 2NN  工作机制详解：**
+&emsp;&emsp;**Fsimage：**NameNode 内存中元数据序列化后形成的文件。
 
-**Edits：**记录客户端更新元数据信息的每一步操作（可通过 Edits 运算出元数据）。
+&emsp;&emsp;**Edits：**记录客户端更新元数据信息的每一步操作（可通过 Edits 运算出元数据）。
 
 ### 2. NameNode 故障处理
 
-NameNode 故障后，可以采用如下两种方法恢复数据。
+&emsp;&emsp;NameNode 故障后，可以采用如下两种方法恢复数据。
 
 **方法一：**将 SecondaryNameNode 中到数据拷贝到 NameNode  存储数据的目录；
 
@@ -405,19 +405,19 @@ data name namesecondary
 ```
 ## 七、Datanode工作机制
 
-1）一个数据块在 DataNode 上以文件形式存储在磁盘上，包括两个文件，一个是数据本
+&emsp;&emsp;1）一个数据块在 DataNode 上以文件形式存储在磁盘上，包括两个文件，一个是数据本
 
 身，一个是元数据包括数据块的长度，块数据的校验和，以及时间戳。
 
-2）DataNode 启动后向 NameNode 注册，通过后，周期性（1 小时）的向 NameNode 上
+&emsp;&emsp;2）DataNode 启动后向 NameNode 注册，通过后，周期性（1 小时）的向 NameNode 上
 
 报所有的块信息。
 
-3）心跳是每 3 秒一次，心跳返回结果带有 NameNode 给该 DataNode 的命令如复制块数
+&emsp;&emsp;3）心跳是每 3 秒一次，心跳返回结果带有 NameNode 给该 DataNode 的命令如复制块数
 
 据到另一台机器，或删除某个数据块。如果超过 10 分钟没有收到某个 DataNode 的心跳，则
 
 认为该节点不可用。
 
-4）集群运行中可以安全加入和退出一些机器。
+&emsp;&emsp;4）集群运行中可以安全加入和退出一些机器。
 
