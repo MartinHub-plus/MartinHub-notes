@@ -11,14 +11,23 @@ Hbase 面向列存储，构建于 Hadoop 之上，类似于 Google 的 BigTable�
 ### 2. HBase的特点
 
 1）海量存储
+
 &emsp;&emsp;HBase 适合存储 PB 级别的海量数据，在 PB 级别的数据以及采用廉价 PC 存储的情况下，能在几十到百毫秒内返回数据。这与 HBase 的极易扩展性息息相关。正式因为 HBase 良好的扩展性，才为海量数据的存储提供了便利。
+
 2）列式存储
+
 &emsp;&emsp;这里的列式存储其实说的是列族存储，HBase 是根据列族来存储数据的。列族下面可以有非常多的列，列族在创建表的时候就必须指定。
+
 3）极易扩展
+
 &emsp;&emsp;HBase 的扩展性主要体现在两个方面，一个是基于上层处理能力（RegionServer）的扩展，一个是基于存储的扩展（HDFS）。通过横向添加 RegionSever 的机器，进行水平扩展，提升 HBase 上层的处理能力，提升 Hbsae 服务更多 Region的能力。
+
 4）高并发
+
 &emsp;&emsp;由于目前大部分使用 HBase 的架构，都是采用的廉价 PC，因此单个 IO 的延迟其实并不小，一般在几十到上百ms 之间。这里说的高并发，主要是在并发的情况下，HBase 的单个 IO 延迟下降并不多。能获得高并发、低延迟的服务。
+
 5）稀疏
+
 &emsp;&emsp;稀疏主要是针对 HBase 列的灵活性，在列族中，你可以指定任意多的列，在列数据为空的情况下，是不会占用存储空间的。
 
 ### 3. HBase的优缺点
@@ -26,13 +35,17 @@ Hbase 面向列存储，构建于 Hadoop 之上，类似于 Google 的 BigTable�
 **优点** ：
 
 ①HDFS 有高容错，高扩展的特点，而 Hbase 基于 HDFS 实现数据的存储，因此 Hbase 拥有与生俱来的超强的扩展性和吞吐量。
+
 ②HBase 采用的是 Key/Value 的存储方式，这意味着，即便面临海量数据的增长，也几乎不会导致查询性能下降。
+
 ③HBase 是一个列式数据库，相对于于传统的行式数据库而言。当你的单张表字段很多的时候，可以将相同的列(以regin 为单位)存在到不同的服务实例上，分散负载压力。
 
 **缺点** ：
 
 ①架构设计复杂，且使用 HDFS 作为分布式存储，因此只是存储少量数据，它也不会很快。在大数据量时，它慢的不会很明显！
+
 ②Hbase不支持表的关联操作，因此数据分析是HBase的弱项。常见的 group by或order by只能通过编写MapReduce来实现！
+
 ③Hbase 部分支持了 ACID。
 
 ### 4. HBase的总结
@@ -52,28 +65,44 @@ Hbase 面向列存储，构建于 Hadoop 之上，类似于 Google 的 BigTable�
 ### 7. HBase  数据模型
 
 1）**Name Space**
+
 &emsp;&emsp;命名空间，类似于关系型数据库的 database 概念，每个命名空间下有多个表。HBase 两个自带的命名空间，分别是 hbase 和 default，hbase 中存放的是 HBase 内置的表，default 表是用户默认使用的命名空间。
 一个表可以 自由选择是否有命名 空间，如果创建表的 时候加上了命名空间 后，这个表名字 以
 <Namespace>:<Table>作为区分！
+
 2） **Table**
+
 &emsp;&emsp;类似于关系型数据库的表概念。不同的是，HBase 定义表时只需要声明列族即可，数据属性，比如超时时间（TTL），压缩算法（COMPRESSION）等，都在列族的定义中定义，不需要声明具体的列。这意味着，往 HBase 写入数据时，字段可以动态、按需指定。因此，和关系型数据库相比，HBase 能够轻松应对字段变更的场景。
+
 3） **Row**
+
 &emsp;&emsp;HBase 表中的每行数据都由一个 RowKey 和多个 Column（列）组成。一个行包含了多个列，这些列通过列族来分类,行中的数据所属列族只能从该表所定义的列族中选取,不能定义这个表中不存在的列族，否则报错
 NoSuchColumnFamilyException。
-4   **RowKey**
+
+4)  **RowKey**
+
 &emsp;&emsp;Rowkey 由用户指定的一串不重复的字符串定义，是一行的唯一标识！数据是按照 RowKey 的字典顺序存储的，并且查询数据时只能根据 RowKey 进行检索，所以 RowKey 的设计十分重要。如果使用了之前已经定义的 RowKey，那么会将之前的数据更新掉！
+
 5）**Column Family**
+
 &emsp;&emsp;列族是多个列的集合。一个列族可以动态地灵活定义多个列。表的相关属性大部分都定义在列族上，同一个表里的不同列族可以有完全不同的属性配置，但是同一个列族内的所有列都会有相同的属性。列族存在的意义是 HBase 会把相同列族的列尽量放在同一台机器上，所以说，如果想让某几个列被放到一起，你就给他们定义相同的列族。官方建议一张表的列族定义的越少越好，列族太多会极大程度地降低数据库性能，且目前版本 Hbase 的架构，容易出 BUG。
+
 6)  **Column Qualifier**
+
 &emsp;&emsp;Hbase 中的列是可以随意定义的，一个行中的列不限名字、不限数量，只限定列族。因此列必须依赖于列族存在！列的名称前必须带着其所属的列族！例如 info：name，info：age。因为 HBase 中的列全部都是灵活的，可以随便定义的，因此创建表的时候并不需要指定列！列只有在你插入第一条数据的时候才会生成。其他行有没有当前行相同的列是不确定，只有在扫描数据的时候才能得知！
+
 7）**TimeStamp**
+
 &emsp;&emsp;用于标识数据的不同版本（version）。时间戳默认由系统指定，也可以由用户显式指定。在读取单元格的数据时，版本号可以省略，如果不指定，Hbase 默认会获取最后一个版本的数据返回！
+
 8）**Cell**
+
 &emsp;&emsp;一个列中可以存储多个版本的数据。而每个版本就称为一个单元格（Cell）。Cell 由{rowkey, column Family：column Qualifier, time Stamp}确定。Cell 中的数据是没有类型的，全部是字节码形式存贮。
 
 ![img](./images/row.PNG)
 
 9）**Region**
+
 &emsp;&emsp;Region 由一个表的若干行组成！在 Region 中行的排序按照行键（rowkey）字典排序。
 
 &emsp;&emsp;Region 不能跨 RegionSever，且当数据量大的时候，HBase 会拆分 Region。
@@ -87,14 +116,19 @@ NoSuchColumnFamilyException。
 ![img](./images/架构.PNG)
 
 **架构角色**：
-1） Region Server
+
+1） Region Serve
+
 &emsp;&emsp;RegionServer 是一个服务，负责多个 Region 的管理。其实现类为 HRegionServer，主要作用如下:
+
 &emsp;&emsp;&emsp;对于数据的操作：get, put, delete；
 
 &emsp;&emsp;&emsp;对于 Region 的操作：splitRegion、compactRegion。
 
 &emsp;&emsp;&emsp;客户端从 ZooKeeper 获取 RegionServer 的地址，从而调用相应的服务，获取数据。
+
 2） Master
+
 &emsp;&emsp;Master 是所有 Region Server 的管理者，其实现类为 HMaster，主要作用如下：
 
 &emsp;&emsp;&emsp;对于表的操作：create, delete, alter，这些操作可能需要跨多个 ReginServer，因此需要 Master 来进行协调！
@@ -102,13 +136,17 @@ NoSuchColumnFamilyException。
 &emsp;&emsp;&emsp;对于 RegionServer 的操作：分配 regions 到每个 RegionServer，监控每个 RegionServer 的状态，负载均衡和故障转移。
 
 &emsp;&emsp;&emsp;即使 Master 进程宕机，集群依然可以执行数据的读写，只是不能进行表的创建和修改等操作！当然Master 也不能宕机太久，有很多必要的操作，比如创建表、修改列族配置，以及更重要的分割和合并都需要它的操作。
+
 3） Zookeeper
+
 &emsp;&emsp;RegionServer 非常依赖 ZooKeeper 服务，ZooKeeper 管理了 HBase 所有 RegionServer 的信息，包括具体的数据段存放在哪个 RegionServer 上。
 
 &emsp;&emsp;客户端每次与 HBase 连接，其实都是先与 ZooKeeper 通信，查询出哪个 RegionServer 需要连接，然后再连接RegionServer。Zookeeper 中记录了读取数据所需要的元数据表hbase:meata,因此关闭 Zookeeper 后，客户端是无法实现读操作的！
 
 &emsp;&emsp;HBase 通过 Zookeeper 来做 master 的高可用、RegionServer 的监控、元数据的入口以及集群配置的维护等工作。
+
 4） HDFS
+
 &emsp;&emsp;HDFS 为 Hbase 提供最终的底层数据存储服务，同时为 HBase 提供高可用的支持。
 
 ### 9. ROWkey的设计
@@ -392,22 +430,35 @@ hadoop002 上的 HBase 出于备用状态：
 ### 1. HBase 与 Hive 的对比
 
 **Hive**:
+
 (1) 数据仓库
-&emsp;&emsp;Hive 的本质其实就相当于将 HDFS 中已经存储的文件在 Mysql 中做了一个双射关系，以方便使用 HQL 去管理查
-询。
+
+&emsp;&emsp;Hive 的本质其实就相当于将 HDFS 中已经存储的文件在 Mysql 中做了一个双射关系，以方便使用 HQL 去管理查询。
+
 (2) 用于数据分析、清洗
+
 &emsp;&emsp;Hive 适用于离线的数据分析和清洗，延迟较高。
+
 (3) 基于 HDFS、MapReduce
+
 &emsp;&emsp;Hive 存储的数据依旧在 DataNode 上，编写的 HQL 语句终将是转换为 MapReduce 代码执行。
 
 **HBase**:
+
 (1) 数据库
+
 &emsp;&emsp;是一种面向列存储的非关系型数据库。
+
 (2) 用于存储结构化和非结构化的数据
+
 &emsp;&emsp;适用于单表非关系型数据的存储，不适合做关联查询，类似 JOIN 等操作。
+
 (3) 基于 HDFS
+
 &emsp;&emsp;数据持久化存储的体现形式是 Hfile，存放于 DataNode 中，被 ResionServer 以 region 的形式进行管理。
+
 (4) 延迟较低，接入在线业务使用
+
 &emsp;&emsp;面对大量的企业数据，HBase 可以直线单表大量数据的存储，同时提供了高效的数据访问速度。
 
 ### 2. HBase 与 Hive 集成使用

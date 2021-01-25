@@ -649,7 +649,10 @@ RCFILE（列式存储格式文件）
 **管理表（内部表）**:
 
 &emsp;&emsp;1．理论
-&emsp;&emsp;默认创建的表都是所谓的管理表，有时也被称为内部表。因为这种表，Hive 会（或多或少地）控制着数据的生命周期。Hive 默认情况下会将这些表的数据存储在由配置项hive.metastore.warehouse.dir(例如，/user/hive/warehouse)所定义的目录的子目录下。 当我 们删除一个管理表时，Hive 也会删除这个表中数据。管理表不适合和其他工具共享数据。
+
+&emsp;&emsp;默认创建的表都是所谓的管理表，有时也被称为内部表。因为这种表，Hive 会（或多或少地）控制着数据的生命周期。Hive 默认情况下会将这些表的数据存储在由配置项hive.metastore.warehouse.dir (例如，/user/hive/warehouse)所定义的目录的子目录下。 当我 们删除一个管理表时，Hive 也会删除这个表中数据。
+
+管理表不适合和其他工具共享数据。
 
 ```sql
   CREATE TABLE emp(
@@ -667,8 +670,11 @@ RCFILE（列式存储格式文件）
 **外部表(EXTERNAL)**:
 
 &emsp;&emsp;1．理论
+
 &emsp;&emsp;因为表是外部表，所以 Hive 并非认为其完全拥有这份数据。删除该表并不会删除掉这份数据，不过描述表的元数据信息会被删除掉。
+
 &emsp;&emsp;2．管理表和外部表的使用场景
+
 &emsp;&emsp;每天将收集到的网站日志定期流入 HDFS 文本文件。在外部表（原始日志表）的基础上做大量的统计分析，用到的中间表、结果表使用内部表存储，数据通过 SELECT+INSERT进入内部表。
 
 ```sql
@@ -939,7 +945,7 @@ hive (default)> truncate table student;
 
 ### 1. 数据准备
 
-为了演示查询操作，这里需要预先创建三张表，并加载测试数据。
+&emsp;&emsp;为了演示查询操作，这里需要预先创建三张表，并加载测试数据。
 
 #### 1.1 员工表
 
@@ -977,7 +983,7 @@ LOAD DATA LOCAL INPATH "/usr/file/emp.txt" OVERWRITE INTO TABLE emp;
 
 #### 1.3 分区表
 
-这里需要额外创建一张分区表，主要是为了演示分区查询：
+&emsp;&emsp;这里需要额外创建一张分区表，主要是为了演示分区查询：
 
 ```sql
 CREATE EXTERNAL TABLE emp_ptn(
@@ -1056,7 +1062,7 @@ SELECT * FROM emp ORDER BY sal DESC LIMIT 5;
 
 #### 2.6 GROUP BY
 
-Hive 支持使用 GROUP BY 进行分组聚合操作。
+&emsp;&emsp;Hive 支持使用 GROUP BY 进行分组聚合操作。
 
 ```sql
 set hive.map.aggr=true;
@@ -1065,18 +1071,18 @@ set hive.map.aggr=true;
 SELECT deptno,SUM(sal) FROM emp GROUP BY deptno;
 ```
 
-`hive.map.aggr` 控制程序如何进行聚合。默认值为 false。如果设置为 true，Hive 会在 map 阶段就执行一次聚合。这可以提高聚合效率，但需要消耗更多内存。
+&emsp;&emsp;`hive.map.aggr` 控制程序如何进行聚合。默认值为 false。如果设置为 true，Hive 会在 map 阶段就执行一次聚合。这可以提高聚合效率，但需要消耗更多内存。
 
 
 
 #### 2.7 ORDER AND SORT
 
-可以使用 ORDER BY 或者 Sort BY 对查询结果进行排序，排序字段可以是整型也可以是字符串：如果是整型，则按照大小排序；如果是字符串，则按照字典序排序。ORDER BY 和 SORT BY 的区别如下：
+&emsp;&emsp;可以使用 ORDER BY 或者 Sort BY 对查询结果进行排序，排序字段可以是整型也可以是字符串：如果是整型，则按照大小排序；如果是字符串，则按照字典序排序。ORDER BY 和 SORT BY 的区别如下：
 
 - 使用 ORDER BY 时会有一个 Reducer 对全部查询结果进行排序，可以保证数据的全局有序性；
 - 使用 SORT BY 时只会在每个 Reducer 中进行排序，这可以保证每个 Reducer 的输出数据是有序的，但不能保证全局有序。
 
-由于 ORDER BY 的时间可能很长，如果你设置了严格模式 (hive.mapred.mode = strict)，则其后面必须再跟一个 `limit` 子句。
+&emsp;&emsp;由于 ORDER BY 的时间可能很长，如果你设置了严格模式 (hive.mapred.mode = strict)，则其后面必须再跟一个 `limit` 子句。
 
 > 注 ：hive.mapred.mode 默认值是 nonstrict ，也就是非严格模式。
 
@@ -1089,7 +1095,7 @@ SELECT empno, deptno, sal FROM emp ORDER BY deptno ASC, sal DESC;
 
 #### 2.8 HAVING
 
-可以使用 HAVING 对分组数据进行过滤。
+&emsp;&emsp;可以使用 HAVING 对分组数据进行过滤。
 
 ```sql
 -- 查询工资总和大于 9000 的所有部门
@@ -1100,9 +1106,9 @@ SELECT deptno,SUM(sal) FROM emp GROUP BY deptno HAVING SUM(sal)>9000;
 
 #### 2.9 DISTRIBUTE BY
 
-如果想要把具有相同 Key 值的数据分发到同一个 Reducer 进行处理，这可以使用 DISTRIBUTE BY 字句。需要注意的是，DISTRIBUTE BY 虽然能把具有相同 Key 值的数据分发到同一个 Reducer，但是不能保证数据在 Reducer 上是有序的。情况如下：
+&emsp;&emsp;如果想要把具有相同 Key 值的数据分发到同一个 Reducer 进行处理，这可以使用 DISTRIBUTE BY 字句。需要注意的是，DISTRIBUTE BY 虽然能把具有相同 Key 值的数据分发到同一个 Reducer，但是不能保证数据在 Reducer 上是有序的。情况如下：
 
-把以下 5 个数据发送到两个 Reducer 上进行处理：
+&emsp;&emsp;把以下 5 个数据发送到两个 Reducer 上进行处理：
 
 ```properties
 k1
@@ -1127,7 +1133,7 @@ k4
 k3
 ```
 
-如果想让 Reducer 上的数据是有序的，可以结合 `SORT BY` 使用 (示例如下)，或者使用下面我们将要介绍的 CLUSTER BY。
+&emsp;&emsp;如果想让 Reducer 上的数据是有序的，可以结合 `SORT BY` 使用 (示例如下)，或者使用下面我们将要介绍的 CLUSTER BY。
 
 ```sql
 -- 将数据按照部门分发到对应的 Reducer 上处理
@@ -1138,7 +1144,7 @@ SELECT empno, deptno, sal FROM emp DISTRIBUTE BY deptno SORT BY deptno ASC;
 
 #### 2.10 CLUSTER BY
 
-如果 `SORT BY` 和 `DISTRIBUTE BY` 指定的是相同字段，且 SORT BY 排序规则是 ASC，此时可以使用 `CLUSTER BY` 进行替换，同时 `CLUSTER BY` 可以保证数据在全局是有序的。
+&emsp;&emsp;如果 `SORT BY` 和 `DISTRIBUTE BY` 指定的是相同字段，且 SORT BY 排序规则是 ASC，此时可以使用 `CLUSTER BY` 进行替换，同时 `CLUSTER BY` 可以保证数据在全局是有序的。
 
 ```sql
 SELECT empno, deptno, sal FROM emp CLUSTER  BY deptno ;
@@ -1148,9 +1154,9 @@ SELECT empno, deptno, sal FROM emp CLUSTER  BY deptno ;
 
 ### 3. 多表联结查询
 
-Hive 支持内连接，外连接，左外连接，右外连接，笛卡尔连接，这和传统数据库中的概念是一致的，可以参见下图。
+&emsp;&emsp;Hive 支持内连接，外连接，左外连接，右外连接，笛卡尔连接，这和传统数据库中的概念是一致的，可以参见下图。
 
-需要特别强调：JOIN 语句的关联条件必须用 ON 指定，不能用 WHERE 指定，否则就会先做笛卡尔积，再过滤，这会导致你得不到预期的结果 (下面的演示会有说明)。
+&emsp;&emsp;需要特别强调：JOIN 语句的关联条件必须用 ON 指定，不能用 WHERE 指定，否则就会先做笛卡尔积，再过滤，这会导致你得不到预期的结果 (下面的演示会有说明)。
 
 ![img](./images/sql-join.jpg)
 
@@ -1187,7 +1193,7 @@ FROM emp e RIGHT OUTER JOIN  dept d
 ON e.deptno = d.deptno;
 ```
 
-执行右连接后，由于 40 号部门下没有任何员工，所以此时员工信息为 NULL。这个查询可以很好的复述上面提到的——JOIN 语句的关联条件必须用 ON 指定，不能用 WHERE 指定。你可以把 ON 改成 WHERE，你会发现无论如何都查不出 40 号部门这条数据，因为笛卡尔运算不会有 (NULL, 40) 这种情况。
+&emsp;&emsp;执行右连接后，由于 40 号部门下没有任何员工，所以此时员工信息为 NULL。这个查询可以很好的复述上面提到的——JOIN 语句的关联条件必须用 ON 指定，不能用 WHERE 指定。你可以把 ON 改成 WHERE，你会发现无论如何都查不出 40 号部门这条数据，因为笛卡尔运算不会有 (NULL, 40) 这种情况。
 
 ![img](./images/hive-right-join.png)
 
@@ -1219,7 +1225,7 @@ WHERE emp.deptno IN (SELECT deptno FROM dept WHERE loc="NEW YORK");
 
 #### 3.6 JOIN
 
-笛卡尔积连接，这个连接日常的开发中可能很少遇到，且性能消耗比较大，基于这个原因，如果在严格模式下 (hive.mapred.mode = strict)，Hive 会阻止用户执行此操作。
+&emsp;&emsp;笛卡尔积连接，这个连接日常的开发中可能很少遇到，且性能消耗比较大，基于这个原因，如果在严格模式下 (hive.mapred.mode = strict)，Hive 会阻止用户执行此操作。
 
 ```sql
 SELECT * FROM emp JOIN dept;
@@ -1231,7 +1237,7 @@ SELECT * FROM emp JOIN dept;
 
 #### 4.1 STREAMTABLE
 
-在多表进行联结的时候，如果每个 ON 字句都使用到共同的列（如下面的 `b.key`），此时 Hive 会进行优化，将多表 JOIN 在同一个 map / reduce 作业上进行。同时假定查询的最后一个表（如下面的 c 表）是最大的一个表，在对每行记录进行 JOIN 操作时，它将尝试将其他的表缓存起来，然后扫描最后那个表进行计算。因此用户需要保证查询的表的大小从左到右是依次增加的。
+&emsp;&emsp;在多表进行联结的时候，如果每个 ON 字句都使用到共同的列（如下面的 `b.key`），此时 Hive 会进行优化，将多表 JOIN 在同一个 map / reduce 作业上进行。同时假定查询的最后一个表（如下面的 c 表）是最大的一个表，在对每行记录进行 JOIN 操作时，它将尝试将其他的表缓存起来，然后扫描最后那个表进行计算。因此用户需要保证查询的表的大小从左到右是依次增加的。
 
 ```sql
 `SELECT a.val, b.val, c.val FROM a JOIN b ON (a.key = b.key) JOIN c ON (c.key = b.key)`
@@ -1250,7 +1256,7 @@ WHERE job='CLERK';
 
 #### 4.2 MAPJOIN
 
-如果所有表中只有一张表是小表，那么 Hive 把这张小表加载到内存中。这时候程序会在 map 阶段直接拿另外一个表的数据和内存中表数据做匹配，由于在 map 就进行了 JOIN 操作，从而可以省略 reduce 过程，这样效率可以提升很多。Hive 中提供了 `/*+ MAPJOIN() */` 来标记小表，示例如下：
+&emsp;&emsp;如果所有表中只有一张表是小表，那么 Hive 把这张小表加载到内存中。这时候程序会在 map 阶段直接拿另外一个表的数据和内存中表数据做匹配，由于在 map 就进行了 JOIN 操作，从而可以省略 reduce 过程，这样效率可以提升很多。Hive 中提供了 `/*+ MAPJOIN() */` 来标记小表，示例如下：
 
 ```sql
 SELECT /*+ MAPJOIN(d) */ e.*,d.* 
