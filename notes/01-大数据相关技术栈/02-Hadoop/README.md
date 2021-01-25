@@ -70,7 +70,7 @@ share
 
 ### 2. 安装JDK
 
-##### 下载并解压
+下载并解压
 
 &emsp;&emsp;在[官网](https://www.oracle.com/technetwork/java/javase/downloads/index.html) 下载所需版本的 JDK，这里我下载的版本为[JDK 1.8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) ,下载后进行解压：
 
@@ -78,7 +78,7 @@ share
 [root@ java]# tar -zxvf jdk-8u201-linux-x64.tar.gz
 ```
 
-##### 设置环境变量
+设置环境变量
 
 ```shell
 [root@ java]# vi /etc/profile
@@ -99,7 +99,7 @@ export PATH=${JAVA_HOME}/bin:$PATH
 [root@ java]# source /etc/profile
 ```
 
-##### 检查是否成功
+检查是否成功
 
 ```shell
 [root@ java]# java -version
@@ -175,14 +175,14 @@ export  PATH=${HADOOP_HOME}/bin:$PATH
 
 &emsp;&emsp;进入 `${HADOOP_HOME}/etc/hadoop` 目录下，修改配置文件。各个配置文件内容如下：
 
-##### 1. hadoop-env.sh
+1. hadoop-env.sh
 
 ```shell
 # 指定JDK的安装位置
 export JAVA_HOME=/usr/java/jdk1.8.0_201/
 ```
 
-##### 2.  core-site.xml
+2.  core-site.xml
 
 ```xml
 <configuration>
@@ -199,7 +199,7 @@ export JAVA_HOME=/usr/java/jdk1.8.0_201/
 </configuration>
 ```
 
-##### 3. hdfs-site.xml
+3. hdfs-site.xml
 
 ```xml
 <property>
@@ -214,7 +214,7 @@ export JAVA_HOME=/usr/java/jdk1.8.0_201/
 </property>
 ```
 
-##### 4. yarn-site.xml
+4. yarn-site.xml
 
 ```xml
 <configuration>
@@ -232,7 +232,7 @@ export JAVA_HOME=/usr/java/jdk1.8.0_201/
 
 ```
 
-##### 5.  mapred-site.xml
+5.  mapred-site.xml
 
 ```xml
 <configuration>
@@ -244,7 +244,7 @@ export JAVA_HOME=/usr/java/jdk1.8.0_201/
 </configuration>
 ```
 
-##### 6. slaves
+6. slaves
 
 &emsp;&emsp;配置所有从属节点的主机名或 IP 地址，每行一个。所有从属节点上的 `DataNode` 服务和 `NodeManager` 服务都会被启动。
 
@@ -512,14 +512,14 @@ export  PATH=${HADOOP_HOME}/bin:$PATH
 
 &emsp;&emsp;进入 `${HADOOP_HOME}/etc/hadoop` 目录下，修改配置文件。各个配置文件内容如下：
 
-##### 1. hadoop-env.sh
+1. hadoop-env.sh
 
 ```shell
 # 指定JDK的安装位置
 export JAVA_HOME=/usr/java/jdk1.8.0_201/
 ```
 
-##### 2.  core-site.xml
+2.  core-site.xml
 
 ```xml
 <configuration>
@@ -546,7 +546,7 @@ export JAVA_HOME=/usr/java/jdk1.8.0_201/
 </configuration>
 ```
 
-##### 3. hdfs-site.xml
+3. hdfs-site.xml
 
 ```xml
 <configuration>
@@ -633,7 +633,7 @@ export JAVA_HOME=/usr/java/jdk1.8.0_201/
 </configuration>
 ```
 
-##### 4. yarn-site.xml
+4. yarn-site.xml
 
 ```xml
 <configuration>
@@ -705,7 +705,7 @@ export JAVA_HOME=/usr/java/jdk1.8.0_201/
 </configuration>
 ```
 
-##### 5.  mapred-site.xml
+5.  mapred-site.xml
 
 ```xml
 <configuration>
@@ -717,7 +717,7 @@ export JAVA_HOME=/usr/java/jdk1.8.0_201/
 </configuration>
 ```
 
-##### 6. slaves
+6. slaves
 
 &emsp;&emsp;配置所有从属节点的主机名或 IP 地址，每行一个。所有从属节点上的 `DataNode` 服务和 `NodeManager` 服务都会被启动。
 
@@ -742,7 +742,7 @@ scp -r /usr/app/hadoop-2.6.0-cdh5.15.2/  hadoop003:/usr/app/
 
 ### 5. 启动集群
 
-#### 5.1 启动ZooKeeper
+#### 启动ZooKeeper
 
 &emsp;&emsp;分别到三台服务器上启动 ZooKeeper 服务：
 
@@ -750,7 +750,7 @@ scp -r /usr/app/hadoop-2.6.0-cdh5.15.2/  hadoop003:/usr/app/
  zkServer.sh start
 ```
 
-#### 5.2 启动Journalnode
+#### 启动Journalnode
 
 &emsp;&emsp;分别到三台服务器的的 `${HADOOP_HOME}/sbin` 目录下，启动 `journalnode` 进程：
 
@@ -758,7 +758,7 @@ scp -r /usr/app/hadoop-2.6.0-cdh5.15.2/  hadoop003:/usr/app/
 hadoop-daemon.sh start journalnode
 ```
 
-#### 5.3 初始化NameNode
+#### 初始化NameNode
 
 &emsp;&emsp;在 `hadop001` 上执行 `NameNode` 初始化命令：
 
@@ -772,7 +772,7 @@ hdfs namenode -format
  scp -r /home/hadoop/namenode/data hadoop002:/home/hadoop/namenode/
 ```
 
-#### 5.4 初始化HA状态
+#### 初始化HA状态
 
 &emsp;&emsp;在任意一台 `NameNode` 上使用以下命令来初始化 ZooKeeper 中的 HA 状态：
 
@@ -780,7 +780,7 @@ hdfs namenode -format
 hdfs zkfc -formatZK
 ```
 
-#### 5.5 启动HDFS
+#### 启动HDFS
 
 &emsp;&emsp;进入到 `hadoop001` 的 `${HADOOP_HOME}/sbin` 目录下，启动 HDFS。此时 `hadoop001` 和 `hadoop002` 上的 `NameNode` 服务，和三台服务器上的 `DataNode` 服务都会被启动：
 
@@ -788,7 +788,7 @@ hdfs zkfc -formatZK
 start-dfs.sh
 ```
 
-#### 5.6 启动YARN
+#### 启动YARN
 
 &emsp;&emsp;进入到 `hadoop002` 的 `${HADOOP_HOME}/sbin` 目录下，启动 YARN。此时 `hadoop002` 上的 `ResourceManager` 服务，和三台服务器上的 `NodeManager` 服务都会被启动：
 

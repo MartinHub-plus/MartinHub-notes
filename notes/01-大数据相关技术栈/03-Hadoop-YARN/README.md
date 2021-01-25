@@ -56,13 +56,13 @@
 
 ### 1. 作业提交
 
-&emsp;&emsp;client 调用 job.waitForCompletion 方法，向整个集群提交 MapReduce 作业 (第 1 步) 。新的作业 ID(应用 ID) 由资源管理器分配 (第 2 步)。作业的 client 核实作业的输出, 计算输入的 split, 将作业的资源 (包括 Jar 包，配置文件, split 信息) 拷贝给 HDFS(第 3 步)。 最后, 通过调用资源管理器的 submitApplication() 来提交作业 (第 4 步)。
+&emsp;&emsp;`client` 调用 `job.waitForCompletion` 方法，向整个集群提交 `MapReduce` 作业 (第 1 步) 。新的作业 ID(应用 ID) 由资源管理器分配 (第 2 步)。作业的 client 核实作业的输出, 计算输入的 `split`, 将作业的资源 (包括 Jar 包，配置文件, `split` 信息) 拷贝给 `HDFS`(第 3 步)。 最后, 通过调用资源管理器的 `submitApplication() `来提交作业 (第 4 步)。
 
 ### 2. 作业初始化
 
-&emsp;&emsp;当资源管理器收到 submitApplciation() 的请求时, 就将该请求发给调度器 (scheduler), 调度器分配 container, 然后资源管理器在该 container 内启动应用管理器进程, 由节点管理器监控 (第 5 步)。
+&emsp;&emsp;当资源管理器收到` submitApplciation() `的请求时, 就将该请求发给调度器 (`scheduler`), 调度器分配 `container`, 然后资源管理器在该 `container` 内启动应用管理器进程, 由节点管理器监控 (第 5 步)。
 
-&emsp;&emsp;MapReduce 作业的应用管理器是一个主类为 MRAppMaster 的 Java 应用，其通过创造一些 bookkeeping 对象来监控作业的进度,  得到任务的进度和完成报告 (第 6 步)。然后其通过分布式文件系统得到由客户端计算好的输入 split(第 7 步)，然后为每个输入 split 创建一个 map 任务, 根据 mapreduce.job.reduces 创建 reduce 任务对象。
+&emsp;&emsp;`MapReduce` 作业的应用管理器是一个主类为 `MRAppMaster` 的 Java 应用，其通过创造一些 `bookkeeping `对象来监控作业的进度,  得到任务的进度和完成报告 (第 6 步)。然后其通过分布式文件系统得到由客户端计算好的输入 `split`(第 7 步)，然后为每个输入 split 创建一个 map 任务, 根据 `mapreduce.job.reduces `创建 `reduce`任务对象。
 
 ### 3. 任务分配
 
@@ -92,7 +92,7 @@ YarnChild 运行在一个专用的 JVM 中, 但是 YARN 不支持 JVM 重用。
 
 ```shell
 # 提交格式: hadoop jar jar包路径 主类名称 主类参数
-# hadoop jar hadoop-mapreduce-examples-2.6.0-cdh5.15.2.jar pi 3 3
+hadoop jar hadoop-mapreduce-examples-2.6.0-cdh5.15.2.jar pi 3 3
 ```
 
 

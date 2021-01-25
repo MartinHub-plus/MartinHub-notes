@@ -4,9 +4,8 @@
 
 ### 1. HBase的定义
 
-HBase 是一种分布式、可扩展、支持海量数据存储的 NoSQL 数据库。
-Hbase 面向列存储，构建于 Hadoop 之上，类似于 Google 的 BigTable，提供对 10 亿级别表数据的快速随机实
-时读写！
+&emsp;&emsp;HBase 是一种分布式、可扩展、支持海量数据存储的 NoSQL 数据库。
+&emsp;&emsp;Hbase 面向列存储，构建于 Hadoop 之上，类似于 Google 的 BigTable，提供对 10 亿级别表数据的快速随机实时读写！
 
 ### 2. HBase的特点
 

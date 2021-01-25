@@ -1,167 +1,8 @@
 ![img](./images/spark.jpg)
 
-## 一、Spark开发环境搭建
 
-### 1. 安装Spark
 
-#### 1.1 下载并解压
-
-官方下载地址：http://spark.apache.org/downloads.html ，选择 Spark 版本和对应的 Hadoop 版本后再下载：
-
-![img](./images/spark-download.png)
-
-解压安装包：
-
-```shell
-tar -zxvf  spark-2.2.3-bin-hadoop2.6.tgz
-```
-
-#### 1.2 配置环境变量
-
-```shell
-vim /etc/profile
-```
-
-添加环境变量：
-
-```shell
-export SPARK_HOME=/usr/app/spark-2.2.3-bin-hadoop2.6
-export  PATH=${SPARK_HOME}/bin:$PATH
-```
-
-使得配置的环境变量立即生效：
-
-```shell
-source /etc/profile
-```
-
-#### 1.3 Local模式
-
-Local 模式是最简单的一种运行方式，它采用单节点多线程方式运行，不用部署，开箱即用，适合日常测试开发。
-
-```shell
-# 启动spark-shell
-spark-shell --master local[2]
-```
-
-- **local**：只启动一个工作线程；
-- **local[k]**：启动 k 个工作线程；
-- **local[*]**：启动跟 cpu 数目相同的工作线程数。
-
-![img](./images/spark-shell-local.png)
-
-进入 spark-shell 后，程序已经自动创建好了上下文 `SparkContext`，等效于执行了下面的 Scala 代码：
-
-```scala
-val conf = new SparkConf().setAppName("Spark shell").setMaster("local[2]")
-val sc = new SparkContext(conf)
-```
-
-### 2. 词频统计案例
-
-安装完成后可以先做一个简单的词频统计例子，感受 spark 的魅力。准备一个词频统计的文件样本 `wc.txt`，内容如下：
-
-```txt
-hadoop,spark,hadoop
-spark,flink,flink,spark
-hadoop,hadoop
-```
-
-在 scala 交互式命令行中执行如下 Scala 语句：
-
-```scala
-val file = spark.sparkContext.textFile("file:///usr/app/wc.txt")
-val wordCounts = file.flatMap(line => line.split(",")).map((word => (word, 1))).reduceByKey(_ + _)
-wordCounts.collect
-```
-
-执行过程如下，可以看到已经输出了词频统计的结果：
-
-![img](./images/spark-shell.png)
-
-同时还可以通过 Web UI 查看作业的执行情况，访问端口为 `4040`：
-
-![img](./images/spark-shell-web-ui.png)
-
-
-
-### 3. Scala开发环境配置
-
-Spark 是基于 Scala 语言进行开发的，分别提供了基于 Scala、Java、Python 语言的 API，如果你想使用 Scala 语言进行开发，则需要搭建 Scala 语言的开发环境。
-
-#### 3.1 前置条件
-
-Scala 的运行依赖于 JDK，所以需要你本机有安装对应版本的 JDK，最新的 Scala 2.12.x 需要 JDK 1.8+。
-
-#### 3.2 安装Scala插件
-
-IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。打开 IDEA，依次点击 **File** => **settings**=> **plugins** 选项卡，搜索 Scala 插件 (如下图)。找到插件后进行安装，并重启 IDEA 使得安装生效。
-
-![img](./images/idea-scala-plugin.png)
-
-
-
-#### 3.3 创建Scala项目
-
-在 IDEA 中依次点击 **File** => **New** => **Project** 选项卡，然后选择创建 `Scala—IDEA` 工程：
-
-![img](./images/idea-newproject-scala.png)
-
-#### 3.4 下载Scala SDK
-
-##### 1. 方式一
-
-此时看到 `Scala SDK` 为空，依次点击 `Create` => `Download` ，选择所需的版本后，点击 `OK` 按钮进行下载，下载完成点击 `Finish` 进入工程。
-
-![img](./images/idea-scala-select.png)
-
-
-
-##### 2. 方式二
-
-方式一是 Scala 官方安装指南里使用的方式，但下载速度通常比较慢，且这种安装下并没有直接提供 Scala 命令行工具。所以个人推荐到官网下载安装包进行安装，下载地址：https://www.scala-lang.org/download/
-
-这里我的系统是 Windows，下载 msi 版本的安装包后，一直点击下一步进行安装，安装完成后会自动配置好环境变量。
-
-![img](./images/scala-other-resources.png)
-
-
-
-由于安装时已经自动配置好环境变量，所以 IDEA 会自动选择对应版本的 SDK。
-
-![img](./images/idea-scala-2.1.8.png)
-
-
-
-#### 3.5 创建Hello World
-
-在工程 `src` 目录上右击 **New** => **Scala class** 创建 `Hello.scala`。输入代码如下，完成后点击运行按钮，成功运行则代表搭建成功。
-
-![img](./images/scala-hello-world.png)
-
-
-
-
-
-#### 3.6 切换Scala版本
-
-在日常的开发中，由于对应软件（如 Spark）的版本切换，可能导致需要切换 Scala 的版本，则可以在 `Project Structures` 中的 `Global Libraries` 选项卡中进行切换。
-
-![img](./images/idea-scala-change.png)
-
-#### 3.7 可能出现的问题
-
-在 IDEA 中有时候重新打开项目后，右击并不会出现新建 `scala` 文件的选项，或者在编写时没有 Scala 语法提示，此时可以先删除 `Global Libraries` 中配置好的 SDK，之后再重新添加：
-
-![img](./images/scala-sdk.png)
-
-
-
-**另外在 IDEA 中以本地模式运行 Spark 项目是不需要在本机搭建 Spark 和 Hadoop 环境的。**
-
-
-
-## 二、Spark-Core
+## 一、Spark-Core
 
 ### 1. Spark 概述
 
@@ -199,7 +40,158 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
 
 &emsp;GraphX 是 Spark 面向图计算提供的框架与算法库。
 
-### 3. Spark部署模式与作业提交 
+### 3. Spark开发环境搭建
+
+#### 1. 安装Spark
+
+**下载并解压**
+
+官方下载地址：http://spark.apache.org/downloads.html ，选择 Spark 版本和对应的 Hadoop 版本后再下载：
+
+![img](./images/spark-download.png)
+
+解压安装包：
+
+```shell
+tar -zxvf  spark-2.2.3-bin-hadoop2.6.tgz
+```
+
+**配置环境变量**
+
+```shell
+vim /etc/profile
+```
+
+添加环境变量：
+
+```shell
+export SPARK_HOME=/usr/app/spark-2.2.3-bin-hadoop2.6
+export  PATH=${SPARK_HOME}/bin:$PATH
+```
+
+使得配置的环境变量立即生效：
+
+```shell
+source /etc/profile
+```
+
+**Local模式**
+
+Local 模式是最简单的一种运行方式，它采用单节点多线程方式运行，不用部署，开箱即用，适合日常测试开发。
+
+```shell
+# 启动spark-shell
+spark-shell --master local[2]
+```
+
+- **local**：只启动一个工作线程；
+- **local[k]**：启动 k 个工作线程；
+- **local[*]**：启动跟 cpu 数目相同的工作线程数。
+
+![img](./images/spark-shell-local.png)
+
+进入 spark-shell 后，程序已经自动创建好了上下文 `SparkContext`，等效于执行了下面的 Scala 代码：
+
+```scala
+val conf = new SparkConf().setAppName("Spark shell").setMaster("local[2]")
+val sc = new SparkContext(conf)
+```
+
+#### 2. 词频统计案例
+
+安装完成后可以先做一个简单的词频统计例子，感受 spark 的魅力。准备一个词频统计的文件样本 `wc.txt`，内容如下：
+
+```txt
+hadoop,spark,hadoop
+spark,flink,flink,spark
+hadoop,hadoop
+```
+
+在 scala 交互式命令行中执行如下 Scala 语句：
+
+```scala
+val file = spark.sparkContext.textFile("file:///usr/app/wc.txt")
+val wordCounts = file.flatMap(line => line.split(",")).map((word => (word, 1))).reduceByKey(_ + _)
+wordCounts.collect
+```
+
+执行过程如下，可以看到已经输出了词频统计的结果：
+
+![img](./images/spark-shell.png)
+
+同时还可以通过 Web UI 查看作业的执行情况，访问端口为 `4040`：
+
+![img](./images/spark-shell-web-ui.png)
+
+
+
+#### 3. Scala开发环境配置
+
+Spark 是基于 Scala 语言进行开发的，分别提供了基于 Scala、Java、Python 语言的 API，如果你想使用 Scala 语言进行开发，则需要搭建 Scala 语言的开发环境。
+
+**前置条件**
+
+Scala 的运行依赖于 JDK，所以需要你本机有安装对应版本的 JDK，最新的 Scala 2.12.x 需要 JDK 1.8+。
+
+**安装Scala插件**
+
+IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。打开 IDEA，依次点击 **File** => **settings**=> **plugins** 选项卡，搜索 Scala 插件 (如下图)。找到插件后进行安装，并重启 IDEA 使得安装生效。
+
+![img](./images/idea-scala-plugin.png)
+
+**创建Scala项目** 
+
+在 IDEA 中依次点击 **File** => **New** => **Project** 选项卡，然后选择创建 `Scala—IDEA` 工程：
+
+![img](./images/idea-newproject-scala.png)
+
+**下载Scala SDK** 
+
+1. 方式一
+
+此时看到 `Scala SDK` 为空，依次点击 `Create` => `Download` ，选择所需的版本后，点击 `OK` 按钮进行下载，下载完成点击 `Finish` 进入工程。
+
+![img](./images/idea-scala-select.png)
+
+2. 方式二
+
+方式一是 Scala 官方安装指南里使用的方式，但下载速度通常比较慢，且这种安装下并没有直接提供 Scala 命令行工具。所以个人推荐到官网下载安装包进行安装，下载地址：https://www.scala-lang.org/download/
+
+这里我的系统是 Windows，下载 msi 版本的安装包后，一直点击下一步进行安装，安装完成后会自动配置好环境变量。
+
+![img](./images/scala-other-resources.png)
+
+
+
+由于安装时已经自动配置好环境变量，所以 IDEA 会自动选择对应版本的 SDK。
+
+![img](./images/idea-scala-2.1.8.png)
+
+**创建Hello World** 
+
+在工程 `src` 目录上右击 **New** => **Scala class** 创建 `Hello.scala`。输入代码如下，完成后点击运行按钮，成功运行则代表搭建成功。
+
+![img](./images/scala-hello-world.png)
+
+**切换Scala版本** 
+
+在日常的开发中，由于对应软件（如 Spark）的版本切换，可能导致需要切换 Scala 的版本，则可以在 `Project Structures` 中的 `Global Libraries` 选项卡中进行切换。
+
+![img](./images/idea-scala-change.png)
+
+**可能出现的问题** 
+
+在 IDEA 中有时候重新打开项目后，右击并不会出现新建 `scala` 文件的选项，或者在编写时没有 Scala 语法提示，此时可以先删除 `Global Libraries` 中配置好的 SDK，之后再重新添加：
+
+![img](./images/scala-sdk.png)
+
+
+
+**另外在 IDEA 中以本地模式运行 Spark 项目是不需要在本机搭建 Spark 和 Hadoop 环境的。**
+
+
+
+### 4. Spark部署模式与作业提交 
 
 - **Local  模式**
 
@@ -280,7 +272,7 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
 
 
 
-### 4. Spark运行架构
+### 5. Spark运行架构
 
 | Term（术语）        | Meaning（含义）                              |
 | --------------- | ---------------------------------------- |
@@ -326,7 +318,7 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
   >
   > 说的简单点就是，ResourceManager（资源）和 Driver（计算）之间的解耦合靠的就是ApplicationMaster。
 
-### 5. 核心概念
+### 6. 核心概念
 
 -  **Executor 与 Core**
 
@@ -340,7 +332,7 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
 
 > 在分布式计算框架中一般都是多个任务同时执行，由于任务分布在不同的计算节点进行计算，所以能够真正地实现多任务并行执行，记住，这里是并行，而不是并发。这里我们将整个集群并行执行任务的数量称之为并行度。那么一个作业到底并行度是多少呢？这个取决于框架的默认配置。应用程序也可以在运行过程中动态修改。
 
-### 6. 提交流程
+### 7. 提交流程
 
 &emsp;所谓的提交流程，其实就是我们开发人员根据需求写的应用程序通过 Spark 客户端提交给 Spark 运行环境执行计算的流程。在不同的部署环境中，这个提交过程基本相同，但是又有细微的区别，我们这里不进行详细的比较，但是因为国内工作中，将 Spark 引用部署到Yarn 环境中会更多一些，所以本课程中的提交流程是基于 Yarn 环境的。
 
@@ -392,7 +384,7 @@ nohup spark-submit
 [/opt/work/xxxx.jar] # Jar 包路径 
 ```
 
-### 7. RDD的Transformation 和 Action 常用算子
+### 8. RDD的Transformation 和 Action 常用算子
 
 - **RDD**
 
@@ -576,7 +568,7 @@ spark 常用的 Transformation 算子如下表：
 
 下面分别给出这些算子的基本使用示例：
 
-##### 1.1 map
+**1.1 map** 
 
 ```scala
 val list = List(1,2,3)
@@ -585,7 +577,7 @@ sc.parallelize(list).map(_ * 10).foreach(println)
 // 输出结果： 10 20 30 （这里为了节省篇幅去掉了换行,后文亦同）
 ```
 
-##### 1.2 filter
+**1.2 filter**  
 
 ```scala
 val list = List(3, 6, 9, 10, 12, 21)
@@ -594,7 +586,7 @@ sc.parallelize(list).filter(_ >= 10).foreach(println)
 // 输出： 10 12 21
 ```
 
-##### 1.3 flatMap
+**1.3 flatMap** 
 
 `flatMap(func)` 与 `map` 类似，但每一个输入的 item 会被映射成 0 个或多个输出的 items（ *func* 返回类型需要为 `Seq`）。
 
@@ -620,7 +612,7 @@ map(word=>(word,1)).reduceByKey(_+_).foreach(println)
 (flume,2)
 ```
 
-##### 1.4 mapPartitions
+**1.4 mapPartitions** 
 
 与 map 类似，但函数单独在 RDD 的每个分区上运行， *func*函数的类型为 `Iterator<T> => Iterator<U>` (其中 T 是 RDD 的类型)，即输入和输出都必须是可迭代类型。
 
@@ -637,7 +629,7 @@ sc.parallelize(list, 3).mapPartitions(iterator => {
 100 200 300 400 500 600
 ```
 
-##### 1.5 mapPartitionsWithIndex
+**1.5 mapPartitionsWithIndex**
 
   与 mapPartitions 类似，但 *func* 类型为 `(Int, Iterator<T>) => Iterator<U>` ，其中第一个参数为分区索引。
 
@@ -659,7 +651,7 @@ sc.parallelize(list, 3).mapPartitionsWithIndex((index, iterator) => {
 2 分区:600
 ```
 
-##### 1.6 sample
+**1.6 sample**
 
   数据采样。有三个可选参数：设置是否放回 (withReplacement)、采样的百分比 (fraction)、随机数生成器的种子 (seed) ：
 
@@ -668,7 +660,7 @@ val list = List(1, 2, 3, 4, 5, 6)
 sc.parallelize(list).sample(withReplacement = false, fraction = 0.5).foreach(println)
 ```
 
-##### 1.7 union
+**1.7 union**
 
 合并两个 RDD：
 
@@ -679,7 +671,7 @@ sc.parallelize(list1).union(sc.parallelize(list2)).foreach(println)
 // 输出: 1 2 3 4 5 6
 ```
 
-##### 1.8 intersection
+**1.8 intersection**
 
 求两个 RDD 的交集：
 
@@ -690,7 +682,7 @@ sc.parallelize(list1).intersection(sc.parallelize(list2)).foreach(println)
 // 输出:  4 5
 ```
 
-##### 1.9 distinct
+**1.9 distinct**
 
 去重：
 
@@ -700,7 +692,7 @@ sc.parallelize(list).distinct().foreach(println)
 // 输出: 4 1 2
 ```
 
-##### 1.10 groupByKey
+**1.10 groupByKey**
 
 按照键进行分组：
 
@@ -714,7 +706,7 @@ sc.parallelize(list).groupByKey().map(x => (x._1, x._2.toList)).foreach(println)
 (storm,List(6))
 ```
 
-##### 1.11 reduceByKey
+**1.11 reduceByKey**
 
 按照键进行归约操作：
 
@@ -728,7 +720,7 @@ sc.parallelize(list).reduceByKey(_ + _).foreach(println)
 (storm,6)
 ```
 
-##### 1.12 sortBy & sortByKey
+**1.12 sortBy & sortByKey**
 
 按照键进行排序：
 
@@ -752,7 +744,7 @@ sc.parallelize(list02).sortBy(x=>x._2,ascending=false).foreach(println)
 (spark,90)
 ```
 
-##### 1.13 join
+**1.13 join**
 
 在一个 (K, V) 和 (K, W) 类型的 Dataset 上调用时，返回一个 (K, (V, W)) 的 Dataset，等价于内连接操作。如果想要执行外连接，可以使用 `leftOuterJoin`, `rightOuterJoin` 和 `fullOuterJoin` 等算子。
 
@@ -767,7 +759,7 @@ sc.parallelize(list01).join(sc.parallelize(list02)).foreach(println)
 (2,(student02,teacher02))
 ```
 
-##### 1.14 cogroup
+**1.14 cogroup**
 
 在一个 (K, V) 对的 Dataset 上调用时，返回多个类型为 (K, (Iterable\<V>, Iterable\<W>)) 的元组所组成的 Dataset。
 
@@ -784,7 +776,7 @@ sc.parallelize(list01).cogroup(sc.parallelize(list02),sc.parallelize(list03)).fo
 
 ```
 
-##### 1.15 cartesian
+**1.15 cartesian**
 
 计算笛卡尔积：
 
@@ -805,7 +797,7 @@ sc.parallelize(list1).cartesian(sc.parallelize(list2)).foreach(println)
 (C,3)
 ```
 
-##### 1.16 aggregateByKey
+**1.16 aggregateByKey**
 
 当调用（K，V）对的数据集时，返回（K，U）对的数据集，其中使用给定的组合函数和 zeroValue 聚合每个键的值。与 `groupByKey` 类似，reduce 任务的数量可通过第二个参数 `numPartitions` 进行配置。示例如下：
 
@@ -872,7 +864,7 @@ Spark 常用的 Action 算子如下：
 | **countByKey**()                         | 计算每个键出现的次数。                              |
 | **foreach**(*func*)                      | 遍历 RDD 中每个元素，并对其执行*fun*函数                |
 
-##### 2.1 reduce
+**2.1 reduce**
 
 使用函数*func*执行归约操作：
 
@@ -884,7 +876,7 @@ sc.parallelize(list).reduce(_ + _)
 // 输出 15
 ```
 
-##### 2.2 takeOrdered
+**2.2 takeOrdered**
 
 按自然顺序（natural order）或自定义比较器（custom comparator）排序后返回前 *n* 个元素。需要注意的是 `takeOrdered` 使用隐式参数进行隐式转换，以下为其源码。所以在使用自定义排序时，需要继承 `Ordering[T]` 实现自定义比较器，然后将其作为隐式参数引入。
 
@@ -911,7 +903,7 @@ sc.parallelize(list).takeOrdered(5)
 // 输出： Array((1,hive), (1,storm), (1,hadoop), (1,azkaban)
 ```
 
-##### 2.3 countByKey
+**2.3 countByKey**
 
 计算每个键出现的次数：
 
@@ -922,7 +914,7 @@ sc.parallelize(list).countByKey()
 // 输出： Map(hadoop -> 2, storm -> 2, azkaban -> 1)
 ```
 
-##### 2.4 saveAsTextFile
+**2.4 saveAsTextFile**
 
 将 dataset 中的元素以文本文件的形式写入本地文件系统、HDFS 或其它 Hadoop 支持的文件系统中。Spark 将对每个元素调用 toString 方法，将元素转换为文本文件中的一行记录。
 
@@ -1012,7 +1004,7 @@ num2 = v
 
 
 
-## 三、 Spark-SQL
+## 二、 Spark-SQL
 
 ### 1. DataFrame和DataSet
 
@@ -1044,25 +1036,25 @@ loading.............
 
 
 
-## 四、Spark-Streaming
+## 三、Spark-Streaming
 
 loading.............
 
 
 
-## 五、Spark 内核
+## 四、Spark 内核
 
 loading.............
 
 
 
-## 六、Spark 性能优化
+## 五、Spark 性能优化
 
 loading.............
 
 
 
-## 七、基于ZooKeeper搭建Spark高可用集群
+## 六、基于ZooKeeper搭建Spark高可用集群
 
 ### 1. 集群规划
 
@@ -1111,7 +1103,7 @@ source /etc/profile
 
 进入 `${SPARK_HOME}/conf` 目录，拷贝配置样本进行修改：
 
-##### 1. spark-env.sh
+**1. spark-env.sh**
 
 ```she
  cp spark-env.sh.template spark-env.sh
@@ -1126,7 +1118,7 @@ HADOOP_CONF_DIR=/usr/app/hadoop-2.6.0-cdh5.15.2/etc/hadoop
 SPARK_DAEMON_JAVA_OPTS="-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=hadoop001:2181,hadoop002:2181,hadoop003:2181 -Dspark.deploy.zookeeper.dir=/spark"
 ```
 
-##### 2. slaves
+**2. slaves**
 
 ```
 cp slaves.template slaves
