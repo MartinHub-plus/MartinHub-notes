@@ -42,7 +42,7 @@
 
 ### （3）Spark开发环境搭建
 
-#### 安装Spark
+#### > 安装Spark
 
 **下载并解压**
 
@@ -97,7 +97,7 @@ val conf = new SparkConf().setAppName("Spark shell").setMaster("local[2]")
 val sc = new SparkContext(conf)
 ```
 
-#### 词频统计案例
+#### > 词频统计案例
 
 安装完成后可以先做一个简单的词频统计例子，感受 spark 的魅力。准备一个词频统计的文件样本 `wc.txt`，内容如下：
 
@@ -125,7 +125,7 @@ wordCounts.collect
 
 
 
-#### Scala开发环境配置
+#### > Scala开发环境配置
 
 Spark 是基于 Scala 语言进行开发的，分别提供了基于 Scala、Java、Python 语言的 API，如果你想使用 Scala 语言进行开发，则需要搭建 Scala 语言的开发环境。
 
@@ -540,7 +540,7 @@ nohup spark-submit
 <font color='red'>从计算的角度, 算子以外的代码都是在 Driver 端执行, 算子里面的代码都是在 Executor
 端执行。</font>
 
-#### Transformation
+#### > Transformation
 
 spark 常用的 Transformation 算子如下表：
 
@@ -845,7 +845,7 @@ sc.parallelize(list,numSlices = 6).aggregateByKey(zeroValue = 0,numPartitions = 
 
 ![img](./images/spark-getpartnum.png) 
 
-#### Action
+#### > Action
 
 Spark 常用的 Action 算子如下：
 
@@ -1008,7 +1008,7 @@ num2 = v
 
 ### （1）Spark - SQL 的 DataFrame / DataSet
 
-#### Spark SQL 的简介
+#### > Spark SQL 的简介
 
 > Spark SQL 是 Spark 用于结构化数据(structured data)处理的 Spark 模块。
 >
@@ -1018,7 +1018,7 @@ num2 = v
 >
 > （2）DataSet
 
-#### Spark SQL 的特点
+#### > Spark SQL 的特点
 
 > **Integrated( 易整合)**：无缝的整合了 SQL 查询和 Spark 编程。
 >
@@ -1028,14 +1028,14 @@ num2 = v
 >
 > **Standard Connectivity( 标准的连接方式)**：通过 JDBC 或者 ODBC 来连接。
 
-#### 什么是DataFrame
+#### > 什么是DataFrame
 
 > 1. 与 RDD 类似， DataFrame 也是一个分布式数据容器。
 > 2. 然而 DataFrame 更像传统数据库的二维表格，除了数据以外，还记录数据的结构信息，即 schema 。同时，与 Hive 类似， DataFrame 也支持嵌套数据类型（ struct 、 array 和 map ）。
 > 3. 从 API 易用性的角度上看， DataFrame API 提供的是一套高层的关系操作，比函数式的RDD API 要更加友好，门槛更低。
 > 4. 性能上比  RDD 要高，主要原因： 优化的执行计划：查询计划通过 Spark catalyst optimiser进行优化。
 
-#### 什么是DataSet
+#### > 什么是DataSet
 
 > 1. 是 DataFrame API 的一个扩展，是 SparkSQL 最新的数据抽象(1.6 新增)。
 > 2. 用户友好的 API 风格，既具有类型安全检查也具有 DataFrame 的查询优化特性。
@@ -1049,9 +1049,9 @@ num2 = v
 
 >  SparkSession 是 Spark 最新的 SQL 查询起始点，实质上是 SQLContext和 HiveContext 的组合。
 >
-> 我们使用 spark-shell 的时候, spark 会自动的创建一个叫做 spark 的 SparkSession ,就像我们以前可以自动获取到一个 sc 来表示 SparkContext
+>  我们使用 spark-shell 的时候, spark 会自动的创建一个叫做 spark 的 SparkSession ,就像我们以前可以自动获取到一个 sc 来表示 SparkContext
 
-#### RDD、DataFrame、DataSet的关系 / 转化
+#### > RDD、DataFrame、DataSet的关系 / 转化
 
 > - RDDs 适合非结构化数据的处理，而 DataFrame & DataSet 更适合结构化数据和半结构化的处理；
 >
@@ -1082,7 +1082,7 @@ num2 = v
 
 
 
-  #### 使用 IDEA  创建 SparkSQL  程序
+  #### > 使用 IDEA  创建 SparkSQL  程序
 
 **步骤 1** :  添加 SparkSQL  依赖
 
@@ -1125,7 +1125,48 @@ object DataFrameDemo {
 }
 ```
 
-#### 自定义 Spark-SQL函数
+#### > **Columns列操作**
+
+引用列
+
+Spark 支持多种方法来构造和引用列，最简单的是使用 `col() ` 或 `column() ` 函数。
+
+```scala
+col("colName")
+column("colName")
+
+// 对于 Scala 语言而言，还可以使用$"myColumn"和'myColumn 这两种语法糖进行引用。
+df.select($"ename", $"job").show()
+df.select('ename, 'job).show()
+```
+
+新增列
+
+```scala
+// 基于已有列值新增列
+df.withColumn("upSal",$"sal"+1000)
+// 基于固定值新增列
+df.withColumn("intCol",lit(1000))
+```
+
+删除列
+
+```scala
+// 支持删除多个列
+df.drop("comm","job").show()
+```
+
+重命名列
+
+```scala
+df.withColumnRenamed("comm", "common").show()
+```
+
+需要说明的是新增，删除，重命名列都会产生新的 DataFrame，原来的 DataFrame 不会被改变。
+
+<br/>
+
+#### > 自定义 Spark-SQL函数
 
 **步骤1**： 写一个生成md5的函数
 
@@ -1181,9 +1222,9 @@ object data_process {
 
 
 
-### （3） Spark - SQL 的数据源
+### （3）Spark - SQL 的数据源
 
-#### (1) 前情概要
+#### > 前情概要
 
 **通用加载和保存函数**
 
@@ -1262,7 +1303,7 @@ object data_process {
 | SaveMode.Overwrite               | "overwrite"       | 如果文件已经存在则覆盖   |
 | SaveMode.Ignore                  | "ignore"          | 如果文件已经存在则忽略   |
 
-#### (2) 数据源 - JDBC
+#### > 数据源 - JDBC
 
 > Spark 同样支持与传统的关系型数据库进行数据读写。但是 Spark 程序默认是没有提供数据库驱动的，所以在使用前需要将对应的数据库驱动上传到安装目录下的 `jars` 目录中。下面示例使用的是 Mysql 数据库，使用前需要将对应的 `mysql-connector-java-x.x.x.jar` 上传到 `jars` 目录下。
 
@@ -1355,7 +1396,7 @@ df.write
 .save()
 ```
 
-#### (3) 数据源 - CSV
+#### > 数据源 - CSV
 
 CSV 是一种常见的文本文件格式，其中每一行表示一条记录，记录中的每个字段用逗号分隔。
 
@@ -1401,7 +1442,7 @@ df.write.format("csv").mode("overwrite").save("/tmp/csv/dept2")
 df.write.format("csv").mode("overwrite").option("sep", "\t").save("/tmp/csv/dept2")
 ```
 
-#### (4) 数据源 - JSON
+#### > 数据源 - JSON
 
 **读取JSON文件** 
 
@@ -1429,7 +1470,7 @@ spark.read.format("json").option("mode", "FAILFAST").load("/usr/file/json/dept.j
 df.write.format("json").mode("overwrite").save("/tmp/spark/json/dept")
 ```
 
-#### (5) 数据源 - Parquet
+#### > 数据源 - Parquet
 
  Parquet 是一个开源的面向列的数据存储，它提供了多种存储优化，允许读取单独的列非整个文件，这不仅节省了存储空间而且提升了读取效率，它是 Spark 是默认的文件格式。
 
@@ -1456,7 +1497,7 @@ Parquet 文件有着自己的存储规则，因此其可选配置项比较少，
 
 > 更多可选配置可以参阅官方文档：https://spark.apache.org/docs/latest/sql-data-sources-parquet.html
 
-#### (6) 数据源 - ORC
+#### > 数据源 - ORC
 
 ORC 是一种自描述的、类型感知的列文件格式，它针对大型数据的读写进行了优化，也是大数据中常用的文件格式。
 
@@ -1472,7 +1513,7 @@ spark.read.format("orc").load("/usr/file/orc/dept.orc").show(5)
 csvFile.write.format("orc").mode("overwrite").save("/tmp/spark/orc/dept")
 ```
 
-#### (7) 数据源 - Text
+#### > 数据源 - Text
 
 Text 文件在读写性能方面并没有任何优势，且不能表达明确的数据结构，所以其使用的比较少，读写操作如下：
 
@@ -1488,7 +1529,7 @@ spark.read.textFile("/usr/file/txt/dept.txt").show()
 df.write.text("/tmp/spark/txt/dept")
 ```
 
-#### (8) 数据读写高级特性
+#### >  数据读写高级特性
 
 **并行读**
 
@@ -1533,31 +1574,31 @@ df.write.format("parquet").mode("overwrite")
 df.write.option(“maxRecordsPerFile”, 5000)
 ```
 
-#### (9) 可选配置附录
+#### > 可选配置附录
 
 **CSV读写可选配置** 
 
-| 读\写操作 | 配置项                         | 可选值                                      | 默认值                        | 描述                                       |
-| ----- | --------------------------- | ---------------------------------------- | -------------------------- | ---------------------------------------- |
-| Both  | seq                         | 任意字符                                     | `,`(逗号)                    | 分隔符                                      |
-| Both  | header                      | true, false                              | false                      | 文件中的第一行是否为列的名称。                          |
-| Read  | escape                      | 任意字符                                     | \                          | 转义字符                                     |
-| Read  | inferSchema                 | true, false                              | false                      | 是否自动推断列类型                                |
-| Read  | ignoreLeadingWhiteSpace     | true, false                              | false                      | 是否跳过值前面的空格                               |
-| Both  | ignoreTrailingWhiteSpace    | true, false                              | false                      | 是否跳过值后面的空格                               |
-| Both  | nullValue                   | 任意字符                                     | “”                         | 声明文件中哪个字符表示空值                            |
-| Both  | nanValue                    | 任意字符                                     | NaN                        | 声明哪个值表示 NaN 或者缺省值                        |
-| Both  | positiveInf                 | 任意字符                                     | Inf                        | 正无穷                                      |
-| Both  | negativeInf                 | 任意字符                                     | -Inf                       | 负无穷                                      |
-| Both  | compression or codec        | None,<br/>uncompressed,<br/>bzip2, deflate,<br/>gzip, lz4, or<br/>snappy | none                       | 文件压缩格式                                   |
-| Both  | dateFormat                  | 任何能转换为 Java 的 <br/>SimpleDataFormat 的字符串 | yyyy-MM-dd                 | 日期格式                                     |
-| Both  | timestampFormat             | 任何能转换为 Java 的 <br/>SimpleDataFormat 的字符串 | yyyy-MMdd’T’HH:mm:ss.SSSZZ | 时间戳格式                                    |
-| Read  | maxColumns                  | 任意整数                                     | 20480                      | 声明文件中的最大列数                               |
-| Read  | maxCharsPerColumn           | 任意整数                                     | 1000000                    | 声明一个列中的最大字符数。                            |
-| Read  | escapeQuotes                | true, false                              | true                       | 是否应该转义行中的引号。                             |
-| Read  | maxMalformedLogPerPartition | 任意整数                                     | 10                         | 声明每个分区中最多允许多少条格式错误的数据，超过这个值后格式错误的数据将不会被读取 |
-| Write | quoteAll                    | true, false                              | false                      | 指定是否应该将所有值都括在引号中，而不只是转义具有引号字符的值。         |
-| Read  | multiLine                   | true, false                              | false                      | 是否允许每条完整记录跨域多行                           |
+| 读\写操作 | 配置项                         | 可选值                                      | 默认值                           | 描述                                       |
+| ----- | --------------------------- | ---------------------------------------- | ----------------------------- | ---------------------------------------- |
+| Both  | seq                         | 任意字符                                     | `,`(逗号)                       | 分隔符                                      |
+| Both  | header                      | true, false                              | false                         | 文件中的第一行是否为列的名称。                          |
+| Read  | escape                      | 任意字符                                     | \                             | 转义字符                                     |
+| Read  | inferSchema                 | true, false                              | false                         | 是否自动推断列类型                                |
+| Read  | ignoreLeadingWhiteSpace     | true, false                              | false                         | 是否跳过值前面的空格                               |
+| Both  | ignoreTrailingWhiteSpace    | true, false                              | false                         | 是否跳过值后面的空格                               |
+| Both  | nullValue                   | 任意字符                                     | “”                            | 声明文件中哪个字符表示空值                            |
+| Both  | nanValue                    | 任意字符                                     | NaN                           | 声明哪个值表示 NaN 或者缺省值                        |
+| Both  | positiveInf                 | 任意字符                                     | Inf                           | 正无穷                                      |
+| Both  | negativeInf                 | 任意字符                                     | -Inf                          | 负无穷                                      |
+| Both  | compression or codec        | None,<br/>uncompressed,<br/>bzip2, deflate,<br/>gzip, lz4, or<br/>snappy | none                          | 文件压缩格式                                   |
+| Both  | dateFormat                  | 任何能转换为 Java 的 <br/>SimpleDataFormat 的字符串 | yyyy-MM-dd                    | 日期格式                                     |
+| Both  | timestampFormat             | 任何能转换为 Java 的 <br/>SimpleDataFormat 的字符串 | `yyyy-MM-dd'T'HH:mm:ss.SSSZZ` | 时间戳格式                                    |
+| Read  | maxColumns                  | 任意整数                                     | 20480                         | 声明文件中的最大列数                               |
+| Read  | maxCharsPerColumn           | 任意整数                                     | 1000000                       | 声明一个列中的最大字符数。                            |
+| Read  | escapeQuotes                | true, false                              | true                          | 是否应该转义行中的引号。                             |
+| Read  | maxMalformedLogPerPartition | 任意整数                                     | 10                            | 声明每个分区中最多允许多少条格式错误的数据，超过这个值后格式错误的数据将不会被读取 |
+| Write | quoteAll                    | true, false                              | false                         | 指定是否应该将所有值都括在引号中，而不只是转义具有引号字符的值。         |
+| Read  | multiLine                   | true, false                              | false                         | 是否允许每条完整记录跨域多行                           |
 
 **JSON读写可选配置** 
 
@@ -1565,7 +1606,7 @@ df.write.option(“maxRecordsPerFile”, 5000)
 | ----- | ---------------------------------- | ---------------------------------------- | -------------------------------- |
 | Both  | compression or codec               | None,<br/>uncompressed,<br/>bzip2, deflate,<br/>gzip, lz4, or<br/>snappy | none                             |
 | Both  | dateFormat                         | 任何能转换为 Java 的 SimpleDataFormat 的字符串      | yyyy-MM-dd                       |
-| Both  | timestampFormat                    | 任何能转换为 Java 的 SimpleDataFormat 的字符串      | yyyy-MMdd’T’HH:mm:ss.SSSZZ       |
+| Both  | timestampFormat                    | 任何能转换为 Java 的 SimpleDataFormat 的字符串      | `yyyy-MM-dd'T'HH:mm:ss.SSSZZ`    |
 | Read  | primitiveAsString                  | true, false                              | false                            |
 | Read  | allowComments                      | true, false                              | false                            |
 | Read  | allowUnquotedFieldNames            | true, false                              | false                            |
@@ -1594,21 +1635,536 @@ df.write.option(“maxRecordsPerFile”, 5000)
 
 
 
-### （4） Spark - SQL 的 Join 操作
+### （4）Spark - SQL 的 Join 操作
 
-loading.............
+- **数据准备**
+
+本文主要介绍 Spark SQL 的多表连接，需要预先准备测试数据。分别创建员工和部门的 Datafame，并注册为临时视图，代码如下：
+
+```scala
+val spark = SparkSession.builder().appName("aggregations").master("local[2]").getOrCreate()
+
+val empDF = spark.read.json("/usr/file/json/emp.json")
+empDF.createOrReplaceTempView("emp")
+
+val deptDF = spark.read.json("/usr/file/json/dept.json")
+deptDF.createOrReplaceTempView("dept")
+```
+
+两表的主要字段如下：
+
+```properties
+emp 员工表
+ |-- ENAME: 员工姓名
+ |-- DEPTNO: 部门编号
+ |-- EMPNO: 员工编号
+ |-- HIREDATE: 入职时间
+ |-- JOB: 职务
+ |-- MGR: 上级编号
+ |-- SAL: 薪资
+ |-- COMM: 奖金  
+```
+
+```properties
+dept 部门表
+ |-- DEPTNO: 部门编号
+ |-- DNAME:  部门名称
+ |-- LOC:    部门所在城市
+```
+
+- **连接类型**
+
+Spark 中支持多种连接类型：
+
+- **Inner Join** : 内连接；
+- **Full Outer Join** :  全外连接；
+- **Left Outer Join** :  左外连接；
+- **Right Outer Join** :  右外连接；
+- **Left Semi Join** :  左半连接；
+- **Left Anti Join** :  左反连接；
+- **Natural Join** :  自然连接；
+- **Cross (or Cartesian) Join** :  交叉 (或笛卡尔) 连接。
+
+其中内，外连接，笛卡尔积均与普通关系型数据库中的相同，如下图所示：
+
+![img](./images/sql-join.jpg)
+
+这里解释一下左半连接和左反连接，这两个连接等价于关系型数据库中的 `IN` 和 `NOT IN` 字句：
+
+```sql
+-- LEFT SEMI JOIN
+SELECT * FROM emp LEFT SEMI JOIN dept ON emp.deptno = dept.deptno
+-- 等价于如下的 IN 语句
+SELECT * FROM emp WHERE deptno IN (SELECT deptno FROM dept)
+
+-- LEFT ANTI JOIN
+SELECT * FROM emp LEFT ANTI JOIN dept ON emp.deptno = dept.deptno
+-- 等价于如下的 IN 语句
+SELECT * FROM emp WHERE deptno NOT IN (SELECT deptno FROM dept)
+```
+
+所有连接类型的示例代码如下：
+
+#### > INNER JOIN
+
+```scala
+// 1.定义连接表达式
+val joinExpression = empDF.col("deptno") === deptDF.col("deptno")
+// 2.连接查询 
+empDF.join(deptDF,joinExpression).select("ename","dname").show()
+
+// 等价 SQL 如下：
+spark.sql("SELECT ename,dname FROM emp JOIN dept ON emp.deptno = dept.deptno").show()
+```
+
+#### >  FULL OUTER JOIN
+
+```scala
+empDF.join(deptDF, joinExpression, "outer").show()
+spark.sql("SELECT * FROM emp FULL OUTER JOIN dept ON emp.deptno = dept.deptno").show()
+```
+
+#### >  LEFT OUTER JOIN
+
+```scala
+empDF.join(deptDF, joinExpression, "left_outer").show()
+spark.sql("SELECT * FROM emp LEFT OUTER JOIN dept ON emp.deptno = dept.deptno").show()
+```
+
+#### >  RIGHT OUTER JOIN
+
+```scala
+empDF.join(deptDF, joinExpression, "right_outer").show()
+spark.sql("SELECT * FROM emp RIGHT OUTER JOIN dept ON emp.deptno = dept.deptno").show()
+```
+
+#### >  LEFT SEMI JOIN
+
+```scala
+empDF.join(deptDF, joinExpression, "left_semi").show()
+spark.sql("SELECT * FROM emp LEFT SEMI JOIN dept ON emp.deptno = dept.deptno").show()
+```
+
+#### > LEFT ANTI JOIN
+
+```scala
+empDF.join(deptDF, joinExpression, "left_anti").show()
+spark.sql("SELECT * FROM emp LEFT ANTI JOIN dept ON emp.deptno = dept.deptno").show()
+```
+
+#### >  CROSS JOIN
+
+```scala
+empDF.join(deptDF, joinExpression, "cross").show()
+spark.sql("SELECT * FROM emp CROSS JOIN dept ON emp.deptno = dept.deptno").show()
+```
+
+#### >  NATURAL JOIN
+
+自然连接是在两张表中寻找那些数据类型和列名都相同的字段，然后自动地将他们连接起来，并返回所有符合条件的结果。
+
+```scala
+spark.sql("SELECT * FROM emp NATURAL JOIN dept").show()
+```
+
+以下是一个自然连接的查询结果，程序自动推断出使用两张表都存在的 dept 列进行连接，其实际等价于：
+
+```sql
+spark.sql("SELECT * FROM emp JOIN dept ON emp.deptno = dept.deptno").show()
+```
+
+![img](./images/spark-sql-NATURAL-JOIN.png) 
+
+由于自然连接常常会产生不可预期的结果，所以并不推荐使用。
+
+#### >  连接的执行
+
+在对大表与大表之间进行连接操作时，通常都会触发 `Shuffle Join`，两表的所有分区节点会进行 `All-to-All` 的通讯，这种查询通常比较昂贵，会对网络 IO 会造成比较大的负担。
+
+![img](./images/spark-Big-table–to–big-table.png)
+
+而对于大表和小表的连接操作，Spark 会在一定程度上进行优化，如果小表的数据量小于 Worker Node 的内存空间，Spark 会考虑将小表的数据广播到每一个 Worker Node，在每个工作节点内部执行连接计算，这可以降低网络的 IO，但会加大每个 Worker Node 的 CPU 负担。
+
+![img](./images/spark-Big-table–to–small-table.png)
+
+是否采用广播方式进行 `Join` 取决于程序内部对小表的判断，如果想明确使用广播方式进行 `Join`，则可以在 DataFrame API 中使用 `broadcast` 方法指定需要广播的小表：
+
+```scala
+empDF.join(broadcast(deptDF), joinExpression).show()
+```
 
 
 
 ### （5）Spark - SQL 的聚合参数
 
-loading.............
+#### > 简单聚合
+
+- **数据准备**
+
+```scala
+// 需要导入 spark sql 内置的函数包
+import org.apache.spark.sql.functions._
+
+val spark = SparkSession.builder().appName("aggregations").master("local[2]").getOrCreate()
+val empDF = spark.read.json("/usr/file/json/emp.json")
+// 注册为临时视图，用于后面演示 SQL 查询
+empDF.createOrReplaceTempView("emp")
+empDF.show()
+```
+
+- **count**
+
+```scala
+// 计算员工人数
+empDF.select(count("ename")).show()
+```
+
+- **countDistinct** 
+
+```scala
+// 计算姓名不重复的员工人数
+empDF.select(countDistinct("deptno")).show()
+```
+
+- **approx_count_distinct**
+
+通常在使用大型数据集时，你可能关注的只是近似值而不是准确值，这时可以使用 approx_count_distinct 函数，并可以使用第二个参数指定最大允许误差。
+
+```scala
+empDF.select(approx_count_distinct ("ename",0.1)).show()
+```
+
+- **first & last**
+
+获取 DataFrame 中指定列的第一个值或者最后一个值。
+
+```scala
+empDF.select(first("ename"),last("job")).show()
+```
+
+- **min & max**
+
+获取 DataFrame 中指定列的最小值或者最大值。
+
+```scala
+empDF.select(min("sal"),max("sal")).show()
+```
+
+- **sum & sumDistinct**
+
+求和以及求指定列所有不相同的值的和。
+
+```scala
+empDF.select(sum("sal")).show()
+empDF.select(sumDistinct("sal")).show()
+```
+
+- **avg**
+
+内置的求平均数的函数。
+
+```scala
+empDF.select(avg("sal")).show()
+```
+
+**数学函数**
+
+Spark SQL 中还支持多种数学聚合函数，用于通常的数学计算，以下是一些常用的例子：
+
+```scala
+// 1.计算总体方差、均方差、总体标准差、样本标准差
+empDF.select(var_pop("sal"), var_samp("sal"), stddev_pop("sal"), stddev_samp("sal")).show()
+
+// 2.计算偏度和峰度
+empDF.select(skewness("sal"), kurtosis("sal")).show()
+
+// 3. 计算两列的皮尔逊相关系数、样本协方差、总体协方差。(这里只是演示，员工编号和薪资两列实际上并没有什么关联关系)
+empDF.select(corr("empno", "sal"), covar_samp("empno", "sal"),covar_pop("empno", "sal")).show()
+```
+
+- **聚合数据到集合**
+
+```scala
+scala>  empDF.agg(collect_set("job"), collect_list("ename")).show()
+
+输出：
++--------------------+--------------------+
+|    collect_set(job)| collect_list(ename)|
++--------------------+--------------------+
+|[MANAGER, SALESMA...|[SMITH, ALLEN, WA...|
++--------------------+--------------------+
+```
+
+
+
+#### > 分组聚合
+
+- **简单分组**
+
+```scala
+empDF.groupBy("deptno", "job").count().show()
+//等价 SQL
+spark.sql("SELECT deptno, job, count(*) FROM emp GROUP BY deptno, job").show()
+
+输出：
++------+---------+-----+
+|deptno|      job|count|
++------+---------+-----+
+|    10|PRESIDENT|    1|
+|    30|    CLERK|    1|
+|    10|  MANAGER|    1|
+|    30|  MANAGER|    1|
+|    20|    CLERK|    2|
+|    30| SALESMAN|    4|
+|    20|  ANALYST|    2|
+|    10|    CLERK|    1|
+|    20|  MANAGER|    1|
++------+---------+-----+
+```
+
+- **分组聚合**
+
+```scala
+empDF.groupBy("deptno").agg(count("ename").alias("人数"), sum("sal").alias("总工资")).show()
+// 等价语法
+empDF.groupBy("deptno").agg("ename"->"count","sal"->"sum").show()
+// 等价 SQL
+spark.sql("SELECT deptno, count(ename) ,sum(sal) FROM emp GROUP BY deptno").show()
+
+输出：
++------+----+------+
+|deptno|人数|总工资|
++------+----+------+
+|    10|   3|8750.0|
+|    30|   6|9400.0|
+|    20|   5|9375.0|
++------+----+------+
+```
+
+
+
+#### > 自定义聚合函数
+
+Scala 提供了两种自定义聚合函数的方法，分别如下：
+
+- 有类型的自定义聚合函数，主要适用于 DataSet；
+- 无类型的自定义聚合函数，主要适用于 DataFrame。
+
+以下分别使用两种方式来自定义一个求平均值的聚合函数，这里以计算员工平均工资为例。两种自定义方式分别如下：
+
+- **有类型的自定义函数**
+
+```scala
+import org.apache.spark.sql.expressions.Aggregator
+import org.apache.spark.sql.{Encoder, Encoders, SparkSession, functions}
+
+// 1.定义员工类,对于可能存在 null 值的字段需要使用 Option 进行包装
+case class Emp(ename: String, comm: scala.Option[Double], deptno: Long, empno: Long,
+               hiredate: String, job: String, mgr: scala.Option[Long], sal: Double)
+
+// 2.定义聚合操作的中间输出类型
+case class SumAndCount(var sum: Double, var count: Long)
+
+/* 3.自定义聚合函数
+ * @IN  聚合操作的输入类型
+ * @BUF reduction 操作输出值的类型
+ * @OUT 聚合操作的输出类型
+ */
+object MyAverage extends Aggregator[Emp, SumAndCount, Double] {
+    
+    // 4.用于聚合操作的的初始零值
+    override def zero: SumAndCount = SumAndCount(0, 0)
+    
+    // 5.同一分区中的 reduce 操作
+    override def reduce(avg: SumAndCount, emp: Emp): SumAndCount = {
+        avg.sum += emp.sal
+        avg.count += 1
+        avg
+    }
+
+    // 6.不同分区中的 merge 操作
+    override def merge(avg1: SumAndCount, avg2: SumAndCount): SumAndCount = {
+        avg1.sum += avg2.sum
+        avg1.count += avg2.count
+        avg1
+    }
+
+    // 7.定义最终的输出类型
+    override def finish(reduction: SumAndCount): Double = reduction.sum / reduction.count
+
+    // 8.中间类型的编码转换
+    override def bufferEncoder: Encoder[SumAndCount] = Encoders.product
+
+    // 9.输出类型的编码转换
+    override def outputEncoder: Encoder[Double] = Encoders.scalaDouble
+}
+
+object SparkSqlApp {
+
+    // 测试方法
+    def main(args: Array[String]): Unit = {
+
+        val spark = SparkSession.builder().appName("Spark-SQL").master("local[2]").getOrCreate()
+        import spark.implicits._
+        val ds = spark.read.json("file/emp.json").as[Emp]
+
+        // 10.使用内置 avg() 函数和自定义函数分别进行计算，验证自定义函数是否正确
+        val myAvg = ds.select(MyAverage.toColumn.name("average_sal")).first()
+        val avg = ds.select(functions.avg(ds.col("sal"))).first().get(0)
+
+        println("自定义 average 函数 : " + myAvg)
+        println("内置的 average 函数 : " + avg)
+    }
+}
+```
+
+自定义聚合函数需要实现的方法比较多，这里以绘图的方式来演示其执行流程，以及每个方法的作用：
+
+![img](./images/spark-sql-自定义函数.png)
+
+
+
+关于 `zero`,`reduce`,`merge`,`finish` 方法的作用在上图都有说明，这里解释一下中间类型和输出类型的编码转换，这个写法比较固定，基本上就是两种情况：
+
+- 自定义类型 Case Class 或者元组就使用 `Encoders.product` 方法；
+- 基本类型就使用其对应名称的方法，如 `scalaByte `，`scalaFloat`，`scalaShort` 等，示例如下：
+
+```scala
+override def bufferEncoder: Encoder[SumAndCount] = Encoders.product
+override def outputEncoder: Encoder[Double] = Encoders.scalaDouble
+```
+
+- **无类型的自定义聚合函数**
+
+理解了有类型的自定义聚合函数后，无类型的定义方式也基本相同，代码如下：
+
+```scala
+import org.apache.spark.sql.expressions.{MutableAggregationBuffer, UserDefinedAggregateFunction}
+import org.apache.spark.sql.types._
+import org.apache.spark.sql.{Row, SparkSession}
+
+object MyAverage extends UserDefinedAggregateFunction {
+  // 1.聚合操作输入参数的类型,字段名称可以自定义
+  def inputSchema: StructType = StructType(StructField("MyInputColumn", LongType) :: Nil)
+
+  // 2.聚合操作中间值的类型,字段名称可以自定义
+  def bufferSchema: StructType = {
+    StructType(StructField("sum", LongType) :: StructField("MyCount", LongType) :: Nil)
+  }
+
+  // 3.聚合操作输出参数的类型
+  def dataType: DataType = DoubleType
+
+  // 4.此函数是否始终在相同输入上返回相同的输出,通常为 true
+  def deterministic: Boolean = true
+
+  // 5.定义零值
+  def initialize(buffer: MutableAggregationBuffer): Unit = {
+    buffer(0) = 0L
+    buffer(1) = 0L
+  }
+
+  // 6.同一分区中的 reduce 操作
+  def update(buffer: MutableAggregationBuffer, input: Row): Unit = {
+    if (!input.isNullAt(0)) {
+      buffer(0) = buffer.getLong(0) + input.getLong(0)
+      buffer(1) = buffer.getLong(1) + 1
+    }
+  }
+
+  // 7.不同分区中的 merge 操作
+  def merge(buffer1: MutableAggregationBuffer, buffer2: Row): Unit = {
+    buffer1(0) = buffer1.getLong(0) + buffer2.getLong(0)
+    buffer1(1) = buffer1.getLong(1) + buffer2.getLong(1)
+  }
+
+  // 8.计算最终的输出值
+  def evaluate(buffer: Row): Double = buffer.getLong(0).toDouble / buffer.getLong(1)
+}
+
+object SparkSqlApp {
+
+  // 测试方法
+  def main(args: Array[String]): Unit = {
+
+    val spark = SparkSession.builder().appName("Spark-SQL").master("local[2]").getOrCreate()
+    // 9.注册自定义的聚合函数
+    spark.udf.register("myAverage", MyAverage)
+
+    val df = spark.read.json("file/emp.json")
+    df.createOrReplaceTempView("emp")
+
+    // 10.使用自定义函数和内置函数分别进行计算
+    val myAvg = spark.sql("SELECT myAverage(sal) as avg_sal FROM emp").first()
+    val avg = spark.sql("SELECT avg(sal) as avg_sal FROM emp").first()
+
+    println("自定义 average 函数 : " + myAvg)
+    println("内置的 average 函数 : " + avg)
+  }
+}
+```
 
 
 
 ## 三、Spark-Streaming
 
-loading.............
+### （1）Spark Streaming 概述
+
+- **Spark Streaming 是什么**
+
+  > Spark 流使得构建可扩展的容错流应用程序变得更加容易。
+  >
+  > Spark Streaming 用于流式数据的处理。Spark Streaming 支持的数据输入源很多，例如：Kafka、Flume、Twitter、ZeroMQ 和简单的 TCP 套接字等等。数据输入后可以用 Spark 的高度抽象原语
+  > 如：map、reduce、join、window 等进行运算。而结果也能保存在很多地方，如 HDFS，数据库等。
+
+![img](./images/streaming1.PNG)
+
+> 在 Spark Streaming 中，处理数据的单位是一批而不是单条，而数据采集却是逐条进行的，因此 Spark Streaming 系统需要设置间隔使得数据汇总到一定的量后再一并操作，这个间隔就是批处理间隔。批处理间隔是 Spark Streaming 的核心概念和关键参数，它决定了 Spark Streaming 提交作业的频率和数据处理的延迟，同时也影响着数据处理的吞吐量和性能。
+
+![img](./images/streaming2.PNG)
+
+> Spark Streaming 提供了一个高级抽象: discretized stream(SStream), DStream 表示一个连续的数据流.
+>
+> DStream 可以由来自数据源的输入数据流来创建, 也可以通过在其他的 DStream 上应用一些高阶操作来得到.在内部, 一个 DSteam 是由一个个 RDD 序列来表示的。
+
+- **特点**
+  - 易用：通过高阶函数来构建应用
+  - 容错
+  - 易整合到 Spark  体系中
+  - 缺点：Spark Streaming 是一种“微量批处理”架构, 和其他基于“一次处理一条记录”架构的系统相比, 它的延迟会相对高一些
+- **Spark-Streaming架构** 
+
+![img](./images/架构.PNG)
+
+- **背压机制**
+
+> 为了更好的协调数据接收速率与资源处理能力，1.5 版本开始 Spark Streaming 可以动态控制数据接收速率来适配集群数据处理能力。背压机制（即 Spark StreamingBackpressure）: 根据 JobScheduler 反馈作业的执行信息来动态调整 Receiver 数据接收率。
+>
+> 通过属性 spark.streaming.backpressure.enabled 来控制是否启用 backpressure 机制，默认值 false ，即不启用。
+
+
+
+### （2）DStream 入门 
+
+- **WordCount词频统计** 
+
+  ​
+
+### （3）DStream 创建   
+
+
+
+### （4）DStream 转换 
+
+
+
+### （5）DStream 输出
+
+
+
+### （6）DStream 编程进阶
+
+
 
 
 
