@@ -4,7 +4,7 @@
 
 ## 一、Spark-Core
 
-### 1. Spark 概述
+### （1）Spark 概述
 
 > Spark 是一种基于内存的快速、通用、可扩展的大数据分析计算引擎。
 >
@@ -16,7 +16,7 @@
 >
 > &emsp;在绝大多数的数据计算场景中，Spark 确实会比 MapReduce更有优势。但是 Spark 是基于内存的，所以在实际的生产环境中，由于内存的限制，可能会由于内存资源不够导致 Job 执行失败，此时，MapReduce 其实是一个更好的选择，所以 Spark并不能完全替代 MR。
 
-### 2. Spark的核心模块
+### （2）Spark的核心模块
 
 ![img](./images/模块.PNG)
 
@@ -40,9 +40,9 @@
 
 &emsp;GraphX 是 Spark 面向图计算提供的框架与算法库。
 
-### 3. Spark开发环境搭建
+### （3）Spark开发环境搭建
 
-#### 1. 安装Spark
+#### 安装Spark
 
 **下载并解压**
 
@@ -92,16 +92,16 @@ spark-shell --master local[2]
 
 进入 spark-shell 后，程序已经自动创建好了上下文 `SparkContext`，等效于执行了下面的 Scala 代码：
 
-```scala
+```java
 val conf = new SparkConf().setAppName("Spark shell").setMaster("local[2]")
 val sc = new SparkContext(conf)
 ```
 
-#### 2. 词频统计案例
+#### 词频统计案例
 
 安装完成后可以先做一个简单的词频统计例子，感受 spark 的魅力。准备一个词频统计的文件样本 `wc.txt`，内容如下：
 
-```txt
+```text
 hadoop,spark,hadoop
 spark,flink,flink,spark
 hadoop,hadoop
@@ -109,7 +109,7 @@ hadoop,hadoop
 
 在 scala 交互式命令行中执行如下 Scala 语句：
 
-```scala
+```java
 val file = spark.sparkContext.textFile("file:///usr/app/wc.txt")
 val wordCounts = file.flatMap(line => line.split(",")).map((word => (word, 1))).reduceByKey(_ + _)
 wordCounts.collect
@@ -125,7 +125,7 @@ wordCounts.collect
 
 
 
-#### 3. Scala开发环境配置
+#### Scala开发环境配置
 
 Spark 是基于 Scala 语言进行开发的，分别提供了基于 Scala、Java、Python 语言的 API，如果你想使用 Scala 语言进行开发，则需要搭建 Scala 语言的开发环境。
 
@@ -191,7 +191,7 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
 
 
 
-### 4. Spark部署模式与作业提交 
+### （4）Spark部署模式与作业提交 
 
 - **Local  模式**
 
@@ -224,8 +224,8 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
   必须要保证 Hadoop 已经启动，这里包括 YARN 和 HDFS 都需要启动，因为在计算过程中 Spark 会使用 HDFS 存储临时文件，如果 HDFS 没有启动，则会抛出异常。
 
   ```shell
-  # start-yarn.sh
-  # start-dfs.sh
+  start-yarn.sh
+  start-dfs.sh
   ```
 
   **提交应用**
@@ -272,7 +272,7 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
 
 
 
-### 5. Spark运行架构
+### （5）Spark运行架构
 
 | Term（术语）        | Meaning（含义）                              |
 | --------------- | ---------------------------------------- |
@@ -318,7 +318,7 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
   >
   > 说的简单点就是，ResourceManager（资源）和 Driver（计算）之间的解耦合靠的就是ApplicationMaster。
 
-### 6. 核心概念
+### （6）核心概念
 
 -  **Executor 与 Core**
 
@@ -332,7 +332,7 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
 
 > 在分布式计算框架中一般都是多个任务同时执行，由于任务分布在不同的计算节点进行计算，所以能够真正地实现多任务并行执行，记住，这里是并行，而不是并发。这里我们将整个集群并行执行任务的数量称之为并行度。那么一个作业到底并行度是多少呢？这个取决于框架的默认配置。应用程序也可以在运行过程中动态修改。
 
-### 7. 提交流程
+### （7）提交流程
 
 &emsp;所谓的提交流程，其实就是我们开发人员根据需求写的应用程序通过 Spark 客户端提交给 Spark 运行环境执行计算的流程。在不同的部署环境中，这个提交过程基本相同，但是又有细微的区别，我们这里不进行详细的比较，但是因为国内工作中，将 Spark 引用部署到Yarn 环境中会更多一些，所以本课程中的提交流程是基于 Yarn 环境的。
 
@@ -384,7 +384,7 @@ nohup spark-submit
 [/opt/work/xxxx.jar] # Jar 包路径 
 ```
 
-### 8. RDD的Transformation 和 Action 常用算子
+### （8）RDD的Transformation 和 Action 常用算子
 
 - **RDD**
 
@@ -540,7 +540,7 @@ nohup spark-submit
 <font color='red'>从计算的角度, 算子以外的代码都是在 Driver 端执行, 算子里面的代码都是在 Executor
 端执行。</font>
 
-#### 1. Transformation
+#### Transformation
 
 spark 常用的 Transformation 算子如下表：
 
@@ -570,7 +570,7 @@ spark 常用的 Transformation 算子如下表：
 
 **1.1 map** 
 
-```scala
+```java
 val list = List(1,2,3)
 sc.parallelize(list).map(_ * 10).foreach(println)
 
@@ -579,7 +579,7 @@ sc.parallelize(list).map(_ * 10).foreach(println)
 
 **1.2 filter**  
 
-```scala
+```java
 val list = List(3, 6, 9, 10, 12, 21)
 sc.parallelize(list).filter(_ >= 10).foreach(println)
 
@@ -590,7 +590,7 @@ sc.parallelize(list).filter(_ >= 10).foreach(println)
 
 `flatMap(func)` 与 `map` 类似，但每一个输入的 item 会被映射成 0 个或多个输出的 items（ *func* 返回类型需要为 `Seq`）。
 
-```scala
+```java
 val list = List(List(1, 2), List(3), List(), List(4, 5))
 sc.parallelize(list).flatMap(_.toList).map(_ * 10).foreach(println)
 
@@ -599,7 +599,7 @@ sc.parallelize(list).flatMap(_.toList).map(_ * 10).foreach(println)
 
 flatMap 这个算子在日志分析中使用概率非常高，这里进行一下演示：拆分输入的每行数据为单个单词，并赋值为 1，代表出现一次，之后按照单词分组并统计其出现总次数，代码如下：
 
-```scala
+```java
 val lines = List("spark flume spark",
                  "hadoop flume hive")
 sc.parallelize(lines).flatMap(line => line.split(" ")).
@@ -616,7 +616,7 @@ map(word=>(word,1)).reduceByKey(_+_).foreach(println)
 
 与 map 类似，但函数单独在 RDD 的每个分区上运行， *func*函数的类型为 `Iterator<T> => Iterator<U>` (其中 T 是 RDD 的类型)，即输入和输出都必须是可迭代类型。
 
-```scala
+```java
 val list = List(1, 2, 3, 4, 5, 6)
 sc.parallelize(list, 3).mapPartitions(iterator => {
   val buffer = new ListBuffer[Int]
@@ -633,7 +633,7 @@ sc.parallelize(list, 3).mapPartitions(iterator => {
 
   与 mapPartitions 类似，但 *func* 类型为 `(Int, Iterator<T>) => Iterator<U>` ，其中第一个参数为分区索引。
 
-```scala
+```java
 val list = List(1, 2, 3, 4, 5, 6)
 sc.parallelize(list, 3).mapPartitionsWithIndex((index, iterator) => {
   val buffer = new ListBuffer[String]
@@ -655,7 +655,7 @@ sc.parallelize(list, 3).mapPartitionsWithIndex((index, iterator) => {
 
   数据采样。有三个可选参数：设置是否放回 (withReplacement)、采样的百分比 (fraction)、随机数生成器的种子 (seed) ：
 
-```scala
+```java
 val list = List(1, 2, 3, 4, 5, 6)
 sc.parallelize(list).sample(withReplacement = false, fraction = 0.5).foreach(println)
 ```
@@ -664,7 +664,7 @@ sc.parallelize(list).sample(withReplacement = false, fraction = 0.5).foreach(pri
 
 合并两个 RDD：
 
-```scala
+```java
 val list1 = List(1, 2, 3)
 val list2 = List(4, 5, 6)
 sc.parallelize(list1).union(sc.parallelize(list2)).foreach(println)
@@ -675,7 +675,7 @@ sc.parallelize(list1).union(sc.parallelize(list2)).foreach(println)
 
 求两个 RDD 的交集：
 
-```scala
+```java
 val list1 = List(1, 2, 3, 4, 5)
 val list2 = List(4, 5, 6)
 sc.parallelize(list1).intersection(sc.parallelize(list2)).foreach(println)
@@ -686,7 +686,7 @@ sc.parallelize(list1).intersection(sc.parallelize(list2)).foreach(println)
 
 去重：
 
-```scala
+```java
 val list = List(1, 2, 2, 4, 4)
 sc.parallelize(list).distinct().foreach(println)
 // 输出: 4 1 2
@@ -696,7 +696,7 @@ sc.parallelize(list).distinct().foreach(println)
 
 按照键进行分组：
 
-```scala
+```java
 val list = List(("hadoop", 2), ("spark", 3), ("spark", 5), ("storm", 6), ("hadoop", 2))
 sc.parallelize(list).groupByKey().map(x => (x._1, x._2.toList)).foreach(println)
 
@@ -710,7 +710,7 @@ sc.parallelize(list).groupByKey().map(x => (x._1, x._2.toList)).foreach(println)
 
 按照键进行归约操作：
 
-```scala
+```java
 val list = List(("hadoop", 2), ("spark", 3), ("spark", 5), ("storm", 6), ("hadoop", 2))
 sc.parallelize(list).reduceByKey(_ + _).foreach(println)
 
@@ -724,7 +724,7 @@ sc.parallelize(list).reduceByKey(_ + _).foreach(println)
 
 按照键进行排序：
 
-```scala
+```java
 val list01 = List((100, "hadoop"), (90, "spark"), (120, "storm"))
 sc.parallelize(list01).sortByKey(ascending = false).foreach(println)
 // 输出
@@ -735,7 +735,7 @@ sc.parallelize(list01).sortByKey(ascending = false).foreach(println)
 
 按照指定元素进行排序：
 
-```scala
+```java
 val list02 = List(("hadoop",100), ("spark",90), ("storm",120))
 sc.parallelize(list02).sortBy(x=>x._2,ascending=false).foreach(println)
 // 输出
@@ -748,7 +748,7 @@ sc.parallelize(list02).sortBy(x=>x._2,ascending=false).foreach(println)
 
 在一个 (K, V) 和 (K, W) 类型的 Dataset 上调用时，返回一个 (K, (V, W)) 的 Dataset，等价于内连接操作。如果想要执行外连接，可以使用 `leftOuterJoin`, `rightOuterJoin` 和 `fullOuterJoin` 等算子。
 
-```scala
+```java
 val list01 = List((1, "student01"), (2, "student02"), (3, "student03"))
 val list02 = List((1, "teacher01"), (2, "teacher02"), (3, "teacher03"))
 sc.parallelize(list01).join(sc.parallelize(list02)).foreach(println)
@@ -763,7 +763,7 @@ sc.parallelize(list01).join(sc.parallelize(list02)).foreach(println)
 
 在一个 (K, V) 对的 Dataset 上调用时，返回多个类型为 (K, (Iterable\<V>, Iterable\<W>)) 的元组所组成的 Dataset。
 
-```scala
+```java
 val list01 = List((1, "a"),(1, "a"), (2, "b"), (3, "e"))
 val list02 = List((1, "A"), (2, "B"), (3, "E"))
 val list03 = List((1, "[ab]"), (2, "[bB]"), (3, "eE"),(3, "eE"))
@@ -780,7 +780,7 @@ sc.parallelize(list01).cogroup(sc.parallelize(list02),sc.parallelize(list03)).fo
 
 计算笛卡尔积：
 
-```scala
+```java
 val list1 = List("A", "B", "C")
 val list2 = List(1, 2, 3)
 sc.parallelize(list1).cartesian(sc.parallelize(list2)).foreach(println)
@@ -801,7 +801,7 @@ sc.parallelize(list1).cartesian(sc.parallelize(list2)).foreach(println)
 
 当调用（K，V）对的数据集时，返回（K，U）对的数据集，其中使用给定的组合函数和 zeroValue 聚合每个键的值。与 `groupByKey` 类似，reduce 任务的数量可通过第二个参数 `numPartitions` 进行配置。示例如下：
 
-```scala
+```java
 // 为了清晰，以下所有参数均使用具名传参
 val list = List(("hadoop", 3), ("hadoop", 2), ("spark", 4), ("spark", 3), ("storm", 6), ("storm", 8))
 sc.parallelize(list,numSlices = 2).aggregateByKey(zeroValue = 0,numPartitions = 3)(
@@ -836,7 +836,7 @@ sc.parallelize(list,numSlices = 2).aggregateByKey(zeroValue = 0,numPartitions = 
 
 `aggregateByKey(zeroValue = 0,numPartitions = 3)` 的第二个参数 `numPartitions` 决定的是输出 RDD 的分区数量，想要验证这个问题，可以对上面代码进行改写，使用 `getNumPartitions` 方法获取分区数量：
 
-```scala
+```java
 sc.parallelize(list,numSlices = 6).aggregateByKey(zeroValue = 0,numPartitions = 3)(
   seqOp = math.max(_, _),
   combOp = _ + _
@@ -845,7 +845,7 @@ sc.parallelize(list,numSlices = 6).aggregateByKey(zeroValue = 0,numPartitions = 
 
 ![img](./images/spark-getpartnum.png) 
 
-#### 2. Action
+#### Action
 
 Spark 常用的 Action 算子如下：
 
@@ -868,7 +868,7 @@ Spark 常用的 Action 算子如下：
 
 使用函数*func*执行归约操作：
 
-```scala
+```java
  val list = List(1, 2, 3, 4, 5)
 sc.parallelize(list).reduce((x, y) => x + y)
 sc.parallelize(list).reduce(_ + _)
@@ -880,7 +880,7 @@ sc.parallelize(list).reduce(_ + _)
 
 按自然顺序（natural order）或自定义比较器（custom comparator）排序后返回前 *n* 个元素。需要注意的是 `takeOrdered` 使用隐式参数进行隐式转换，以下为其源码。所以在使用自定义排序时，需要继承 `Ordering[T]` 实现自定义比较器，然后将其作为隐式参数引入。
 
-```scala
+```java
 def takeOrdered(num: Int)(implicit ord: Ordering[T]): Array[T] = withScope {
   .........
 }
@@ -888,7 +888,7 @@ def takeOrdered(num: Int)(implicit ord: Ordering[T]): Array[T] = withScope {
 
 自定义规则排序：
 
-```scala
+```java
 // 继承 Ordering[T],实现自定义比较器，按照 value 值的长度进行排序
 class CustomOrdering extends Ordering[(Int, String)] {
     override def compare(x: (Int, String), y: (Int, String)): Int
@@ -907,7 +907,7 @@ sc.parallelize(list).takeOrdered(5)
 
 计算每个键出现的次数：
 
-```scala
+```java
 val list = List(("hadoop", 10), ("hadoop", 10), ("storm", 3), ("storm", 3), ("azkaban", 1))
 sc.parallelize(list).countByKey()
 
@@ -918,7 +918,7 @@ sc.parallelize(list).countByKey()
 
 将 dataset 中的元素以文本文件的形式写入本地文件系统、HDFS 或其它 Hadoop 支持的文件系统中。Spark 将对每个元素调用 toString 方法，将元素转换为文本文件中的一行记录。
 
-```scala
+```java
 val list = List(("hadoop", 10), ("hadoop", 10), ("storm", 3), ("storm", 3), ("azkaban", 1))
 sc.parallelize(list).saveAsTextFile("/usr/file/temp")
 ```
@@ -929,13 +929,13 @@ sc.parallelize(list).saveAsTextFile("/usr/file/temp")
 
 
 
-### 8. 累加器
+### （9）累加器
 
 ➢  累加器：分布式共享<font color='red'>只写</font>变量
 
 > 累加器用来把 Executor 端变量信息聚合到 Driver 端。在 Driver 程序中定义的变量，在Executor 端的每个 Task 都会得到这个变量的一份新的副本，每个 task 更新这些副本的值后，传回 Driver 端进行merge。
 
-```scala
+```java
 val rdd = sc.makeRDD(List(1,2,3,4,5))
 // 声明累加器
 var sum = sc.longAccumulator("sum");
@@ -955,7 +955,7 @@ println("sum = " + sum.value)
 
 这里先介绍一下 Scala 中关于闭包的概念：
 
-```
+```java
 var more = 10
 val addMore = (x: Int) => x + more
 ```
@@ -977,13 +977,13 @@ val addMore = (x: Int) => x + more
 
 
 
-### 9. 广播变量
+### （10）广播变量
 
 ➢  广播变量：分布式共享<font color='red'>只读</font>变量
 
 > 广播变量用来高效分发较大的对象。向所有工作节点发送一个较大的只读值，以供一个或多个 Spark 操作使用。比如，如果你的应用需要向所有节点发送一个较大的只读查询表，广播变量用起来都很顺手。在多个并行操作中使用同一个变量，但是 Spark 会为每个任务分别发送。
 
-```scala
+```java
 val rdd1 = sc.makeRDD(List( ("a",1), ("b", 2), ("c", 3), ("d", 4) ),4)
 val list = List( ("a",4), ("b", 5), ("c", 6), ("d", 7) )
 // 声明广播变量
@@ -1006,31 +1006,601 @@ num2 = v
 
 ## 二、 Spark-SQL
 
-### 1. DataFrame和DataSet
+### （1）Spark - SQL 的 DataFrame / DataSet
+
+#### Spark SQL 的简介
+
+> Spark SQL 是 Spark 用于结构化数据(structured data)处理的 Spark 模块。
+>
+> Spark SQL 它提供了 2 个编程抽象, 类似 Spark Core 中的  RDD
+>
+> （1）DataFrame
+>
+> （2）DataSet
+
+#### Spark SQL 的特点
+
+> **Integrated( 易整合)**：无缝的整合了 SQL 查询和 Spark 编程。
+>
+> **Uniform Data Access( 统一的数据访问方式)**：使用相同的方式连接不同的数据源。
+>
+> **Hive Integration( 集成 Hive)**：在已有的仓库上直接运行 SQL 或者 HiveQL。
+>
+> **Standard Connectivity( 标准的连接方式)**：通过 JDBC 或者 ODBC 来连接。
+
+#### 什么是DataFrame
+
+> 1. 与 RDD 类似， DataFrame 也是一个分布式数据容器。
+> 2. 然而 DataFrame 更像传统数据库的二维表格，除了数据以外，还记录数据的结构信息，即 schema 。同时，与 Hive 类似， DataFrame 也支持嵌套数据类型（ struct 、 array 和 map ）。
+> 3. 从 API 易用性的角度上看， DataFrame API 提供的是一套高层的关系操作，比函数式的RDD API 要更加友好，门槛更低。
+> 4. 性能上比  RDD 要高，主要原因： 优化的执行计划：查询计划通过 Spark catalyst optimiser进行优化。
+
+#### 什么是DataSet
+
+> 1. 是 DataFrame API 的一个扩展，是 SparkSQL 最新的数据抽象(1.6 新增)。
+> 2. 用户友好的 API 风格，既具有类型安全检查也具有 DataFrame 的查询优化特性。
+> 3. Dataset 支持编解码器，当需要访问非堆上的数据时可以避免反序列化整个对象，提高了效率。
+> 4. 样例类被用来在 DataSet 中定义数据的结构信息，样例类中每个属性的名称直接映射到 DataSet 中的字段名称。
+> 5. DataFrame 是 DataSet 的特列， DataFrame=DataSet[Row] ，所以可以通过as 方法将 DataFrame 转换为 DataSet 。 Row 是一个类型，跟 Car 、 Person 这些的类型一样，所有的表结构信息都用 Row 来表示。
+> 6. DataSet 是强类型的。比如可以有 DataSet[Car] ， DataSet[Person] .
+> 7. DataFrame 只是知道字段，但是不知道字段的类型，所以在执行这些操作的时候是没办法在编译的时候检查是否类型失败的，比如你可以对一个String 进行减法操作，在执行的时候才报错，而 DataSet 不仅仅知道字段，而且知道字段类型，所以有更严格的错误检查。就跟 JSON 对象和类对象之间的类比。
+
+### （2）Spark - SQL 核心编程
+
+>  SparkSession 是 Spark 最新的 SQL 查询起始点，实质上是 SQLContext和 HiveContext 的组合。
+>
+> 我们使用 spark-shell 的时候, spark 会自动的创建一个叫做 spark 的 SparkSession ,就像我们以前可以自动获取到一个 sc 来表示 SparkContext
+
+#### RDD、DataFrame、DataSet的关系 / 转化
+
+> - RDDs 适合非结构化数据的处理，而 DataFrame & DataSet 更适合结构化数据和半结构化的处理；
+>
+> - DataFrame & DataSet 可以通过统一的 Structured API 进行访问，而 RDDs 则更适合函数式编程的场景；
+>
+> - 相比于 DataFrame 而言，DataSet 是强类型的 (Typed)，有着更为严格的静态类型检查；
+>
+> - DataSets、DataFrames、SQL 的底层都依赖了 RDDs API，并对外提供结构化的访问接口。
+>
+>   ​
+>
+> - DataSets、DataFrames、RDD区别：
+>
+>   - **DataSets** 
+>     1. Dataset 和 DataFrame 拥有完全相同的成员函数，区别只是每一行的数据类型不同 ，DataFrame 其实就是 DataSet 的一个特例。
+>     2. DataFrame 也可以叫 Dataset[Row] ,每一行的类型是 Row ，不解析，每一行究竟有哪些字段，各个字段又是什么类型都无从得知，只能用上面提到的getAS 方法或者共性中的第七条提到的模式匹配拿出特定字段。而Dataset 中，每一行是什么类型是不一定的，在自定义了 case class 之后可以很自由的获得每一行的信息
+>   - **RDD**：
+>     1. RDD 一般和 spark mlib 同时使用。
+>     2. RDD 不支持 sparksql 操作。
+>
+>   - **DataFrames** 
+>     1.  与 RDD 和 Dataset 不同， DataFrame 每一行的类型固定为 Row ，每一列的值没法直接访问，只有通过解析才能获取各个字段的值。
+>     2.  DataFrame 与 DataSet 一般不与 spark mlib 同时使用。
+>     3.  DataFrame 与 DataSet 均支持 SparkSQL 的操作，比如 select ， groupby之类，还能注册临时表/视窗，进行 sql 语句操作。
+>     4.  DataFrame 与 DataSet 支持一些特别方便的保存方式，比如保存成 csv ，可以带上表头，这样每一列的字段名一目了然。
+
+![img](./images/互换.PNG)
+
+
+
+  #### 使用 IDEA  创建 SparkSQL  程序
+
+**步骤 1** :  添加 SparkSQL  依赖
+
+```properties
+<dependency>
+  <groupId>org.apache.spark</groupId>
+  <artifactId>spark-sql_2.11</artifactId>
+  <version>2.1.1</version>
+</dependency>
+```
+
+**步骤 2** :  具体代码
+
+```java
+object DataFrameDemo {
+	def main(args: Array[String]): Unit = {
+		// 创建一个新的 SparkSession 对象
+		val spark: SparkSession = SparkSession.builder()
+			.master("local[*]")
+			.appName("Word Count")
+			.getOrCreate()
+          
+			// 导入用到隐式转换. 如果想要使用: $"age" 则必须导入
+            import spark.implicits._
+          
+			val df = spark.read.json("file://" +
+				ClassLoader.getSystemResource("user.json").getPath)
+            // 打印信息
+            df.show
+            // 查找年龄大于 19 岁的
+            df.filter($"age" > 19).show
+          
+            // 创建临时表
+            df.createTempView("user")
+            spark.sql("select * from user where age > 19").show
+          
+            //关闭连接
+            spark.stop()
+	}
+}
+```
+
+#### 自定义 Spark-SQL函数
+
+**步骤1**： 写一个生成md5的函数
+
+```java
+import java.security.MessageDigest
+import java.math.BigInteger
+
+object tools_functions { 
+	def getMD5(str: String): String = {
+    // 第一步，获取MessageDigest对象，参数为MD5表示这是一个MD5算法
+    val md5 = MessageDigest.getInstance("MD5")
+    // 第二步，计算MD5值
+    val array = md5.digest(str.getBytes("UTF-8"))
+    // 第三步，结果转换并返回
+    val bigInt = new BigInteger(1, array)
+
+    val md5Str = bigInt.toString(16)
+
+    md5Str
+  }
+}
+```
+
+**步骤二**： 导入udf
+
+```java
+import org.apache.spark.sql.SparkSession
+import com.martinhub.utils.tools_functions.getMD5
+import org.apache.spark.sql.functions.udf
+
+object data_process {
+  // udf注册自定义函数
+  private val generateMD5 = udf(getMD5 _) //生成MD5
+
+  def main(args: Array[String]): Unit = {
+    // 创建spark session
+    val spark: SparkSession = SparkSession
+      .builder()
+      .appName("Extract Data")
+      .enableHiveSupport()
+      .getOrCreate()
+    spark.sparkContext.setLogLevel("ERROR")
+    import spark.implicits._
+    
+    //读取Hive表
+     val res = spark.table(s"sys.data_table")
+     .withColumn("md5_id", generateMD5($"tel_num"))
+     
+     ........
+     ........
+     ........
+```
+
+
+
+### （3） Spark - SQL 的数据源
+
+#### (1) 前情概要
+
+**通用加载和保存函数**
+
+> 1.  spark.read.load 是加载数据的通用方法.
+> 2.  df.write.save 是保存数据的通用方法.
+
+**手动指定选项**
+
+> 也可以手动给数据源指定一些额外的选项. 数据源应该用全名称来指定, 但是对一些内置的数据源也可以使用短名称: 
+>
+> - CSV
+> - JSON
+> - Parquet
+> - ORC
+> - JDBC
+> - text
+
+- **读数据格式** 
+
+  所有读取 API 遵循以下调用格式：
+
+  ```java
+  // 格式
+  DataFrameReader.format(...).option("key", "value").schema(...).load()
+
+  // 示例
+  spark.read.format("csv")
+  .option("mode", "FAILFAST")          // 读取模式
+  .option("inferSchema", "true")       // 是否自动推断 schema
+  .option("path", "path/to/file(s)")   // 文件路径
+  .schema(someSchema)                  // 使用预定义的 schema      
+  .load()
+  ```
+
+  读取模式有以下三种可选项：
+
+  | 读模式             | 描述                                       |
+  | --------------- | ---------------------------------------- |
+  | `permissive`    | 当遇到损坏的记录时，将其所有字段设置为 null，并将所有损坏的记录放在名为 _corruption t_record 的字符串列中 |
+  | `dropMalformed` | 删除格式不正确的行                                |
+  | `failFast`      | 遇到格式不正确的数据时立即失败                          |
+
+- **写数据格式**
+
+  ```java
+  // 格式
+  DataFrameWriter.format(...).option(...).partitionBy(...).bucketBy(...).sortBy(...).save()
+
+  //示例
+  dataframe.write.format("csv")
+  .option("mode", "OVERWRITE")         //写模式
+  .option("dateFormat", "yyyy-MM-dd")  //日期格式
+  .option("path", "path/to/file(s)")
+  .save()
+  ```
+
+  写数据模式有以下四种可选项：
+
+  | Scala/Java               | 描述                             |
+  | :----------------------- | :----------------------------- |
+  | `SaveMode.ErrorIfExists` | 如果给定的路径已经存在文件，则抛出异常，这是写数据默认的模式 |
+  | `SaveMode.Append`        | 数据以追加的方式写入                     |
+  | `SaveMode.Overwrite`     | 数据以覆盖的方式写入                     |
+  | `SaveMode.Ignore`        | 如果给定的路径已经存在文件，则不做任何操作          |
+
+**文件保存选项(SaveMode)**
+
+> 保存操作可以使用 SaveMode, 用来指明如何处理数据. 使用 mode() 方法来设置.
+>
+> 有一点很重要: 这些 SaveMode 都是没有加锁的, 也不是原子操作. 还有, 如果你执行的是Overwrite 操作, 在写入新的数据之前会先删除旧的数据.
+
+| Scala/Java                       | Any Language      | Meaning       |
+| -------------------------------- | ----------------- | ------------- |
+| SaveMode.ErrorIfExists (default) | "error" (default) | 如果文件已经存在则抛出异常 |
+| SaveMode.Append                  | "append"          | 如果文件已经存在则追加   |
+| SaveMode.Overwrite               | "overwrite"       | 如果文件已经存在则覆盖   |
+| SaveMode.Ignore                  | "ignore"          | 如果文件已经存在则忽略   |
+
+#### (2) 数据源 - JDBC
+
+> Spark 同样支持与传统的关系型数据库进行数据读写。但是 Spark 程序默认是没有提供数据库驱动的，所以在使用前需要将对应的数据库驱动上传到安装目录下的 `jars` 目录中。下面示例使用的是 Mysql 数据库，使用前需要将对应的 `mysql-connector-java-x.x.x.jar` 上传到 `jars` 目录下。
+
+ **导入依赖： ** 
+
+```properties
+<dependency>
+  <groupId>mysql</groupId>
+  <artifactId>mysql-connector-java</artifactId>
+  <version>5.1.27</version>
+</dependency>
+```
+
+ **读取数据** 
+
+读取全表数据示例如下，这里的 `help_keyword` 是 mysql 内置的字典表，只有 `help_keyword_id` 和 `name` 两个字段。
+
+```java
+spark.read
+.format("jdbc")
+.option("driver", "com.mysql.jdbc.Driver")            //驱动
+.option("url", "jdbc:mysql://127.0.0.1:3306/mysql")   //数据库地址
+.option("dbtable", "help_keyword")                    //表名
+.option("user", "root").option("password","root").load().show(10)
+```
+
+从查询结果读取数据：
+
+```java
+val pushDownQuery = """(SELECT * FROM help_keyword WHERE help_keyword_id <20) AS help_keywords"""
+spark.read.format("jdbc")
+.option("url", "jdbc:mysql://127.0.0.1:3306/mysql")
+.option("driver", "com.mysql.jdbc.Driver")
+.option("user", "root").option("password", "root")
+.option("dbtable", pushDownQuery)
+.load().show()
+```
+
+也可以使用如下的写法进行数据的过滤：
+
+```java
+val props = new java.util.Properties
+props.setProperty("driver", "com.mysql.jdbc.Driver")
+props.setProperty("user", "root")
+props.setProperty("password", "root")
+val predicates = Array("help_keyword_id < 10  OR name = 'WHEN'")   //指定数据过滤条件
+spark.read.jdbc("jdbc:mysql://127.0.0.1:3306/mysql", "help_keyword", predicates, props).show() 
+```
+
+可以使用 `numPartitions` 指定读取数据的并行度：
+
+```java
+option("numPartitions", 10)
+```
+
+在这里，除了可以指定分区外，还可以设置上界和下界，任何小于下界的值都会被分配在第一个分区中，任何大于上界的值都会被分配在最后一个分区中。
+
+```java
+val colName = "help_keyword_id"   //用于判断上下界的列
+val lowerBound = 300L    //下界
+val upperBound = 500L    //上界
+val numPartitions = 10   //分区综述
+val jdbcDf = spark.read.jdbc("jdbc:mysql://127.0.0.1:3306/mysql","help_keyword",
+                             colName,lowerBound,upperBound,numPartitions,props)
+```
+
+想要验证分区内容，可以使用 `mapPartitionsWithIndex` 这个算子，代码如下：
+
+```java
+jdbcDf.rdd.mapPartitionsWithIndex((index, iterator) => {
+    val buffer = new ListBuffer[String]
+    while (iterator.hasNext) {
+        buffer.append(index + "分区:" + iterator.next())
+    }
+    buffer.toIterator
+}).foreach(println)
+```
+
+执行结果如下：`help_keyword` 这张表只有 600 条左右的数据，本来数据应该均匀分布在 10 个分区，但是 0 分区里面却有 319 条数据，这是因为设置了下限，所有小于 300 的数据都会被限制在第一个分区，即 0 分区。同理所有大于 500 的数据被分配在 9 分区，即最后一个分区。
+
+**写入数据** 
+
+```java
+val df = spark.read.format("json").load("/usr/file/json/emp.json")
+df.write
+.format("jdbc")
+.option("url", "jdbc:mysql://127.0.0.1:3306/mysql")
+.option("user", "root").option("password", "root")
+.option("dbtable", "emp")
+.save()
+```
+
+#### (3) 数据源 - CSV
+
+CSV 是一种常见的文本文件格式，其中每一行表示一条记录，记录中的每个字段用逗号分隔。
+
+**读取CSV文件**
+
+自动推断类型读取读取示例：
+
+```java
+spark.read.format("csv")
+.option("header", "false")        // 文件中的第一行是否为列的名称
+.option("mode", "FAILFAST")      // 是否快速失败
+.option("inferSchema", "true")   // 是否自动推断 schema
+.load("/usr/file/csv/dept.csv")
+.show()
+```
+
+使用预定义类型：
+
+```java
+import org.apache.spark.sql.types.{StructField, StructType, StringType,LongType}
+//预定义数据格式
+val myManualSchema = new StructType(Array(
+    StructField("deptno", LongType, nullable = false),
+    StructField("dname", StringType,nullable = true),
+    StructField("loc", StringType,nullable = true)
+))
+spark.read.format("csv")
+.option("mode", "FAILFAST")
+.schema(myManualSchema)
+.load("/usr/file/csv/dept.csv")
+.show()
+```
+
+**写入CSV文件**
+
+```java
+df.write.format("csv").mode("overwrite").save("/tmp/csv/dept2")
+```
+
+也可以指定具体的分隔符：
+
+```java
+df.write.format("csv").mode("overwrite").option("sep", "\t").save("/tmp/csv/dept2")
+```
+
+#### (4) 数据源 - JSON
+
+**读取JSON文件** 
+
+```java
+spark.read.format("json").option("mode", "FAILFAST").load("/usr/file/json/dept.json").show(5)
+```
+
+需要注意的是：默认不支持一条数据记录跨越多行 (如下)，可以通过配置 `multiLine` 为 `true` 来进行更改，其默认值为 `false`。
+
+```json
+// 默认支持单行
+{"DEPTNO": 10,"DNAME": "ACCOUNTING","LOC": "NEW YORK"}
+
+//默认不支持多行
+{
+  "DEPTNO": 10,
+  "DNAME": "ACCOUNTING",
+  "LOC": "NEW YORK"
+}
+```
+
+**写入JSON文件** 
+
+```java
+df.write.format("json").mode("overwrite").save("/tmp/spark/json/dept")
+```
+
+#### (5) 数据源 - Parquet
+
+ Parquet 是一个开源的面向列的数据存储，它提供了多种存储优化，允许读取单独的列非整个文件，这不仅节省了存储空间而且提升了读取效率，它是 Spark 是默认的文件格式。
+
+**读取Parquet文件**
+
+```java
+spark.read.format("parquet").load("/usr/file/parquet/dept.parquet").show(5)
+```
+
+**写入Parquet文件**
+
+```java
+df.write.format("parquet").mode("overwrite").save("/tmp/spark/parquet/dept")
+```
+
+**可选配置**
+
+Parquet 文件有着自己的存储规则，因此其可选配置项比较少，常用的有如下两个：
+
+| 读写操作  | 配置项                  | 可选值                                      | 默认值                                    | 描述                                       |
+| ----- | -------------------- | ---------------------------------------- | -------------------------------------- | ---------------------------------------- |
+| Write | compression or codec | None,<br/>uncompressed,<br/>bzip2,<br/>deflate, gzip,<br/>lz4, or snappy | None                                   | 压缩文件格式                                   |
+| Read  | mergeSchema          | true, false                              | 取决于配置项 `spark.sql.parquet.mergeSchema` | 当为真时，Parquet 数据源将所有数据文件收集的 Schema 合并在一起，否则将从摘要文件中选择 Schema，如果没有可用的摘要文件，则从随机数据文件中选择 Schema。 |
+
+> 更多可选配置可以参阅官方文档：https://spark.apache.org/docs/latest/sql-data-sources-parquet.html
+
+#### (6) 数据源 - ORC
+
+ORC 是一种自描述的、类型感知的列文件格式，它针对大型数据的读写进行了优化，也是大数据中常用的文件格式。
+
+**读取ORC文件**
+
+```java
+spark.read.format("orc").load("/usr/file/orc/dept.orc").show(5)
+```
+
+**写入ORC文件**
+
+```java
+csvFile.write.format("orc").mode("overwrite").save("/tmp/spark/orc/dept")
+```
+
+#### (7) 数据源 - Text
+
+Text 文件在读写性能方面并没有任何优势，且不能表达明确的数据结构，所以其使用的比较少，读写操作如下：
+
+**读取Text数据** 
+
+```java
+spark.read.textFile("/usr/file/txt/dept.txt").show()
+```
+
+**写入Text数据** 
+
+```java
+df.write.text("/tmp/spark/txt/dept")
+```
+
+#### (8) 数据读写高级特性
+
+**并行读**
+
+多个 Executors 不能同时读取同一个文件，但它们可以同时读取不同的文件。这意味着当您从一个包含多个文件的文件夹中读取数据时，这些文件中的每一个都将成为 DataFrame 中的一个分区，并由可用的 Executors 并行读取。
+
+**并行写**
+
+写入的文件或数据的数量取决于写入数据时 DataFrame 拥有的分区数量。默认情况下，每个数据分区写一个文件。
+
+**分区写入**
+
+分区和分桶这两个概念和 Hive 中分区表和分桶表是一致的。都是将数据按照一定规则进行拆分存储。需要注意的是 `partitionBy` 指定的分区和 RDD 中分区不是一个概念：这里的**分区表现为输出目录的子目录**，数据分别存储在对应的子目录中。
+
+```java
+val df = spark.read.format("json").load("/usr/file/json/emp.json")
+df.write.mode("overwrite").partitionBy("deptno").save("/tmp/spark/partitions")
+```
+
+输出结果如下：可以看到输出被按照部门编号分为三个子目录，子目录中才是对应的输出文件。
+
+![img](./images/spark-分区.png) 
+
+**分桶写入**
+
+分桶写入就是将数据按照指定的列和桶数进行散列，目前分桶写入只支持保存为表，实际上这就是 Hive 的分桶表。
+
+```java
+val numberBuckets = 10
+val columnToBucketBy = "empno"
+df.write.format("parquet").mode("overwrite")
+.bucketBy(numberBuckets, columnToBucketBy).saveAsTable("bucketedFiles")
+```
+
+**文件大小管理**
+
+如果写入产生小文件数量过多，这时会产生大量的元数据开销。Spark 和 HDFS 一样，都不能很好的处理这个问题，这被称为“small file problem”。同时数据文件也不能过大，否则在查询时会有不必要的性能开销，因此要把文件大小控制在一个合理的范围内。
+
+在上文我们已经介绍过可以通过分区数量来控制生成文件的数量，从而间接控制文件大小。Spark 2.2 引入了一种新的方法，以更自动化的方式控制文件大小，这就是 `maxRecordsPerFile` 参数，它允许你通过控制写入文件的记录数来控制文件大小。
+
+```java
+ // Spark 将确保文件最多包含 5000 条记录
+df.write.option(“maxRecordsPerFile”, 5000)
+```
+
+#### (9) 可选配置附录
+
+**CSV读写可选配置** 
+
+| 读\写操作 | 配置项                         | 可选值                                      | 默认值                        | 描述                                       |
+| ----- | --------------------------- | ---------------------------------------- | -------------------------- | ---------------------------------------- |
+| Both  | seq                         | 任意字符                                     | `,`(逗号)                    | 分隔符                                      |
+| Both  | header                      | true, false                              | false                      | 文件中的第一行是否为列的名称。                          |
+| Read  | escape                      | 任意字符                                     | \                          | 转义字符                                     |
+| Read  | inferSchema                 | true, false                              | false                      | 是否自动推断列类型                                |
+| Read  | ignoreLeadingWhiteSpace     | true, false                              | false                      | 是否跳过值前面的空格                               |
+| Both  | ignoreTrailingWhiteSpace    | true, false                              | false                      | 是否跳过值后面的空格                               |
+| Both  | nullValue                   | 任意字符                                     | “”                         | 声明文件中哪个字符表示空值                            |
+| Both  | nanValue                    | 任意字符                                     | NaN                        | 声明哪个值表示 NaN 或者缺省值                        |
+| Both  | positiveInf                 | 任意字符                                     | Inf                        | 正无穷                                      |
+| Both  | negativeInf                 | 任意字符                                     | -Inf                       | 负无穷                                      |
+| Both  | compression or codec        | None,<br/>uncompressed,<br/>bzip2, deflate,<br/>gzip, lz4, or<br/>snappy | none                       | 文件压缩格式                                   |
+| Both  | dateFormat                  | 任何能转换为 Java 的 <br/>SimpleDataFormat 的字符串 | yyyy-MM-dd                 | 日期格式                                     |
+| Both  | timestampFormat             | 任何能转换为 Java 的 <br/>SimpleDataFormat 的字符串 | yyyy-MMdd’T’HH:mm:ss.SSSZZ | 时间戳格式                                    |
+| Read  | maxColumns                  | 任意整数                                     | 20480                      | 声明文件中的最大列数                               |
+| Read  | maxCharsPerColumn           | 任意整数                                     | 1000000                    | 声明一个列中的最大字符数。                            |
+| Read  | escapeQuotes                | true, false                              | true                       | 是否应该转义行中的引号。                             |
+| Read  | maxMalformedLogPerPartition | 任意整数                                     | 10                         | 声明每个分区中最多允许多少条格式错误的数据，超过这个值后格式错误的数据将不会被读取 |
+| Write | quoteAll                    | true, false                              | false                      | 指定是否应该将所有值都括在引号中，而不只是转义具有引号字符的值。         |
+| Read  | multiLine                   | true, false                              | false                      | 是否允许每条完整记录跨域多行                           |
+
+**JSON读写可选配置** 
+
+| 读\写操作 | 配置项                                | 可选值                                      | 默认值                              |
+| ----- | ---------------------------------- | ---------------------------------------- | -------------------------------- |
+| Both  | compression or codec               | None,<br/>uncompressed,<br/>bzip2, deflate,<br/>gzip, lz4, or<br/>snappy | none                             |
+| Both  | dateFormat                         | 任何能转换为 Java 的 SimpleDataFormat 的字符串      | yyyy-MM-dd                       |
+| Both  | timestampFormat                    | 任何能转换为 Java 的 SimpleDataFormat 的字符串      | yyyy-MMdd’T’HH:mm:ss.SSSZZ       |
+| Read  | primitiveAsString                  | true, false                              | false                            |
+| Read  | allowComments                      | true, false                              | false                            |
+| Read  | allowUnquotedFieldNames            | true, false                              | false                            |
+| Read  | allowSingleQuotes                  | true, false                              | true                             |
+| Read  | allowNumericLeadingZeros           | true, false                              | false                            |
+| Read  | allowBackslashEscapingAnyCharacter | true, false                              | false                            |
+| Read  | columnNameOfCorruptRecord          | true, false                              | Value of spark.sql.column&NameOf |
+| Read  | multiLine                          | true, false                              | false                            |
+
+**数据库读写可选配置** 
+
+| 属性名称                                     | 含义                                       |
+| ---------------------------------------- | ---------------------------------------- |
+| url                                      | 数据库地址                                    |
+| dbtable                                  | 表名称                                      |
+| driver                                   | 数据库驱动                                    |
+| partitionColumn,<br/>lowerBound, upperBoun | 分区总数，上界，下界                               |
+| numPartitions                            | 可用于表读写并行性的最大分区数。如果要写的分区数量超过这个限制，那么可以调用 coalesce(numpartition) 重置分区数。 |
+| fetchsize                                | 每次往返要获取多少行数据。此选项仅适用于读取数据。                |
+| batchsize                                | 每次往返插入多少行数据，这个选项只适用于写入数据。默认值是 1000。      |
+| isolationLevel                           | 事务隔离级别：可以是 NONE，READ_COMMITTED, READ_UNCOMMITTED，REPEATABLE_READ 或 SERIALIZABLE，即标准事务隔离级别。<br/>默认值是 READ_UNCOMMITTED。这个选项只适用于数据读取。 |
+| createTableOptions                       | 写入数据时自定义创建表的相关配置                         |
+| createTableColumnTypes                   | 写入数据时自定义创建列的列类型                          |
+
+> 数据库读写更多配置可以参阅官方文档：https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html
+
+
+
+### （4） Spark - SQL 的 Join 操作
 
 loading.............
 
 
 
-### 2. Spark API的使用
-
-loading.............
-
-
-
-### 3. Spark SQL外部数据源
-
-loading.............
-
-
-
-### 4. Spark SQL常用聚合函数
-
-loading.............
-
-
-
-### 5. Spark SQL的Join操作 
+### （5）Spark - SQL 的聚合参数
 
 loading.............
 
@@ -1056,19 +1626,19 @@ loading.............
 
 ## 六、基于ZooKeeper搭建Spark高可用集群
 
-### 1. 集群规划
+### （1）集群规划
 
 这里搭建一个 3 节点的 Spark 集群，其中三台主机上均部署 `Worker` 服务。同时为了保证高可用，除了在 hadoop001 上部署主 `Master` 服务外，还在 hadoop002 和 hadoop003 上分别部署备用的 `Master` 服务，Master 服务由 Zookeeper 集群进行协调管理，如果主 `Master` 不可用，则备用 `Master` 会成为新的主 `Master`。
 
 ![img](./images/spark集群规划.png)
 
-### 2. 前置条件
+### （2）前置条件
 
 搭建 Spark 集群前，需要保证 JDK 环境、Zookeeper 集群和 Hadoop 集群已经搭建。
 
-### 3. Spark集群搭建
+### （3）Spark集群搭建
 
-#### 3.1 下载解压
+#### 下载解压
 
 下载所需版本的 Spark，官网下载地址：http://spark.apache.org/downloads.html
 
@@ -1080,7 +1650,7 @@ loading.............
 tar -zxvf  spark-2.2.3-bin-hadoop2.6.tgz
 ```
 
-#### 3.2 配置环境变量
+#### 配置环境变量
 
 ```shell
 vim /etc/profile
@@ -1099,7 +1669,7 @@ export  PATH=${SPARK_HOME}/bin:$PATH
 source /etc/profile
 ```
 
-#### 3.3 集群配置
+#### 集群配置
 
 进入 `${SPARK_HOME}/conf` 目录，拷贝配置样本进行修改：
 
@@ -1132,7 +1702,7 @@ hadoop002
 hadoop003
 ```
 
-#### 3.4 安装包分发
+#### 安装包分发
 
 将 Spark 的安装包分发到其他服务器，分发后建议在这两台服务器上也配置一下 Spark 的环境变量。
 
@@ -1143,9 +1713,9 @@ scp -r /usr/app/spark-2.4.0-bin-hadoop2.6/   hadoop003:usr/app/
 
 
 
-### 4. 启动集群
+### （4）启动集群
 
-#### 4.1 启动ZooKeeper集群
+#### 启动ZooKeeper集群
 
 分别到三台服务器上启动 ZooKeeper 服务：
 
@@ -1153,7 +1723,7 @@ scp -r /usr/app/spark-2.4.0-bin-hadoop2.6/   hadoop003:usr/app/
  zkServer.sh start
 ```
 
-#### 4.2 启动Hadoop集群
+#### 启动Hadoop集群
 
 ```shell
 # 启动dfs服务
@@ -1162,7 +1732,7 @@ start-dfs.sh
 start-yarn.sh
 ```
 
-#### 4.3 启动Spark集群
+#### 启动Spark集群
 
 进入 hadoop001 的 ` ${SPARK_HOME}/sbin` 目录下，执行下面命令启动集群。执行命令后，会在 hadoop001 上启动 `Maser` 服务，会在 `slaves` 配置文件中配置的所有节点上启动 `Worker` 服务。
 
@@ -1177,7 +1747,7 @@ start-all.sh
 start-master.sh
 ```
 
-#### 4.4 查看服务
+#### 查看服务
 
 查看 Spark 的 Web-UI 页面，端口为 `8080`。此时可以看到 hadoop001 上的 Master 节点处于 `ALIVE` 状态，并有 3 个可用的 `Worker` 节点。
 
@@ -1191,7 +1761,7 @@ start-master.sh
 
 
 
-### 5. 验证集群高可用
+### （5）验证集群高可用
 
 此时可以使用 `kill` 命令杀死 hadoop001 上的 `Master` 进程，此时备用 `Master` 会中会有一个再次成为 ` 主 Master`，我这里是 hadoop002，可以看到 hadoop2 上的 `Master` 经过 `RECOVERING` 后成为了新的主 `Master`，并且获得了全部可以用的 `Workers`。
 
@@ -1203,7 +1773,7 @@ Hadoop002 上的 `Master` 成为主 `Master`，并获得了全部可以用的 `W
 
 此时如果你再在 hadoop001 上使用 `start-master.sh` 启动 Master 服务，那么其会作为备用 `Master` 存在。
 
-### 6. 提交作业
+### （6）提交作业
 
 和单机环境下的提交到 Yarn 上的命令完全一致，这里以 Spark 内置的计算 Pi 的样例程序为例，提交命令如下：
 

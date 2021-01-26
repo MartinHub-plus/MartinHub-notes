@@ -2,12 +2,12 @@
 
 ## 一、HBase简介
 
-### 1. HBase的定义
+### （1）HBase的定义
 
 &emsp;&emsp;HBase 是一种分布式、可扩展、支持海量数据存储的 NoSQL 数据库。
 &emsp;&emsp;Hbase 面向列存储，构建于 Hadoop 之上，类似于 Google 的 BigTable，提供对 10 亿级别表数据的快速随机实时读写！
 
-### 2. HBase的特点
+### （2）HBase的特点
 
 1）海量存储
 
@@ -29,7 +29,7 @@
 
 &emsp;&emsp;稀疏主要是针对 HBase 列的灵活性，在列族中，你可以指定任意多的列，在列数据为空的情况下，是不会占用存储空间的。
 
-### 3. HBase的优缺点
+### （3）HBase的优缺点
 
 **优点** ：
 
@@ -47,21 +47,21 @@
 
 ③Hbase 部分支持了 ACID。
 
-### 4. HBase的总结
+### （4）HBase的总结
 
 适合场景：单表超千万，上亿，且高并发！
 不适合场景：主要需求是数据分析，比如做报表。数据量规模不大，对实时性要求高！
 
-### 5. HBase的数据类型
+### （5）HBase的数据类型
 
 逻辑上，HBase 的数据模型同关系型数据库很类似，数据存储在一张表中，有行有列。但从 HBase 的底层物理
 存储结构（K-V）来看，HBase 更像是一个 multi-dimensional map。
 
-### 6. HBase 逻辑结构
+### （6）HBase 逻辑结构
 
 ![img](./images/逻辑结构.PNG)
 
-### 7. HBase  数据模型
+### （7）HBase  数据模型
 
 1）**Name Space**
 
@@ -110,7 +110,7 @@ NoSuchColumnFamilyException。
 
 &emsp;&emsp;Region 是基于 HDFS 的，它的所有数据存取操作都是调用了 HDFS 的客户端接口来实现的。
 
-### 8. HBase  基本架构
+### （8）HBase  基本架构
 
 ![img](./images/架构.PNG)
 
@@ -148,7 +148,7 @@ NoSuchColumnFamilyException。
 
 &emsp;&emsp;HDFS 为 Hbase 提供最终的底层数据存储服务，同时为 HBase 提供高可用的支持。
 
-### 9. ROWkey的设计
+### （9）ROWkey的设计
 
 &emsp;&emsp;一条数据的唯一标识就是 rowkey，那么这条数据存储于哪个分区，取决于 rowkey 处于哪个一个预分区的区间内，设计 rowkey 的主要目的 ，就是让数据均匀的分布于所有的 region 中，在一定程度上防止数据倾斜。
 
@@ -250,19 +250,19 @@ drop 'FileTable'
 
 ## 三、HBase集群环境配置
 
-### 1. 集群规划
+### （1）集群规划
 
 这里搭建一个 3 节点的 HBase 集群，其中三台主机上均为 `Regin Server`。同时为了保证高可用，除了在 hadoop001 上部署主 `Master` 服务外，还在 hadoop002 上部署备用的 `Master` 服务。Master 服务由 Zookeeper 集群进行协调管理，如果主 `Master` 不可用，则备用 `Master` 会成为新的主 `Master`。
 
 ![img](./images/hbase集群规划.png)
 
-### 2. 前置条件
+### （2）前置条件
 
 HBase 的运行需要依赖 Hadoop 和 JDK(`HBase 2.0+` 对应 `JDK 1.8+`) 。同时为了保证高可用，这里我们不采用 HBase 内置的 Zookeeper 服务，而采用外置的 Zookeeper 集群。
 
-### 3. 集群搭建
+### （3）集群搭建
 
-#### 3.1 下载并解压
+#### 下载并解压
 
 下载并解压，这里我下载的是 CDH 版本 HBase，下载地址为：http://archive.cloudera.com/cdh5/cdh/5/
 
@@ -270,7 +270,7 @@ HBase 的运行需要依赖 Hadoop 和 JDK(`HBase 2.0+` 对应 `JDK 1.8+`) 。�
 tar -zxvf hbase-1.2.0-cdh5.15.2.tar.gz
 ```
 
-#### 3.2 配置环境变量
+#### 配置环境变量
 
 ```shell
 vim /etc/profile
@@ -289,11 +289,11 @@ export PATH=$HBASE_HOME/bin:$PATH
 source /etc/profile
 ```
 
-#### 3.3 集群配置
+#### 集群配置
 
 进入 `${HBASE_HOME}/conf` 目录下，修改配置：
 
-##### 1. hbase-env.sh
+##### hbase-env.sh
 
 ```shell
 # 配置JDK安装位置
@@ -302,7 +302,7 @@ export JAVA_HOME=/usr/java/jdk1.8.0_201
 export HBASE_MANAGES_ZK=false
 ```
 
-##### 2. hbase-site.xml
+##### hbase-site.xml
 
 ```xml
 <configuration>
@@ -324,7 +324,7 @@ export HBASE_MANAGES_ZK=false
 </configuration>
 ```
 
-##### 3. regionservers
+##### regionservers
 
 ```
 hadoop001
@@ -332,7 +332,7 @@ hadoop002
 hadoop003
 ```
 
-##### 4. backup-masters
+##### backup-masters
 
 ```
 hadoop002
@@ -340,7 +340,7 @@ hadoop002
 
 ` backup-masters` 这个文件是不存在的，需要新建，主要用来指明备用的 master 节点，可以是多个，这里我们以 1 个为例。
 
-#### 3.4 HDFS客户端配置
+#### HDFS客户端配置
 
 这里有一个可选的配置：如果您在 Hadoop 集群上进行了 HDFS 客户端配置的更改，比如将副本系数 `dfs.replication` 设置成 5，则必须使用以下方法之一来使 HBase 知道，否则 HBase 将依旧使用默认的副本系数 3 来创建文件：
 
@@ -372,7 +372,7 @@ ln -s   /usr/app/hadoop-2.6.0-cdh5.15.2/etc/hadoop/hdfs-site.xml
 
 
 
-#### 3.5 安装包分发
+#### 安装包分发
 
 将 HBase 的安装包分发到其他服务器，分发后建议在这两台服务器上也配置一下 HBase 的环境变量。
 
@@ -383,9 +383,9 @@ scp -r /usr/app/hbase-1.2.0-cdh5.15.2/  hadoop003:usr/app/
 
 
 
-### 4. 启动集群
+### （4）启动集群
 
-#### 4.1 启动ZooKeeper集群
+#### 启动ZooKeeper集群
 
 分别到三台服务器上启动 ZooKeeper 服务：
 
@@ -393,7 +393,7 @@ scp -r /usr/app/hbase-1.2.0-cdh5.15.2/  hadoop003:usr/app/
  zkServer.sh start
 ```
 
-#### 4.2 启动Hadoop集群
+#### 启动Hadoop集群
 
 ```shell
 # 启动dfs服务
@@ -402,7 +402,7 @@ start-dfs.sh
 start-yarn.sh
 ```
 
-#### 4.3 启动HBase集群
+#### 启动HBase集群
 
 进入 hadoop001 的 `${HBASE_HOME}/bin`，使用以下命令启动 HBase 集群。执行此命令后，会在 hadoop001 上启动 `Master` 服务，在 hadoop002 上启动备用 `Master` 服务，在 `regionservers` 文件中配置的所有节点启动 `region server` 服务。
 
@@ -412,7 +412,7 @@ start-hbase.sh
 
 
 
-#### 4.5 查看服务
+#### 查看服务
 
 访问 HBase 的 Web-UI 界面，这里我安装的 HBase 版本为 1.2，访问端口为 `60010`，如果你安装的是 2.0 以上的版本，则访问端口号为 `16010`。可以看到 `Master` 在 hadoop001 上，三个 `Regin Servers` 分别在 hadoop001，hadoop002，和 hadoop003 上，并且还有一个 `Backup Matser` 服务在 hadoop002 上。
 
@@ -426,7 +426,7 @@ hadoop002 上的 HBase 出于备用状态：
 
 ## 四、HBase与Hive集成
 
-### 1. HBase 与 Hive 的对比
+### （1）HBase 与 Hive 的对比
 
 **Hive**:
 
@@ -460,7 +460,7 @@ hadoop002 上的 HBase 出于备用状态：
 
 &emsp;&emsp;面对大量的企业数据，HBase 可以直线单表大量数据的存储，同时提供了高效的数据访问速度。
 
-### 2. HBase 与 Hive 集成使用
+### （2）HBase 与 Hive 集成使用
 
 环境准备:
 

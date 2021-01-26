@@ -24,11 +24,11 @@
 
 &emsp;&emsp;提供的服务包括：统一命名服务、统一配置管理、统一集群管理、服务器节点动态上下线、软负载均衡等。
 
-### 1. 统一命名服务
+### （1）统一命名服务
 
 &emsp;&emsp;在分布式环境下，经常需要对应用/服务进行统一命名，便于识别。例如：IP不容易记住，而域名容易记住。
 
-### 2. 统一配置管理
+### （2）统一配置管理
 
 &emsp;1）分布式环境下，配置文件同步非常常见。
 
@@ -44,7 +44,7 @@
 
 &emsp;（3）一旦Znode中的数据被修改，ZooKeeper将通知各个客户端服务器。
 
-### 3. 统一集群管理
+### （3）统一集群管理
 
 &emsp;1）分布式环境中，实时掌握每个节点的状态是必要的。
 
@@ -56,17 +56,17 @@
 
 &emsp;（2）监听这个ZNode可获取它的实时状态变化。
 
-### 4. 服务器动态上下线
+### （4）服务器动态上下线
 
 &emsp;客户端能实时洞察到服务器上下线的变化。
 
-### 5. 软负载均衡
+### （5）软负载均衡
 
 &emsp;在Zookeeper中记录每台服务器的访问数，让访问数最少的服务器去处理最新的客户端请求。
 
 ## 五、Zookeeper的内部原理
 
-### 1. 选举机制
+### 选举机制
 
 &emsp;1）半数机制：集群中半数以上机器存活，集群可用。所以 Zookeeper 适合安装奇数台服务器。
 
@@ -76,7 +76,7 @@
 
 &emsp;&emsp;为保证集群高可用，Zookeeper 集群的节点数最好是奇数，最少有三个节点，所以这里演示搭建一个三个节点的集群。这里我使用三台主机进行搭建，主机名分别为 hadoop101，hadoop102，hadoop103。
 
-### 1. zoo.cfg 参数解读
+### （1）zoo.cfg 参数解读
 
 &emsp;&emsp;Zookeeper中的配置文件 zoo.cfg 中参数含义解读如下：
 
@@ -97,7 +97,7 @@
 	监听客户端连接的端口。
 ```
 
-### 2. 修改配置
+### （2）修改配置
 
 &emsp;&emsp;解压一份 zookeeper 安装包，修改其配置文件 `zoo.cfg`，内容如下。之后使用 scp 命令将安装包分发到三台服务器上：
 
@@ -116,7 +116,7 @@ server.2=hadoop102:2287:3387
 server.3=hadoop103:2287:3387
 ```
 
-### 3. 标识节点
+### （3）标识节点
 
 &emsp;&emsp;分别在三台主机的 `dataDir` 目录下新建 `myid` 文件,并写入对应的节点标识。Zookeeper 集群通过 `myid` 文件识别集群节点，并通过上文配置的节点通信端口和选举端口来进行节点通信，选举出 Leader 节点。
 
@@ -138,7 +138,7 @@ echo "2" > /usr/local/zookeeper-cluster/data/myid
 echo "3" > /usr/local/zookeeper-cluster/data/myid
 ```
 
-### 4. 启动集群
+### （4）启动集群
 
 &emsp;&emsp;分别在三台主机上，执行如下命令启动服务：
 
@@ -146,7 +146,7 @@ echo "3" > /usr/local/zookeeper-cluster/data/myid
 ./bin/zkServer.sh start
 ```
 
-### 5. 集群验证
+### （5）集群验证
 
 &emsp;&emsp;启动后使用 `zkServer.sh status` 查看集群各个节点状态。如图所示：三个节点进程均启动成功，并且 hadoop102 为 leader 节点，hadoop101 和 hadoop103 为 follower 节点。
 
@@ -165,9 +165,9 @@ echo "3" > /usr/local/zookeeper-cluster/data/myid
 
 ![img](./images/zook1.PNG)
 
-### 1.节点增删改查
+### （1）节点增删改查
 
-#### 1.1 启动服务和连接服务
+#### 启动服务和连接服务
 
 ```shell
 # 启动服务
@@ -177,11 +177,11 @@ bin/zkServer.sh start
 zkCli.sh -server hadoop001:2181
 ```
 
-#### 1.2 help命令
+#### help命令
 
 &emsp;&emsp;使用 `help` 可以查看所有命令及格式。
 
-#### 1.3 查看节点列表
+#### 查看节点列表
 
 &emsp;&emsp;查看节点列表有 `ls path` 和 `ls2 path` 两个命令，后者是前者的增强，不仅可以查看指定路径下的所有节点，还可以查看当前节点的信息。
 
@@ -203,7 +203,7 @@ dataLength = 0
 numChildren = 11
 ```
 
-#### 1.4 新增节点
+#### 新增节点
 
 ```shell
 create [-s] [-e] path data acl   #其中-s 为有序节点，-e 临时节点
@@ -233,7 +233,7 @@ Created /c0000000024
 Created /tmp
 ```
 
-#### 1.5 查看节点
+#### 查看节点
 
 1. 获取节点数据
 
@@ -293,7 +293,7 @@ dataLength = 6
 numChildren = 0
 ```
 
-#### 1.6 更新节点
+#### 更新节点
 
 &emsp;&emsp;更新节点的命令是 `set`，可以直接进行修改，如下：
 
@@ -319,7 +319,7 @@ numChildren = 0
 version No is not valid : /hadoop    #无效的版本号
 ```
 
-#### 1.7 删除节点
+#### 删除节点
 
 &emsp;&emsp;删除节点的语法如下：
 
@@ -338,9 +338,9 @@ version No is not valid : /hadoop   #无效的版本号
 
 &emsp;&emsp;要想删除某个节点及其所有后代节点，可以使用递归删除，命令为 `rmr path`。
 
-### 2. 监听器
+### （2）监听器
 
-#### 2.1 get path [watch]
+#### get path [watch]
 
 &emsp;&emsp;使用 `get path [watch]` 注册的监听器能够在节点内容发生改变的时候，向客户端发出通知。需要注意的是 zookeeper 的触发器是一次性的 (One-time trigger)，即触发一次后就会立即失效。
 
@@ -351,7 +351,7 @@ WATCHER::
 WatchedEvent state:SyncConnected type:NodeDataChanged path:/hadoop  #节点值改变
 ```
 
-#### 2.2 stat path [watch]
+#### stat path [watch]
 
 &emsp;&emsp;使用 `stat path [watch]` 注册的监听器能够在节点状态发生改变的时候，向客户端发出通知。
 
@@ -362,7 +362,7 @@ WATCHER::
 WatchedEvent state:SyncConnected type:NodeDataChanged path:/hadoop  #节点值改变
 ```
 
-#### 2.3 ls\ls2 path  [watch]
+#### ls\ls2 path  [watch]
 
 &emsp;&emsp;使用 `ls path [watch]` 或 `ls2 path [watch]` 注册的监听器能够监听该节点下所有**子节点**的增加和删除操作。
 
@@ -376,7 +376,7 @@ WatchedEvent state:SyncConnected type:NodeChildrenChanged path:/hadoop
 
 
 
-### 3. zookeeper 四字命令
+### （3）zookeeper 四字命令
 
 | 命令   | 功能描述                                     |
 | ---- | ---------------------------------------- |

@@ -30,7 +30,7 @@
 
 &emsp;&emsp;用户编写的程序分成三个部分：Mapper、Reducer 和 Driver。
 
-### 1. Mapper阶段
+### （1）Mapper阶段
 
 （1）用户自定义的Mapper要继承自己的父类
 
@@ -42,7 +42,7 @@
 
 （5）map()方法（MapTask进程）对每一个<K,V>调用一次
 
-### 2. Reducer阶段
+### （2）Reducer阶段
 
 （1）用户自定义的Reducer要继承自己的父类
 
@@ -52,7 +52,7 @@
 
 （4）ReduceTask进程对每一组相同k的<k,v>组调用一次reduce()方法
 
-### 3. Driver阶段
+### （3）Driver阶段
 
 &emsp;&emsp;相当于YARN集群的客户端，用于提交我们整个程序到YARN集群，提交的是封装了MapReduce程序相关运行参数的job对象。
 

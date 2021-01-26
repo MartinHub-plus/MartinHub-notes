@@ -12,7 +12,7 @@
 
 &emsp;3）执行程序运行在 Yarn 上
 
-### 1. Hive的优缺点
+### （1）Hive的优缺点
 
 #### 优点
 
@@ -40,7 +40,7 @@
 
 （2）Hive 调优比较困难，粒度较粗
 
-### 2. Hive架构原理
+### （2）Hive架构原理
 
 1．用户接口：Client
 
@@ -79,7 +79,7 @@
 
 ## 二、Hive的安装
 
-### 1. 下载并解压
+### （1）下载并解压
 
 &emsp;&emsp;下载所需版本的 Hive，这里我下载版本为 `cdh5.15.2`。下载地址：http://archive.cloudera.com/cdh5/cdh/5/
 
@@ -88,7 +88,7 @@
  tar -zxvf hive-1.1.0-cdh5.15.2.tar.gz
 ```
 
-### 2. 配置环境变量
+### （2）配置环境变量
 
 ```shell
 vim /etc/profile
@@ -107,7 +107,7 @@ export PATH=$HIVE_HOME/bin:$PATH
 source /etc/profile
 ```
 
-### 3. 修改配置
+### （3）修改配置
 
 **1. hive-env.sh**
 
@@ -158,13 +158,13 @@ export HIVE_CONF_DIR=/opt/module/hive/conf
 </configuration>
 ```
 
-### 4. 拷贝数据库驱动
+### （4）拷贝数据库驱动
 
 &emsp;&emsp;将 MySQL 驱动包拷贝到 Hive 安装目录的 `lib` 目录下, MySQL 驱动的下载地址为：https://dev.mysql.com/downloads/connector/j/  。
 
 ![img](./images/hive-mysql.png)
 
-### 5. 初始化元数据库
+### （5）初始化元数据库
 
 - 当使用的 hive 是 1.x 版本时，可以不进行初始化操作，Hive 会在第一次启动的时候会自动进行初始化，但不会生成所有的元数据信息表，只会初始化必要的一部分，在之后的使用中用到其余表时会自动创建；
 
@@ -177,7 +177,7 @@ export HIVE_CONF_DIR=/opt/module/hive/conf
 
 &emsp;&emsp;这里我使用的是 CDH 的 `hive-1.1.0-cdh5.15.2.tar.gz`，对应 `Hive 1.1.0` 版本，可以跳过这一步。
 
-### 6. 启动
+### （6）启动
 
 &emsp;&emsp;由于已经将 Hive 的 bin 目录配置到环境变量，直接使用以下命令启动，成功进入交互式命令行后执行 `show databases` 命令，无异常则代表搭建成功。
 
@@ -205,7 +205,7 @@ hive
 
 
 
-### 1. 修改Hadoop配置
+### （1）修改Hadoop配置
 
 &emsp;&emsp;修改 hadoop 集群的 core-site.xml 配置文件，增加如下配置，指定 hadoop 的 root 用户可以代理本机上所有的用户。
 
@@ -226,7 +226,7 @@ hive
 
 
 
-### 2. 启动hiveserver2
+### （2）启动hiveserver2
 
 &emsp;&emsp;由于上面已经配置过环境变量，这里直接启动即可：
 
@@ -236,7 +236,7 @@ nohup hiveserver2 &
 
 
 
-### 3. 使用beeline
+### （3）使用beeline
 
 &emsp;&emsp;可以使用以下命令进入 beeline 交互式命令行，出现 `Connected` 则代表连接成功。
 
@@ -248,9 +248,9 @@ beeline -u jdbc:hive2://hadoop001:10000 -n root
 
 ## 四、Hive CLI和Beeline命令行的基本使用
 
-### 1. Hive CLI
+### （1）Hive CLI
 
-#### 1.1 Help
+#### Help
 
 &emsp;&emsp;使用 `hive -H` 或者 `hive --help` 命令可以查看所有命令的帮助，显示如下：
 
@@ -270,11 +270,11 @@ usage: hive
  -v,--verbose                     Verbose mode (echo executed SQL to the  console)  --详细模式
 ```
 
-#### 1.2 交互式命令行
+#### 交互式命令行
 
 &emsp;&emsp;直接使用 `Hive` 命令，不加任何参数，即可进入交互式命令行。
 
-#### 1.3 执行SQL命令
+#### 执行SQL命令
 
 &emsp;&emsp;在不进入交互式命令行的情况下，可以使用 `hive -e ` 执行 SQL 命令。
 
@@ -286,7 +286,7 @@ hive -e 'select * from emp';
 
 
 
-#### 1.4 执行SQL脚本
+#### 执行SQL脚本
 
 &emsp;&emsp;用于执行的 sql 脚本可以在本地文件系统，也可以在 HDFS 上。
 
@@ -304,7 +304,7 @@ hive -f hdfs://hadoop001:8020/tmp/simple.sql;
 select * from emp;
 ```
 
-#### 1.5 配置Hive变量
+#### 配置Hive变量
 
 &emsp;&emsp;可以使用 `--hiveconf` 设置 Hive 运行时的变量。
 
@@ -316,7 +316,7 @@ hive -e 'select * from emp' \
 
 > hive.exec.scratchdir：指定 HDFS 上目录位置，用于存储不同 map/reduce 阶段的执行计划和这些阶段的中间输出结果。
 
-#### 1.6 配置文件启动
+#### 配置文件启动
 
 &emsp;&emsp;使用 `-i` 可以在进入交互模式之前运行初始化脚本，相当于指定配置文件启动。
 
@@ -332,7 +332,7 @@ set hive.exec.mode.local.auto = true;
 
 > hive.exec.mode.local.auto 默认值为 false，这里设置为 true ，代表开启本地模式。
 
-#### 1.7 用户自定义变量
+#### 用户自定义变量
 
 &emsp;&emsp;`--define <key=value> ` 和 `--hivevar <key=value>  ` 在功能上是等价的，都是用来实现自定义变量，这里给出一个示例:
 
@@ -358,9 +358,9 @@ hive >  select ${hivevar:j} from emp;
 
 ![img](./images/hive-n-j.png)
 
-### 2. Beeline
+### （2）Beeline
 
-#### 2.1 HiveServer2
+#### HiveServer2
 
 &emsp;&emsp;Hive 内置了 HiveServer 和 HiveServer2 服务，两者都允许客户端使用多种编程语言进行连接，但是 HiveServer 不能处理多个客户端的并发请求，所以产生了 HiveServer2。
 
@@ -368,7 +368,7 @@ hive >  select ${hivevar:j} from emp;
 
 &emsp;&emsp; HiveServer2 拥有自己的 CLI(Beeline)，Beeline 是一个基于 SQLLine 的 JDBC 客户端。由于 HiveServer2 是 Hive 开发维护的重点 (Hive0.15 后就不再支持 hiveserver)，所以 Hive CLI 已经不推荐使用了，官方更加推荐使用 Beeline。
 
-#### 2.1 Beeline
+#### Beeline
 
 &emsp;&emsp;Beeline 拥有更多可使用参数，可以使用 `beeline --help` 查看，完整参数如下：
 
@@ -417,7 +417,7 @@ Usage: java org.apache.hive.cli.beeline.BeeLine
 
 ```
 
-#### 2.3 常用参数
+#### 常用参数
 
 &emsp;&emsp;在 Hive CLI 中支持的参数，Beeline 都支持，常用的参数如下。更多参数说明可以参见官方文档 [Beeline Command Options](https://cwiki.apache.org/confluence/display/Hive/HiveServer2+Clients#HiveServer2Clients-Beeline%E2%80%93NewCommandLineShell)
 
@@ -442,11 +442,11 @@ $ beeline -u jdbc:hive2://localhost:10000  -n username -p password
 
 ​         
 
-### 3. Hive配置
+### （3）Hive配置
 
 &emsp;&emsp;可以通过三种方式对 Hive 的相关属性进行配置，分别介绍如下：
 
-#### 3.1 配置文件
+#### 配置文件
 
 方式一为使用配置文件，使用配置文件指定的配置是永久有效的。Hive 有以下三个可选的配置文件：
 
@@ -464,7 +464,7 @@ $ beeline -u jdbc:hive2://localhost:10000  -n username -p password
   </property>
 ```
 
-#### 3.2 hiveconf
+#### hiveconf
 
 &emsp;&emsp;方式二为在启动命令行 (Hive CLI / Beeline) 的时候使用 `--hiveconf` 指定配置，这种方式指定的配置作用于整个 Session。
 
@@ -472,7 +472,7 @@ $ beeline -u jdbc:hive2://localhost:10000  -n username -p password
 hive --hiveconf hive.exec.scratchdir=/tmp/mydir
 ```
 
-#### 3.3 set
+#### set
 
 &emsp;&emsp;方式三为在交互式环境下 (Hive CLI / Beeline)，使用 set 命令指定。这种设置的作用范围也是 Session 级别的，配置对于执行该命令后的所有命令生效。set 兼具设置参数和查看参数的功能。如下：
 
@@ -487,18 +487,18 @@ No rows affected (0.025 seconds)
 +----------------------------------+--+
 ```
 
-#### 3.4 配置优先级
+#### 配置优先级
 
 &emsp;&emsp;配置的优先顺序如下 (由低到高)：  
 `hive-site.xml` - >` hivemetastore-site.xml `- > `hiveserver2-site.xml` - >` -- hiveconf`- > `set`
 
-#### 3.5 配置参数
+#### 配置参数
 
 &emsp;&emsp;Hive 可选的配置参数非常多，在用到时查阅官方文档即可[AdminManual Configuration](https://cwiki.apache.org/confluence/display/Hive/AdminManual+Configuration)
 
 ## 五、Hive常用DDL操作
 
-### 1. 创建数据库
+### （1）创建数据库
 
 &emsp;&emsp;创建一个数据库，数据库在 HDFS 上的默认存储路径是/user/hive/warehouse/*.db。
 
@@ -523,7 +523,7 @@ hive (default)> create database db_hive2 location '/db_hive2.db';
 
 
 
-### 2. 查询数据库
+### （2）查询数据库
 
 &emsp;&emsp;显示数据库
 
@@ -556,7 +556,7 @@ hive (default)> use db_hive;
 
 
 
-### 3. 修改数据库
+### （3）修改数据库
 
 &emsp;&emsp;用户可以使用 ALTER DATABASE 命令为某个数据库的 DBPROPERTIES 设置键-值对属性值，来描述这个数据库的属性信息。数据库的其他元数据信息都是不可更改的，包括数据库名和数据库所在的目录位置。
 
@@ -566,7 +566,7 @@ hive (default)> alter database db_hive set dbproperties('createtime'='20210130')
 
 
 
-### 4. 删除数据库
+### （4）删除数据库
 
 &emsp;&emsp;删除空数据库:
 
@@ -594,7 +594,7 @@ hive> drop database db_hive cascade;
 
 
 
-### 5. 创建表
+### （5）创建表
 
 &emsp;&emsp;建表语法:
 
@@ -732,7 +732,7 @@ Table Type: MANAGED_TABLE
 
 
 
-### 6. 分区表
+### （6）分区表
 
 &emsp;&emsp;分区表实际上就是对应一个 HDFS 文件系统上的独立的文件夹，该文件夹下是该分区所有的数据文件。Hive 中的分区就是分目录，把一个大的数据集根据业务需要分割成小的数据集。在查询时通过 WHERE 子句中的表达式选择查询所需要的指定的分区，这样的查询效率会提高很多。
 
@@ -829,7 +829,7 @@ hive> desc formatted dept_partition;
 month string
 ```
 
-### 7. 分桶表
+### （7）分桶表
 
 &emsp;&emsp;分区提供了一个隔离数据和优化查询的可行方案，但是并非所有的数据集都可以形成合理的分区，分区的数量也不是越多越好，过多的分区条件可能会导致很多分区上没有数据。同时 Hive 会限制动态分区可以创建的最大分区数，用来避免过多分区文件对文件系统产生负担。鉴于以上原因，Hive 还提供了一种更加细粒度的数据拆分方案：分桶表 (bucket Table)。
 
@@ -850,7 +850,7 @@ month string
     LOCATION '/hive/emp_bucket';
 ```
 
-### 8. 修改表
+### （8）修改表
 
 语法：
 
@@ -888,7 +888,7 @@ ALTER TABLE table_name ADD|REPLACE COLUMNS (col_name data_type [COMMENT col_comm
 注：ADD 是代表新增一字段，字段位置在所有列后面(partition 列前)，REPLACE 则是表示替换表中所有字段。
 ```
 
-### 9. 删除表
+### （9）删除表
 
 ```shell
 hive (default)> drop table dept_partition;
@@ -896,7 +896,7 @@ hive (default)> drop table dept_partition;
 
 ## 六、Hive常用的DML操作 
 
-### 1. 数据导入
+### （1）数据导入
 
 向表中装载数据（Load ）
 
@@ -924,7 +924,7 @@ hive (default)> load data inpath '/user/atguigu/hive/student.txt' into table
 default.student;
 ```
 
-### 2. 数据导出
+### （2）数据导出
 
 Hadoop 命令导出到本地
 
@@ -943,11 +943,11 @@ hive (default)> truncate table student;
 
 ## 七、Hive查询操作
 
-### 1. 数据准备
+### （1）数据准备
 
 &emsp;&emsp;为了演示查询操作，这里需要预先创建三张表，并加载测试数据。
 
-#### 1.1 员工表
+#### 员工表
 
 ```sql
  -- 建表语句
@@ -966,7 +966,7 @@ hive (default)> truncate table student;
 LOAD DATA LOCAL INPATH "/usr/file/emp.txt" OVERWRITE INTO TABLE emp;
 ```
 
-#### 1.2 部门表
+#### 部门表
 
 ```sql
  -- 建表语句
@@ -981,7 +981,7 @@ LOAD DATA LOCAL INPATH "/usr/file/emp.txt" OVERWRITE INTO TABLE emp;
  LOAD DATA LOCAL INPATH "/usr/file/dept.txt" OVERWRITE INTO TABLE dept;
 ```
 
-#### 1.3 分区表
+#### 分区表
 
 &emsp;&emsp;这里需要额外创建一张分区表，主要是为了演示分区查询：
 
@@ -1008,9 +1008,9 @@ LOAD DATA LOCAL INPATH "/usr/file/emp.txt" OVERWRITE INTO TABLE emp_ptn PARTITIO
 
 
 
-### 2. 单表查询
+### （2）单表查询
 
-#### 2.1 SELECT
+#### SELECT
 
 ```sql
 -- 查询表中全部数据
@@ -1019,7 +1019,7 @@ SELECT * FROM emp;
 
 
 
-#### 2.2 WHERE
+#### WHERE
 
 ```sql
 -- 查询 10 号部门中员工编号大于 7782 的员工信息 
@@ -1028,7 +1028,7 @@ SELECT * FROM emp WHERE empno > 7782 AND deptno = 10;
 
 
 
-#### 2.3  DISTINCT
+#### DISTINCT
 
 Hive 支持使用 DISTINCT 关键字去重。
 
@@ -1039,7 +1039,7 @@ SELECT DISTINCT job FROM emp;
 
 
 
-#### 2.4 分区查询
+#### 分区查询
 
 分区查询 (Partition Based Queries)，可以指定某个分区或者分区范围。
 
@@ -1051,7 +1051,7 @@ WHERE emp_ptn.deptno >= 20 AND emp_ptn.deptno <= 40;
 
 
 
-#### 2.5 LIMIT
+#### LIMIT
 
 ```sql
 -- 查询薪资最高的 5 名员工
@@ -1060,7 +1060,7 @@ SELECT * FROM emp ORDER BY sal DESC LIMIT 5;
 
 
 
-#### 2.6 GROUP BY
+#### GROUP BY
 
 &emsp;&emsp;Hive 支持使用 GROUP BY 进行分组聚合操作。
 
@@ -1075,7 +1075,7 @@ SELECT deptno,SUM(sal) FROM emp GROUP BY deptno;
 
 
 
-#### 2.7 ORDER AND SORT
+#### ORDER AND SORT
 
 &emsp;&emsp;可以使用 ORDER BY 或者 Sort BY 对查询结果进行排序，排序字段可以是整型也可以是字符串：如果是整型，则按照大小排序；如果是字符串，则按照字典序排序。ORDER BY 和 SORT BY 的区别如下：
 
@@ -1093,7 +1093,7 @@ SELECT empno, deptno, sal FROM emp ORDER BY deptno ASC, sal DESC;
 
 
 
-#### 2.8 HAVING
+#### HAVING
 
 &emsp;&emsp;可以使用 HAVING 对分组数据进行过滤。
 
@@ -1104,7 +1104,7 @@ SELECT deptno,SUM(sal) FROM emp GROUP BY deptno HAVING SUM(sal)>9000;
 
 
 
-#### 2.9 DISTRIBUTE BY
+#### DISTRIBUTE BY
 
 &emsp;&emsp;如果想要把具有相同 Key 值的数据分发到同一个 Reducer 进行处理，这可以使用 DISTRIBUTE BY 字句。需要注意的是，DISTRIBUTE BY 虽然能把具有相同 Key 值的数据分发到同一个 Reducer，但是不能保证数据在 Reducer 上是有序的。情况如下：
 
@@ -1142,7 +1142,7 @@ SELECT empno, deptno, sal FROM emp DISTRIBUTE BY deptno SORT BY deptno ASC;
 
 
 
-#### 2.10 CLUSTER BY
+#### CLUSTER BY
 
 &emsp;&emsp;如果 `SORT BY` 和 `DISTRIBUTE BY` 指定的是相同字段，且 SORT BY 排序规则是 ASC，此时可以使用 `CLUSTER BY` 进行替换，同时 `CLUSTER BY` 可以保证数据在全局是有序的。
 
@@ -1152,7 +1152,7 @@ SELECT empno, deptno, sal FROM emp CLUSTER  BY deptno ;
 
 
 
-### 3. 多表联结查询
+### （3）多表联结查询
 
 &emsp;&emsp;Hive 支持内连接，外连接，左外连接，右外连接，笛卡尔连接，这和传统数据库中的概念是一致的，可以参见下图。
 
@@ -1160,7 +1160,7 @@ SELECT empno, deptno, sal FROM emp CLUSTER  BY deptno ;
 
 ![img](./images/sql-join.jpg)
 
-#### 3.1 INNER JOIN
+#### INNER JOIN
 
 ```sql
 -- 查询员工编号为 7369 的员工的详细信息
@@ -1173,7 +1173,7 @@ WHERE empno=7369;
 SELECT a.val, b.val, c.val FROM a JOIN b ON (a.key = b.key1) JOIN c ON (c.key = b.key1)
 ```
 
-#### 3.2 LEFT OUTER  JOIN
+#### LEFT OUTER  JOIN
 
 LEFT OUTER  JOIN 和 LEFT  JOIN 是等价的。 
 
@@ -1184,7 +1184,7 @@ FROM emp e LEFT OUTER  JOIN  dept d
 ON e.deptno = d.deptno;
 ```
 
-#### 3.3 RIGHT OUTER  JOIN
+#### RIGHT OUTER  JOIN
 
 ```sql
 --右连接
@@ -1197,7 +1197,7 @@ ON e.deptno = d.deptno;
 
 ![img](./images/hive-right-join.png)
 
-#### 3.4 FULL OUTER  JOIN
+#### FULL OUTER  JOIN
 
 ```sql
 SELECT e.*,d.*
@@ -1205,7 +1205,7 @@ FROM emp e FULL OUTER JOIN  dept d
 ON e.deptno = d.deptno;
 ```
 
-#### 3.5 LEFT SEMI JOIN
+#### LEFT SEMI JOIN
 
 LEFT SEMI JOIN （左半连接）是 IN/EXISTS 子查询的一种更高效的实现。
 
@@ -1223,7 +1223,7 @@ SELECT emp.* FROM emp
 WHERE emp.deptno IN (SELECT deptno FROM dept WHERE loc="NEW YORK");
 ```
 
-#### 3.6 JOIN
+#### JOIN
 
 &emsp;&emsp;笛卡尔积连接，这个连接日常的开发中可能很少遇到，且性能消耗比较大，基于这个原因，如果在严格模式下 (hive.mapred.mode = strict)，Hive 会阻止用户执行此操作。
 
@@ -1233,9 +1233,9 @@ SELECT * FROM emp JOIN dept;
 
 
 
-### 4. JOIN优化
+### （4）JOIN优化
 
-#### 4.1 STREAMTABLE
+#### STREAMTABLE
 
 &emsp;&emsp;在多表进行联结的时候，如果每个 ON 字句都使用到共同的列（如下面的 `b.key`），此时 Hive 会进行优化，将多表 JOIN 在同一个 map / reduce 作业上进行。同时假定查询的最后一个表（如下面的 c 表）是最大的一个表，在对每行记录进行 JOIN 操作时，它将尝试将其他的表缓存起来，然后扫描最后那个表进行计算。因此用户需要保证查询的表的大小从左到右是依次增加的。
 
@@ -1254,7 +1254,7 @@ WHERE job='CLERK';
 
 
 
-#### 4.2 MAPJOIN
+#### MAPJOIN
 
 &emsp;&emsp;如果所有表中只有一张表是小表，那么 Hive 把这张小表加载到内存中。这时候程序会在 map 阶段直接拿另外一个表的数据和内存中表数据做匹配，由于在 map 就进行了 JOIN 操作，从而可以省略 reduce 过程，这样效率可以提升很多。Hive 中提供了 `/*+ MAPJOIN() */` 来标记小表，示例如下：
 
@@ -1267,7 +1267,7 @@ WHERE job='CLERK';
 
 
 
-### 5. SELECT的其他用途
+### （5）SELECT的其他用途
 
 查看当前数据库：
 
@@ -1277,7 +1277,7 @@ SELECT current_database()
 
 
 
-### 6. 本地模式
+### （6）本地模式
 
 在上面演示的语句中，大多数都会触发 MapReduce, 少部分不会触发，比如 `select * from emp limit 5` 就不会触发 MR，此时 Hive 只是简单的读取数据文件中的内容，然后格式化后进行输出。在需要执行 MapReduce 的查询中，你会发现执行时间可能会很长，这时候你可以选择开启本地模式。
 

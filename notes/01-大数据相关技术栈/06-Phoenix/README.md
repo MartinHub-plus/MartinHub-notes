@@ -4,13 +4,13 @@
 
 ## 一、Phoenix的简介
 
-### 1. 定义 
+### （1）定义 
 
 &emsp;&emsp;`Phoenix` 是 HBase 的开源 SQL 中间层，它允许你使用标准 JDBC 的方式来操作 HBase 上的数据。在 `Phoenix` 之前，如果你要访问 HBase，只能调用它的 Java API，但相比于使用一行 SQL 就能实现数据查询，HBase 的 API 还是过于复杂。`Phoenix` 的理念是 `we put sql SQL back in NOSQL`，即你可以使用标准的 SQL 就能完成对 HBase 上数据的操作。同时这也意味着你可以通过集成 `Spring Data  JPA` 或 `Mybatis` 等常用的持久层框架来操作 HBase。
 
 &emsp;&emsp;其次 `Phoenix` 的性能表现也非常优异，`Phoenix` 查询引擎会将 SQL 查询转换为一个或多个 HBase Scan，通过并行执行来生成标准的 JDBC 结果集。它通过直接使用 HBase API 以及协处理器和自定义过滤器，可以为小型数据查询提供毫秒级的性能，为千万行数据的查询提供秒级的性能。同时 Phoenix 还拥有二级索引等 HBase 不具备的特性，因为以上的优点，所以 `Phoenix` 成为了 HBase 最优秀的 SQL 中间层。
 
-### 2. 特点
+### （2）特点
 
 ```text
 1 将SQL查询编译为HBase扫描
@@ -23,11 +23,11 @@
 8 容易集成：如 Spark，Hive，Pig，Flume 和 Map Reduce。
 ```
 
-### 3. Phoenix架构
+### （3）Phoenix架构
 
 ![img](./images/架构.PNG)
 
-### 4. Phoenix数据存储
+### （4）Phoenix数据存储
 
 &emsp;&emsp;phoenix将HBase数据模型映射到关系型世界。
 
@@ -35,7 +35,7 @@
 
 ## 二、Phoenix入门
 
-### 1. 安装部署
+### （1）安装部署
 
 > 我们可以按照官方安装说明进行安装，官方说明如下：
 >
@@ -92,9 +92,9 @@ start-hbase.sh
 
 ![img](./images/phoenix-shell.png) 
 
-### 2. Phoenix表操作
+### （2）Phoenix表操作
 
-#### 1. 创建表
+#### 创建表
 
 ```sql
 CREATE TABLE IF NOT EXISTS us_population (
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS us_population (
 
 ![img](./images/hbase-web-ui-phoenix.png)
 
-#### 2. 插入数据
+#### 插入数据
 
 Phoenix 中插入数据采用的是 `UPSERT` 而不是 `INSERT`,因为 Phoenix 并没有更新操作，插入相同主键的数据就视为更新，所以 `UPSERT` 就相当于 `UPDATE`+`INSERT`
 
@@ -126,7 +126,7 @@ UPSERT INTO us_population VALUES('TX','Dallas',1213825);
 UPSERT INTO us_population VALUES('CA','San Jose',912332);
 ```
 
-#### 3. 修改数据
+#### 修改数据
 
 ```sql
 -- 插入主键相同的数据就视为更新
@@ -135,7 +135,7 @@ UPSERT INTO us_population VALUES('NY','New York',999999);
 
 ![img](./images/Phoenix-update.png)
 
-#### 4. 删除数据
+#### 删除数据
 
 ```sql
 DELETE FROM us_population WHERE city='Dallas';
@@ -143,7 +143,7 @@ DELETE FROM us_population WHERE city='Dallas';
 
 ![img](./images/Phoenix-delete.png)
 
-#### 5. 查询数据
+#### 查询数据
 
 ```sql
 SELECT state as "州",count(city) as "市",sum(population) as "热度"
@@ -154,19 +154,19 @@ ORDER BY sum(population) DESC;
 
 ![img](./images/Phoenix-select.png)
 
-#### 6. 退出命令
+#### 退出命令
 
 ```sql
 !quit
 ```
 
-### 3. Phoenix  创建 HBase  二级索引
+### （3）Phoenix 创建二级索引
 
-#### 1. HBase的二级索引
+#### HBase的二级索引
 
 &emsp;&emsp;我们知道 HBase 只能通过 rowkey 进行搜索, 一般把 rowkey 称作一级索引. 在很长的一段时间里 HBase 就只支持一级索引。HBase 里面只有 rowkey 作为一级索引， 如果要对库里的非 rowkey 字段进行数据检索和查询， 往往要通过 MapReduce/Spark 等分布式计算框架进行，硬件资源消耗和时间延迟都会比较高。为了 HBase 的数据查询更高效、适应更多的场景， 诸如使用非 rowkey 字段检索也能做到秒级响应，或者支持各个字段进行模糊查询和多字段组合查询等， 因此需要在 HBase 上面构建二级索引， 以满足现实中更复杂多样的业务需求。从 0.94 版本开始, HBase 开始支持二级索引.HBase 索引有多种放方案，我们今天要做的是使用 Phoenix 给 HBase 添加二级索引。
 
-#### 2. 配置 HBase  支持 Phoenix  创建二级索引
+#### 配置 HBase  支持 Phoenix  创建二级索引
 
 需要先给 HBase 配置支持创建二级索引
 步骤 1:  添加如下配置到 HBase  的 Hregionerver  节点的 hbase-site.xml
@@ -233,7 +233,7 @@ create index idx_user_1 on user_1(name)
 
 注意: 这种索引, 对  name 创建的索引, 则查询的时候也必须只查询  name 字段.
 
-#### 3. Phoenix  创建索引
+#### Phoenix  创建索引
 
 **Phoenix  索引分类**
 
