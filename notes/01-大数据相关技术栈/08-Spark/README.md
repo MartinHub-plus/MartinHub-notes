@@ -213,7 +213,7 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
 
   在 `spark-env.sh` 中配置 hadoop 的配置目录的位置，可以使用 `YARN_CONF_DIR` 或 `HADOOP_CONF_DIR` 进行指定：
 
-  ```properties
+  ```shell
   YARN_CONF_DIR=/usr/app/hadoop-2.6.0-cdh5.15.2/etc/hadoop
   # JDK安装位置
   JAVA_HOME=/usr/java/jdk1.8.0_201
@@ -1131,7 +1131,7 @@ object DataFrameDemo {
 
 Spark 支持多种方法来构造和引用列，最简单的是使用 `col() ` 或 `column() ` 函数。
 
-```scala
+```java
 col("colName")
 column("colName")
 
@@ -1142,7 +1142,7 @@ df.select('ename, 'job).show()
 
 新增列
 
-```scala
+```java
 // 基于已有列值新增列
 df.withColumn("upSal",$"sal"+1000)
 // 基于固定值新增列
@@ -1151,14 +1151,14 @@ df.withColumn("intCol",lit(1000))
 
 删除列
 
-```scala
+```java
 // 支持删除多个列
 df.drop("comm","job").show()
 ```
 
 重命名列
 
-```scala
+```java
 df.withColumnRenamed("comm", "common").show()
 ```
 
@@ -1307,7 +1307,7 @@ object data_process {
 
 > Spark 同样支持与传统的关系型数据库进行数据读写。但是 Spark 程序默认是没有提供数据库驱动的，所以在使用前需要将对应的数据库驱动上传到安装目录下的 `jars` 目录中。下面示例使用的是 Mysql 数据库，使用前需要将对应的 `mysql-connector-java-x.x.x.jar` 上传到 `jars` 目录下。
 
- **导入依赖： ** 
+ **导入依赖:** 
 
 ```properties
 <dependency>
@@ -1510,7 +1510,7 @@ spark.read.format("orc").load("/usr/file/orc/dept.orc").show(5)
 **写入ORC文件**
 
 ```java
-csvFile.write.format("orc").mode("overwrite").save("/tmp/spark/orc/dept")
+spark.write.format("orc").mode("overwrite").save("/tmp/spark/orc/dept")
 ```
 
 #### > 数据源 - Text
@@ -1641,7 +1641,7 @@ df.write.option(“maxRecordsPerFile”, 5000)
 
 本文主要介绍 Spark SQL 的多表连接，需要预先准备测试数据。分别创建员工和部门的 Datafame，并注册为临时视图，代码如下：
 
-```scala
+```java
 val spark = SparkSession.builder().appName("aggregations").master("local[2]").getOrCreate()
 
 val empDF = spark.read.json("/usr/file/json/emp.json")
@@ -1707,7 +1707,7 @@ SELECT * FROM emp WHERE deptno NOT IN (SELECT deptno FROM dept)
 
 #### > INNER JOIN
 
-```scala
+```java
 // 1.定义连接表达式
 val joinExpression = empDF.col("deptno") === deptDF.col("deptno")
 // 2.连接查询 
@@ -1719,42 +1719,42 @@ spark.sql("SELECT ename,dname FROM emp JOIN dept ON emp.deptno = dept.deptno").s
 
 #### >  FULL OUTER JOIN
 
-```scala
+```java
 empDF.join(deptDF, joinExpression, "outer").show()
 spark.sql("SELECT * FROM emp FULL OUTER JOIN dept ON emp.deptno = dept.deptno").show()
 ```
 
 #### >  LEFT OUTER JOIN
 
-```scala
+```java
 empDF.join(deptDF, joinExpression, "left_outer").show()
 spark.sql("SELECT * FROM emp LEFT OUTER JOIN dept ON emp.deptno = dept.deptno").show()
 ```
 
 #### >  RIGHT OUTER JOIN
 
-```scala
+```java
 empDF.join(deptDF, joinExpression, "right_outer").show()
 spark.sql("SELECT * FROM emp RIGHT OUTER JOIN dept ON emp.deptno = dept.deptno").show()
 ```
 
 #### >  LEFT SEMI JOIN
 
-```scala
+```java
 empDF.join(deptDF, joinExpression, "left_semi").show()
 spark.sql("SELECT * FROM emp LEFT SEMI JOIN dept ON emp.deptno = dept.deptno").show()
 ```
 
 #### > LEFT ANTI JOIN
 
-```scala
+```java
 empDF.join(deptDF, joinExpression, "left_anti").show()
 spark.sql("SELECT * FROM emp LEFT ANTI JOIN dept ON emp.deptno = dept.deptno").show()
 ```
 
 #### >  CROSS JOIN
 
-```scala
+```java
 empDF.join(deptDF, joinExpression, "cross").show()
 spark.sql("SELECT * FROM emp CROSS JOIN dept ON emp.deptno = dept.deptno").show()
 ```
@@ -1763,13 +1763,13 @@ spark.sql("SELECT * FROM emp CROSS JOIN dept ON emp.deptno = dept.deptno").show(
 
 自然连接是在两张表中寻找那些数据类型和列名都相同的字段，然后自动地将他们连接起来，并返回所有符合条件的结果。
 
-```scala
+```java
 spark.sql("SELECT * FROM emp NATURAL JOIN dept").show()
 ```
 
 以下是一个自然连接的查询结果，程序自动推断出使用两张表都存在的 dept 列进行连接，其实际等价于：
 
-```sql
+```java
 spark.sql("SELECT * FROM emp JOIN dept ON emp.deptno = dept.deptno").show()
 ```
 
@@ -1789,7 +1789,7 @@ spark.sql("SELECT * FROM emp JOIN dept ON emp.deptno = dept.deptno").show()
 
 是否采用广播方式进行 `Join` 取决于程序内部对小表的判断，如果想明确使用广播方式进行 `Join`，则可以在 DataFrame API 中使用 `broadcast` 方法指定需要广播的小表：
 
-```scala
+```java
 empDF.join(broadcast(deptDF), joinExpression).show()
 ```
 
@@ -1801,7 +1801,7 @@ empDF.join(broadcast(deptDF), joinExpression).show()
 
 - **数据准备**
 
-```scala
+```java
 // 需要导入 spark sql 内置的函数包
 import org.apache.spark.sql.functions._
 
@@ -1814,14 +1814,14 @@ empDF.show()
 
 - **count**
 
-```scala
+```java
 // 计算员工人数
 empDF.select(count("ename")).show()
 ```
 
 - **countDistinct** 
 
-```scala
+```java
 // 计算姓名不重复的员工人数
 empDF.select(countDistinct("deptno")).show()
 ```
@@ -1830,7 +1830,7 @@ empDF.select(countDistinct("deptno")).show()
 
 通常在使用大型数据集时，你可能关注的只是近似值而不是准确值，这时可以使用 approx_count_distinct 函数，并可以使用第二个参数指定最大允许误差。
 
-```scala
+```java
 empDF.select(approx_count_distinct ("ename",0.1)).show()
 ```
 
@@ -1838,7 +1838,7 @@ empDF.select(approx_count_distinct ("ename",0.1)).show()
 
 获取 DataFrame 中指定列的第一个值或者最后一个值。
 
-```scala
+```java
 empDF.select(first("ename"),last("job")).show()
 ```
 
@@ -1846,7 +1846,7 @@ empDF.select(first("ename"),last("job")).show()
 
 获取 DataFrame 中指定列的最小值或者最大值。
 
-```scala
+```java
 empDF.select(min("sal"),max("sal")).show()
 ```
 
@@ -1854,7 +1854,7 @@ empDF.select(min("sal"),max("sal")).show()
 
 求和以及求指定列所有不相同的值的和。
 
-```scala
+```java
 empDF.select(sum("sal")).show()
 empDF.select(sumDistinct("sal")).show()
 ```
@@ -1863,7 +1863,7 @@ empDF.select(sumDistinct("sal")).show()
 
 内置的求平均数的函数。
 
-```scala
+```java
 empDF.select(avg("sal")).show()
 ```
 
@@ -1871,7 +1871,7 @@ empDF.select(avg("sal")).show()
 
 Spark SQL 中还支持多种数学聚合函数，用于通常的数学计算，以下是一些常用的例子：
 
-```scala
+```java
 // 1.计算总体方差、均方差、总体标准差、样本标准差
 empDF.select(var_pop("sal"), var_samp("sal"), stddev_pop("sal"), stddev_samp("sal")).show()
 
@@ -1884,7 +1884,7 @@ empDF.select(corr("empno", "sal"), covar_samp("empno", "sal"),covar_pop("empno",
 
 - **聚合数据到集合**
 
-```scala
+```java
 scala>  empDF.agg(collect_set("job"), collect_list("ename")).show()
 
 输出：
@@ -1901,7 +1901,7 @@ scala>  empDF.agg(collect_set("job"), collect_list("ename")).show()
 
 - **简单分组**
 
-```scala
+```java
 empDF.groupBy("deptno", "job").count().show()
 //等价 SQL
 spark.sql("SELECT deptno, job, count(*) FROM emp GROUP BY deptno, job").show()
@@ -1924,7 +1924,7 @@ spark.sql("SELECT deptno, job, count(*) FROM emp GROUP BY deptno, job").show()
 
 - **分组聚合**
 
-```scala
+```java
 empDF.groupBy("deptno").agg(count("ename").alias("人数"), sum("sal").alias("总工资")).show()
 // 等价语法
 empDF.groupBy("deptno").agg("ename"->"count","sal"->"sum").show()
@@ -1954,7 +1954,7 @@ Scala 提供了两种自定义聚合函数的方法，分别如下：
 
 - **有类型的自定义函数**
 
-```scala
+```java
 import org.apache.spark.sql.expressions.Aggregator
 import org.apache.spark.sql.{Encoder, Encoders, SparkSession, functions}
 
@@ -2029,7 +2029,7 @@ object SparkSqlApp {
 - 自定义类型 Case Class 或者元组就使用 `Encoders.product` 方法；
 - 基本类型就使用其对应名称的方法，如 `scalaByte `，`scalaFloat`，`scalaShort` 等，示例如下：
 
-```scala
+```java
 override def bufferEncoder: Encoder[SumAndCount] = Encoders.product
 override def outputEncoder: Encoder[Double] = Encoders.scalaDouble
 ```
@@ -2038,7 +2038,7 @@ override def outputEncoder: Encoder[Double] = Encoders.scalaDouble
 
 理解了有类型的自定义聚合函数后，无类型的定义方式也基本相同，代码如下：
 
-```scala
+```java
 import org.apache.spark.sql.expressions.{MutableAggregationBuffer, UserDefinedAggregateFunction}
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{Row, SparkSession}
@@ -2148,25 +2148,376 @@ object SparkSqlApp {
 
 - **WordCount词频统计** 
 
-  ​
+  **需求：**
+
+  &emsp;使用 netcat 工具向 9999 端口不断的发送数据，通过 SparkStreaming 读取端口数据并统计不同单词出现的次数
+
+  - **基本数据源**：包括文件系统、Socket 连接等；
+  - **高级数据源**：包括 Kafka，Flume，Kinesis 等。
+
+  **添加依赖**:
+
+  ```properties
+  <dependency>
+    <groupId>org.apache.spark</groupId>
+    <artifactId>spark-streaming_2.12</artifactId>
+    <version>3.0.0</version>
+  </dependency>
+  ```
+
+  **编写代码**：
+
+  ```java
+  object StreamWordCount {
+    def main(args: Array[String]): Unit = {
+      
+      //1.初始化 Spark 配置信息
+      val sparkConf = new
+      SparkConf().setMaster("local[*]").setAppName("StreamWordCount")
+        
+      //2.初始化 SparkStreamingContext
+      val ssc = new StreamingContext(sparkConf, Seconds(3))
+        
+      //3.通过监控端口创建 DStream，读进来的数据为一行行
+      val lineStreams = ssc.socketTextStream("linux1", 9999)
+        
+      //将每一行数据做切分，形成一个个单词
+      val wordStreams = lineStreams.flatMap(_.split(" "))
+        
+      //将单词映射成元组（word,1）
+      val wordAndOneStreams = wordStreams.map((_, 1))
+        
+      //将相同的单词次数做统计
+      val wordAndCountStreams = wordAndOneStreams.reduceByKey(_+_)
+        
+      //打印
+      wordAndCountStreams.print()
+        
+      //启动 SparkStreamingContext
+      ssc.start()
+      ssc.awaitTermination()
+    }
+  }
+  ```
+
+  > 在示例代码中，使用 `streamingContext.start()` 代表启动服务，此时还要使用 `streamingContext.awaitTermination()` 使服务处于等待和可用的状态，直到发生异常或者手动使用 `streamingContext.stop()` 进行终止。
+
+  **启动程序并通过 netcat 发送数据**
+
+  ```shell
+  nc -lk 9999
+  hello spark
+  ```
+
+  > 在内部实现上，DStream 是一系列连续的 RDD 来表示。每个 RDD 含有一段时间间隔内的数据。
+
+
 
 ### （3）DStream 创建   
 
+&emsp;测试过程中，可以通过使用 ssc.queueStream(queueOfRDDs)来创建 DStream，每一个推送到这个队列中的 RDD，都会作为一个 DStream 处理。
 
+➢  需求：循环创建几个 RDD，将 RDD 放入队列。通过 SparkStream 创建 Dstream，计算WordCount。
+
+**代码**： 
+
+```java
+object RDDStream {
+  def main(args: Array[String]) {
+    
+    //1.初始化 Spark 配置信息
+    val conf = new SparkConf().setMaster("local[*]").setAppName("RDDStream")
+      
+    //2.初始化 SparkStreamingContext
+    val ssc = new StreamingContext(conf, Seconds(4))
+      
+    //3.创建 RDD 队列
+    val rddQueue = new mutable.Queue[RDD[Int]]()
+      
+    //4.创建 QueueInputDStream
+    val inputStream = ssc.queueStream(rddQueue,oneAtATime = false)
+      
+    //5.处理队列中的 RDD 数据
+    val mappedStream = inputStream.map((_,1))
+    val reducedStream = mappedStream.reduceByKey(_ + _)
+      
+    //6.打印结果
+    reducedStream.print()
+      
+    //7.启动任务
+    ssc.start()
+      
+    //8.循环创建并向 RDD 队列中放入 RDD
+    for (i <- 1 to 5) {
+      rddQueue += ssc.sparkContext.makeRDD(1 to 300, 10)
+      Thread.sleep(2000)
+    }
+    
+    ssc.awaitTermination()
+  }
+}
+```
+
+**结果展示**：
+
+```java
+-------------------------------------------
+Time: 1539075280000 ms
+-------------------------------------------
+(4,60)
+(0,60)
+(6,60)
+(8,60)
+(2,60)
+(1,60)
+(3,60)
+(7,60)
+(9,60)
+(5,60)
+-------------------------------------------
+Time: 1539075284000 ms
+-------------------------------------------
+(4,60)
+(0,60)
+(6,60)
+(8,60)
+(2,60)
+(1,60)
+(3,60)
+(7,60)
+(9,60)
+(5,60)
+-------------------------------------------
+Time: 1539075288000 ms
+-------------------------------------------
+(4,30)
+(0,30)
+(6,30)
+(8,30)
+(2,30)
+(1,30)
+(3,30)
+(7,30)
+(9,30)
+(5,30)
+-------------------------------------------
+Time: 1539075292000 ms
+-------------------------------------------
+```
 
 ### （4）DStream 转换 
 
+> `DStream` 上的操作与 `RDD` 的类似，分为 `Transformations`（转换）和 `Output Operations`（输出）两种，此外转换操作中还有一些比较特殊的原语，如：`updateStateByKey()`、`transform()`以及各种 `Window `相关的原语
 
+- **无状态转化操作** 
+
+> 无状态转化操作就是把简单的 `RDD` 转化操作应用到每个批次上，也就是转化` DStream` 中的每一个 `RDD`。部分无状态转化操作列在了下表中。注意，针对键值对的` DStream` 转化操作(比如`reduceByKey())`要添加 `import StreamingContext._`才能在 `Scala` 中使用。
+
+![img](./images/无状态转换.PNG)
+
+> 需要记住的是，尽管这些函数看起来像作用在整个流上一样，但事实上每个 DStream 在内部是由许多 RDD（批次）组成，且无状态转化操作是分别应用到每个 RDD 上的。
+
+- **有状态转化操作** 
+
+  - **UpdateStateByKey** 
+
+    > UpdateStateByKey 原语用于记录历史记录，有时，我们需要在 DStream 中跨批次维护状态(例如流计算中累加 wordcount)。针对这种情况，updateStateByKey()为我们提供了对一个状态变量的访问，用于键值对形式的 DStream。给定一个由(键，事件)对构成的 DStream，并传递一个指定如何根据新的事件更新每个键对应状态的函数，它可以构建出一个新的 DStream，其内部数据为(键，状态) 对。
+    >
+    > updateStateByKey() 的结果会是一个新的 DStream，其内部的 RDD 序列是由每个时间区间对应的(键，状态)对组成的。
+    >
+    > updateStateByKey 操作使得我们可以在用新信息进行更新时保持任意的状态。为使用这个功能，需要做下面两步：
+    >
+    > 1. 定义状态，状态可以是一个任意的数据类型。
+    > 2. 定义状态更新函数，用此函数阐明如何使用之前的状态和来自输入流的新值对状态进行更新。
+    > 3. 使用 updateStateByKey 需要对检查点目录进行配置，会使用检查点来保存状态。
+
+    **编写代码**：
+
+    ```java
+    object WorldCount {
+      def main(args: Array[String]) {
+        
+        // 定义更新状态方法，参数 values 为当前批次单词频度，state 为以往批次单词频度
+        val updateFunc = (values: Seq[Int], state: Option[Int]) => {
+          val currentCount = values.foldLeft(0)(_ + _)
+          val previousCount = state.getOrElse(0)
+          Some(currentCount + previousCount)
+        }
+        
+        val conf = new
+        SparkConf().setMaster("local[*]").setAppName("NetworkWordCount")
+          
+        val ssc = new StreamingContext(conf, Seconds(3))
+          
+        ssc.checkpoint("./ck")
+          
+        // Create a DStream that will connect to hostname:port, like hadoop102:9999
+        val lines = ssc.socketTextStream("linux1", 9999)
+          
+        // Split each line into words
+        val words = lines.flatMap(_.split(" "))
+          
+        // Count each word in each batch
+        val pairs = words.map(word => (word, 1))
+          
+        // 使用 updateStateByKey 来更新状态，统计从运行开始以来单词总的次数
+        val stateDstream = pairs.updateStateByKey[Int](updateFunc)
+          
+        stateDstream.print()
+          
+        ssc.start() // Start the computation
+        ssc.awaitTermination() // Wait for the computation to terminate
+        //ssc.stop()
+      }
+    }
+    ```
+
+    **启动程序并向 9999 端口发送数据**:
+
+    ```shell
+    nc -lk 9999
+    Hello World
+    Hello Scala
+    ```
+
+    **结果展示**:
+
+    ```shell
+    -------------------------------------------
+    Time: 1504685175000 ms
+    -------------------------------------------
+    -------------------------------------------
+    Time: 1504685181000 ms
+    -------------------------------------------
+    (shi,1)
+    (shui,1)
+    (ni,1)
+    -------------------------------------------
+    Time: 1504685187000 ms
+    -------------------------------------------
+    (shi,1)
+    (ma,1)
+    (hao,1)
+    (shui,1)
+    ```
+
+    ​
+
+  - **WindowOperations** 
+
+    > Window Operations 可以设置窗口的大小和滑动窗口的间隔来动态的获取当前 Steaming 的允许状态。所有基于窗口的操作都需要两个参数，分别为窗口时长以及滑动步长。
+    >
+    > ➢  窗口时长：计算内容的时间范围；
+    >
+    > ➢  滑动步长：隔多久触发一次计算。
+    >
+    > 注意：这两者都必须为采集周期大小的整数倍。
 
 ### （5）DStream 输出
 
+> 输出操作指定了对流数据经转化操作得到的数据所要执行的操作(例如把结果推入外部数据库或输出到屏幕上)。与 RDD 中的惰性求值类似，如果一个 DStream 及其派生出的 DStream 都没有被执行输出操作，那么这些 DStream 就都不会被求值。如果 StreamingContext 中没有设定输出操作，整个 context 就都不会启动。
+>
+> ➢  print()：在运行流程序的驱动结点上打印 DStream 中每一批次数据的最开始 10 个元素。这用于开发和调试。在 Python API 中，同样的操作叫 print()。
+>
+> ➢  saveAsTextFiles(prefix, [suffix])：以 text 文件形式存储这个 DStream 的内容。每一批次的存储文件名基于参数中的 prefix 和 suffix。”prefix-Time_IN_MS[.suffix]”。
+>
+> ➢  saveAsObjectFiles(prefix, [suffix])：以 Java 对象序列化的方式将 Stream 中的数据保存为SequenceFiles . 每一批次的存储文件名基于参数中的为"prefix-TIME_IN_MS[.suffix]". Python中目前不可用。
+>
+> ➢  saveAsHadoopFiles(prefix, [suffix])：将 Stream 中的数据保存为 Hadoop files. 每一批次的存储文件名基于参数中的为"prefix-TIME_IN_MS[.suffix]"。Python API 中目前不可用。
+>
+> ➢  foreachRDD(func)：这是最通用的输出操作，即将函数 func 用于产生于 stream 的每一个RDD。其中参数传入的函数 func 应该实现将每一个 RDD 中数据推送到外部系统，如将RDD 存入文件或者通过网络将其写入数据库。
+>
+> <br/>
+>
+> 通用的输出操作 foreachRDD()，它用来对 DStream 中的 RDD 运行任意计算。这和 transform()有些类似，都可以让我们访问任意 RDD。在 foreachRDD()中，可以重用我们在 Spark 中实现的所有行动操作。比如，常见的用例之一是把数据写到诸如 MySQL 的外部数据库中。
+>
+> 注意：
+>
+> 1)  连接不能写在 driver 层面（序列化）
+>
+> 2)  如果写在 foreach 则每个 RDD 中的每一条数据都创建，得不偿失；
+>
+> 3)  增加 foreachPartition，在分区创建（获取）。
 
+### （6）Spark-straming 整和 kafka
 
-### （6）DStream 编程进阶
+- **导入依赖**
 
+  ```properties
+  <dependency>
+    <groupId>org.apache.spark</groupId>
+    <artifactId>spark-streaming_2.11</artifactId>
+    <version>2.3.2</version>
+    <scope>provided</scope>
+  </dependency>
+    
+  <dependency>
+    <groupId>org.apache.spark</groupId>
+    <artifactId>spark-streaming-kafka-0-10_2.11</artifactId>
+    <version>2.3.2}</version>
+  </dependency>
+  ```
 
+  - **代码** 
 
+  ```java
+  public class SparkStreamingProcess {
 
+      public static void main(String[] args) {
+  		//=============kafka配置================
+  		Map<String, Object> kafkaParams = new HashMap<>();
+  		//Kafka服务监听端口
+  		kafkaParams.put("bootstrap.servers", "slave01:9092");
+  		//指定kafka输出key的数据类型及编码格式（默认为字符串类型编码格式为uft-8）
+  		kafkaParams.put("key.deserializer", StringDeserializer.class);
+  		//指定kafka输出value的数据类型及编码格式（默认为字符串类型编码格式为uft-8）
+  		kafkaParams.put("value.deserializer", StringDeserializer.class);
+  		//消费者ID，随意指定
+  		kafkaParams.put("group.id", "test_id");
+  		//指定从latest(最新,其他版本的是largest这里不行)还是smallest(最早)处开始读取数据
+  		kafkaParams.put("auto.offset.reset", "latest");
+  		//如果true,consumer定期地往zookeeper写入每个分区的offset
+  		kafkaParams.put("enable.auto.commit", false);
+
+  		//kafka - topic
+  		Collection<String> topics = Collections.singletonList("test");
+
+  		//构建SparkStreaming上下文
+  		SparkConf conf = new SparkConf().setMaster("yarn").setAppName("SparkStreaming-kafka");  //线上使用 - yarn ; 本地使用 - local[*]
+  		
+           //每隔5秒钟，sparkStreaming作业就会收集最近5秒内的数据源接收过来的数据
+  		JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
+
+  		//获取kafka的数据
+  		JavaInputDStream<ConsumerRecord<String, String>> stream =
+  				KafkaUtils.createDirectStream(
+  						jssc,
+  						LocationStrategies.PreferConsistent(),
+  						ConsumerStrategies.Subscribe(topics, kafkaParams)
+  				);
+
+  		//foreachRDD：作用于DStream中每一个时间间隔的RDD;
+  		//foreachPartition：作用于每一个时间间隔的RDD中的每一个partition;
+  		//foreach：作用于每一个时间间隔的RDD中的每一个元素。
+          stream.foreachRDD((VoidFunction<JavaRDD<ConsumerRecord<String, String>>>) rdd ->
+                  rdd.foreachPartition((VoidFunction<Iterator<ConsumerRecord<String, String>>>) partition_iter -> {
+                  while (partition_iter.hasNext()) {
+                  	........
+                  	........
+                  }
+         }));
+
+          jssc.start();
+          try {
+              jssc.awaitTermination();
+          } catch (Exception e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+          }
+      }
+  ```
+
+  ​
 
 ## 四、Spark 内核
 
@@ -2231,7 +2582,7 @@ source /etc/profile
 
 **1. spark-env.sh**
 
-```she
+```shell
  cp spark-env.sh.template spark-env.sh
 ```
 
@@ -2246,7 +2597,7 @@ SPARK_DAEMON_JAVA_OPTS="-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zoo
 
 **2. slaves**
 
-```
+```shell
 cp slaves.template slaves
 ```
 
