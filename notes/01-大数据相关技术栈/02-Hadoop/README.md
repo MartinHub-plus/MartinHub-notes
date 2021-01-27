@@ -97,7 +97,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.201-b09, mixed mode)
 
 ### （3）配置免密登录
 
-#### 生成密匙
+#### > 生成密匙
 
 &emsp;&emsp;在每台主机上使用 `ssh-keygen` 命令生成公钥私钥对：
 
@@ -105,7 +105,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.201-b09, mixed mode)
 ssh-keygen
 ```
 
-#### 免密登录
+#### > 免密登录
 
 &emsp;&emsp;将 `hadoop001` 的公钥写到本机和远程机器的 ` ~/ .ssh/authorized_key` 文件中：
 
@@ -115,7 +115,7 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop002
 ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop003
 ```
 
-#### 验证免密登录
+#### > 验证免密登录
 
 ```she
 ssh hadoop002
@@ -124,25 +124,25 @@ ssh hadoop003
 
 ### （4）集群搭建
 
-#### 下载并解压
+#### > 下载并解压
 
 &emsp;&emsp;下载 Hadoop。这里我下载的是 CDH 版本 Hadoop，下载地址为：http://archive.cloudera.com/cdh5/cdh/5/
 
 ```shell
-# tar -zvxf hadoop-2.6.0-cdh5.15.2.tar.gz 
+tar -zvxf hadoop-2.6.0-cdh5.15.2.tar.gz 
 ```
 
-#### 配置环境变量
+#### > 配置环境变量
 
 &emsp;&emsp;编辑 `profile` 文件：
 
 ```shell
-# vim /etc/profile
+vim /etc/profile
 ```
 
 &emsp;&emsp;增加如下配置：
 
-```
+```properties
 export HADOOP_HOME=/usr/app/hadoop-2.6.0-cdh5.15.2
 export  PATH=${HADOOP_HOME}/bin:$PATH
 ```
@@ -150,10 +150,10 @@ export  PATH=${HADOOP_HOME}/bin:$PATH
 &emsp;&emsp;执行 `source` 命令，使得配置立即生效：
 
 ```shell
-# source /etc/profile
+source /etc/profile
 ```
 
-#### 修改配置
+#### > 修改配置
 
 &emsp;&emsp;进入 `${HADOOP_HOME}/etc/hadoop` 目录下，修改配置文件。各个配置文件内容如下：
 
@@ -236,7 +236,7 @@ hadoop002
 hadoop003
 ```
 
-#### 分发程序
+#### > 分发程序
 
 &emsp;&emsp;将 Hadoop 安装包分发到其他两台服务器，分发后建议在这两台服务器上也配置一下 Hadoop 的环境变量。
 
@@ -247,7 +247,7 @@ scp -r /usr/app/hadoop-2.6.0-cdh5.15.2/  hadoop002:/usr/app/
 scp -r /usr/app/hadoop-2.6.0-cdh5.15.2/  hadoop003:/usr/app/
 ```
 
-#### 初始化
+#### > 初始化
 
 &emsp;&emsp;在 `Hadoop001` 上执行 namenode 初始化命令：
 
@@ -259,7 +259,7 @@ hdfs namenode -format
 
 &emsp;&emsp;&emsp;答：格式化 NameNode，会产生新的集群 id，导致 NameNode 和 DataNode 的集群 id 不一致，集群找不到已往数据。所以，格式 NameNode 时，一定要先删除data 数据和 log 日志，然后再格式化 NameNode。（第一次启动时格式化，以后就不要总格式化）
 
-#### 集群时间同步
+#### > 集群时间同步
 
 &emsp;&emsp;时间同步的方式：找一个机器，作为时间服务器，所有的机器与这台集群时间进行定时的同步，比如，每隔十分钟，同步一次时间。
 
@@ -363,7 +363,7 @@ ntpd 已停
 
 &emsp;&emsp;说明：测试的时候可以将 10 分钟调整为 1 分钟，节省时间。
 
-#### 启动集群
+#### > 启动集群
 
 &emsp;&emsp;进入到 `Hadoop001` 的 `${HADOOP_HOME}/sbin` 目录下，启动 Hadoop。此时 `hadoop002` 和 `hadoop003` 上的相关服务也会被启动：
 
@@ -374,7 +374,7 @@ start-dfs.sh
 start-yarn.sh
 ```
 
-#### 查看集群
+#### > 查看集群
 
 &emsp;&emsp;在每台服务器上使用 `jps` 命令查看服务进程，或直接进入 Web-UI 界面进行查看，端口为 `50070`。可以看到此时有三个可用的 `Datanode`：
 
@@ -388,7 +388,7 @@ start-yarn.sh
 
 ![img](./images/hadoop-集群搭建3.png)
 
-#### 提交服务到集群
+#### > 提交服务到集群
 
 &emsp;&emsp;提交作业到集群的方式和单机环境完全一致，这里以提交 Hadoop 内置的计算 Pi 的示例程序为例，在任何一个节点上执行都可以，命令如下：
 
@@ -404,7 +404,7 @@ hadoop jar /usr/app/hadoop-2.6.0-cdh5.15.2/share/hadoop/mapreduce/hadoop-mapredu
 
 &emsp;&emsp;Hadoop 高可用 (High Availability) 分为 HDFS 高可用和 YARN 高可用，两者的实现基本类似，但 HDFS NameNode 对数据存储及其一致性的要求比 YARN ResourceManger 高得多，所以它的实现也更加复杂，故下面先进行讲解：
 
-#### 高可用整体架构
+#### > 高可用整体架构
 
 &emsp;&emsp;HDFS 高可用架构如下：
 
@@ -420,7 +420,7 @@ HDFS 高可用架构主要由以下组件所构成：
 - **共享存储系统**：共享存储系统是实现 NameNode 的高可用最为关键的部分，共享存储系统保存了 NameNode 在运行过程中所产生的 HDFS 的元数据。主 NameNode 和 NameNode 通过共享存储系统实现元数据同步。在进行主备切换的时候，新的主 NameNode 在确认元数据完全同步之后才能继续对外提供服务。
 - **DataNode 节点**：除了通过共享存储系统共享 HDFS 的元数据信息之外，主 NameNode 和备 NameNode 还需要共享 HDFS 的数据块和 DataNode 之间的映射关系。DataNode 会同时向主 NameNode 和备 NameNode 上报数据块的位置信息。
 
-#### 基于 QJM 的共享存储系统的数据同步机制分析
+#### > 基于 QJM 的共享存储系统的数据同步机制分析
 
 &emsp;&emsp;&emsp;目前 Hadoop 支持使用 Quorum Journal Manager (QJM) 或 Network File System (NFS) 作为共享的存储系统，这里以 QJM 集群为例进行说明：Active NameNode 首先把 EditLog 提交到 JournalNode 集群，然后 Standby NameNode 再从 JournalNode 集群定时同步 EditLog，当 Active NameNode  宕机后， Standby  NameNode 在确认元数据完全同步之后就可以对外提供服务。
 
@@ -428,7 +428,7 @@ HDFS 高可用架构主要由以下组件所构成：
 
 ![img](./images/hadoop-QJM-同步机制.png)
 
-#### NameNode 主备切换
+#### > NameNode 主备切换
 
 &emsp;&emsp;NameNode 实现主备切换的流程下图所示：
 
@@ -441,7 +441,7 @@ HDFS 高可用架构主要由以下组件所构成：
 5. ActiveStandbyElector 在主备选举完成后，会回调 ZKFailoverController 的相应方法来通知当前的 NameNode 成为主 NameNode 或备 NameNode。
 6. ZKFailoverController 调用对应 NameNode 的 HAServiceProtocol RPC 接口的方法将 NameNode 转换为 Active 状态或 Standby 状态。
 
-#### YARN高可用
+#### > YARN高可用
 
 &emsp;&emsp;&emsp;YARN ResourceManager 的高可用与 HDFS NameNode 的高可用类似，但是 ResourceManager 不像 NameNode ，没有那么多的元数据信息需要维护，所以它的状态信息可以直接写到 Zookeeper 上，并依赖 Zookeeper 来进行主备选举。
 
@@ -461,25 +461,25 @@ HDFS 高可用架构主要由以下组件所构成：
 
 ### （4）集群配置
 
-#### 下载并解压
+#### > 下载并解压
 
 &emsp;&emsp;下载 Hadoop。这里我下载的是 CDH 版本 Hadoop，下载地址为：http://archive.cloudera.com/cdh5/cdh/5/
 
 ```shell
-# tar -zvxf hadoop-2.6.0-cdh5.15.2.tar.gz 
+tar -zvxf hadoop-2.6.0-cdh5.15.2.tar.gz 
 ```
 
-#### 配置环境变量
+#### > 配置环境变量
 
 &emsp;&emsp;编辑 `profile` 文件：
 
 ```shell
-# vim /etc/profile
+vim /etc/profile
 ```
 
 &emsp;&emsp;增加如下配置：
 
-```
+```properties
 export HADOOP_HOME=/usr/app/hadoop-2.6.0-cdh5.15.2
 export  PATH=${HADOOP_HOME}/bin:$PATH
 ```
@@ -487,10 +487,10 @@ export  PATH=${HADOOP_HOME}/bin:$PATH
 &emsp;&emsp;执行 `source` 命令，使得配置立即生效：
 
 ```shell
-# source /etc/profile
+source /etc/profile
 ```
 
-#### 修改配置
+#### > 修改配置
 
 &emsp;&emsp;进入 `${HADOOP_HOME}/etc/hadoop` 目录下，修改配置文件。各个配置文件内容如下：
 
@@ -709,7 +709,7 @@ hadoop002
 hadoop003
 ```
 
-#### 分发程序
+#### > 分发程序
 
 &emsp;&emsp;将 Hadoop 安装包分发到其他两台服务器，分发后建议在这两台服务器上也配置一下 Hadoop 的环境变量。
 
@@ -724,7 +724,7 @@ scp -r /usr/app/hadoop-2.6.0-cdh5.15.2/  hadoop003:/usr/app/
 
 ### （5）启动集群
 
-#### 启动ZooKeeper
+#### > 启动ZooKeeper
 
 &emsp;&emsp;分别到三台服务器上启动 ZooKeeper 服务：
 
@@ -732,7 +732,7 @@ scp -r /usr/app/hadoop-2.6.0-cdh5.15.2/  hadoop003:/usr/app/
  zkServer.sh start
 ```
 
-#### 启动Journalnode
+#### > 启动Journalnode
 
 &emsp;&emsp;分别到三台服务器的的 `${HADOOP_HOME}/sbin` 目录下，启动 `journalnode` 进程：
 
@@ -740,7 +740,7 @@ scp -r /usr/app/hadoop-2.6.0-cdh5.15.2/  hadoop003:/usr/app/
 hadoop-daemon.sh start journalnode
 ```
 
-#### 初始化NameNode
+#### > 初始化NameNode
 
 &emsp;&emsp;在 `hadop001` 上执行 `NameNode` 初始化命令：
 
@@ -754,7 +754,7 @@ hdfs namenode -format
  scp -r /home/hadoop/namenode/data hadoop002:/home/hadoop/namenode/
 ```
 
-#### 初始化HA状态
+#### > 初始化HA状态
 
 &emsp;&emsp;在任意一台 `NameNode` 上使用以下命令来初始化 ZooKeeper 中的 HA 状态：
 
@@ -762,7 +762,7 @@ hdfs namenode -format
 hdfs zkfc -formatZK
 ```
 
-#### 启动HDFS
+#### > 启动HDFS
 
 &emsp;&emsp;进入到 `hadoop001` 的 `${HADOOP_HOME}/sbin` 目录下，启动 HDFS。此时 `hadoop001` 和 `hadoop002` 上的 `NameNode` 服务，和三台服务器上的 `DataNode` 服务都会被启动：
 
@@ -770,7 +770,7 @@ hdfs zkfc -formatZK
 start-dfs.sh
 ```
 
-#### 启动YARN
+#### > 启动YARN
 
 &emsp;&emsp;进入到 `hadoop002` 的 `${HADOOP_HOME}/sbin` 目录下，启动 YARN。此时 `hadoop002` 上的 `ResourceManager` 服务，和三台服务器上的 `NodeManager` 服务都会被启动：
 
@@ -786,7 +786,7 @@ yarn-daemon.sh start resourcemanager
 
 ### （6）查看集群
 
-#### 查看进程
+#### > 查看进程
 
 &emsp;&emsp;成功启动后，每台服务器上的进程应该如下：
 
@@ -820,13 +820,14 @@ yarn-daemon.sh start resourcemanager
 
 
 
-#### 查看Web UI
+#### > 查看Web UI
 
 &emsp;&emsp;HDFS 和 YARN 的端口号分别为 `50070` 和 `8080`，界面应该如下：
 
 &emsp;&emsp;此时 hadoop001 上的 `NameNode` 处于可用状态：
 
 ![img](./images/hadoop高可用集群1.png)
+
 &emsp;&emsp;而 hadoop002 上的 `NameNode` 则处于备用状态：
 
 ![img](./images/hadoop高可用集群3.png)

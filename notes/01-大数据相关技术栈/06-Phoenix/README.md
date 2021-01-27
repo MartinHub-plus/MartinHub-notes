@@ -94,7 +94,7 @@ start-hbase.sh
 
 ### （2）Phoenix表操作
 
-#### 创建表
+#### > 创建表
 
 ```sql
 CREATE TABLE IF NOT EXISTS us_population (
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS us_population (
 
 ![img](./images/hbase-web-ui-phoenix.png)
 
-#### 插入数据
+#### > 插入数据
 
 Phoenix 中插入数据采用的是 `UPSERT` 而不是 `INSERT`,因为 Phoenix 并没有更新操作，插入相同主键的数据就视为更新，所以 `UPSERT` 就相当于 `UPDATE`+`INSERT`
 
@@ -126,7 +126,7 @@ UPSERT INTO us_population VALUES('TX','Dallas',1213825);
 UPSERT INTO us_population VALUES('CA','San Jose',912332);
 ```
 
-#### 修改数据
+#### > 修改数据
 
 ```sql
 -- 插入主键相同的数据就视为更新
@@ -135,7 +135,7 @@ UPSERT INTO us_population VALUES('NY','New York',999999);
 
 ![img](./images/Phoenix-update.png)
 
-#### 删除数据
+#### > 删除数据
 
 ```sql
 DELETE FROM us_population WHERE city='Dallas';
@@ -143,7 +143,7 @@ DELETE FROM us_population WHERE city='Dallas';
 
 ![img](./images/Phoenix-delete.png)
 
-#### 查询数据
+#### > 查询数据
 
 ```sql
 SELECT state as "州",count(city) as "市",sum(population) as "热度"
@@ -154,7 +154,7 @@ ORDER BY sum(population) DESC;
 
 ![img](./images/Phoenix-select.png)
 
-#### 退出命令
+#### > 退出命令
 
 ```sql
 !quit
@@ -162,11 +162,11 @@ ORDER BY sum(population) DESC;
 
 ### （3）Phoenix 创建二级索引
 
-#### HBase的二级索引
+#### > HBase的二级索引
 
 &emsp;&emsp;我们知道 HBase 只能通过 rowkey 进行搜索, 一般把 rowkey 称作一级索引. 在很长的一段时间里 HBase 就只支持一级索引。HBase 里面只有 rowkey 作为一级索引， 如果要对库里的非 rowkey 字段进行数据检索和查询， 往往要通过 MapReduce/Spark 等分布式计算框架进行，硬件资源消耗和时间延迟都会比较高。为了 HBase 的数据查询更高效、适应更多的场景， 诸如使用非 rowkey 字段检索也能做到秒级响应，或者支持各个字段进行模糊查询和多字段组合查询等， 因此需要在 HBase 上面构建二级索引， 以满足现实中更复杂多样的业务需求。从 0.94 版本开始, HBase 开始支持二级索引.HBase 索引有多种放方案，我们今天要做的是使用 Phoenix 给 HBase 添加二级索引。
 
-#### 配置 HBase  支持 Phoenix  创建二级索引
+#### > 配置 HBase  支持 Phoenix  创建二级索引
 
 需要先给 HBase 配置支持创建二级索引
 步骤 1:  添加如下配置到 HBase  的 Hregionerver  节点的 hbase-site.xml
@@ -233,7 +233,7 @@ create index idx_user_1 on user_1(name)
 
 注意: 这种索引, 对  name 创建的索引, 则查询的时候也必须只查询  name 字段.
 
-#### Phoenix  创建索引
+#### > Phoenix  创建索引
 
 **Phoenix  索引分类**
 

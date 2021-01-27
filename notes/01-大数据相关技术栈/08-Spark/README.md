@@ -123,8 +123,6 @@ wordCounts.collect
 
 ![img](./images/spark-shell-web-ui.png)
 
-
-
 #### > Scala开发环境配置
 
 Spark 是基于 Scala 语言进行开发的，分别提供了基于 Scala、Java、Python 语言的 API，如果你想使用 Scala 语言进行开发，则需要搭建 Scala 语言的开发环境。
@@ -252,8 +250,6 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
   100
   ```
 
-  ​
-
   **部署模式对比**： 
 
   ![img](./images/部署模式对比.PNG)
@@ -340,6 +336,8 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
 
 &emsp;Spark 应用程序提交到 Yarn 环境中执行的时候，一般会有两种部署执行的方式：Client和 Cluster。两种模式主要区别在于：Driver 程序的运行节点位置。
 
+<br/>
+
 **Yarn Client  模式**
 
 &emsp;Client 模式将用于监控和调度的 Driver 模块在客户端执行，而不是在 Yarn 中，所以一般用于测试。
@@ -355,6 +353,8 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
 ➢  Executor 进程启动后会向 Driver 反向注册，Executor 全部注册完成后 Driver 开始执行main 函数。
 
 ➢  之后执行到 Action 算子时，触发一个 Job，并根据宽依赖开始划分 stage，每个 stage 生成对应的 TaskSet，之后将 task 分发到各个 Executor 上执行。
+
+<br/>
 
 **Yarn Cluster  模式**
 
@@ -568,7 +568,7 @@ spark 常用的 Transformation 算子如下表：
 
 下面分别给出这些算子的基本使用示例：
 
-**1.1 map** 
+**map** 
 
 ```java
 val list = List(1,2,3)
@@ -577,7 +577,7 @@ sc.parallelize(list).map(_ * 10).foreach(println)
 // 输出结果： 10 20 30 （这里为了节省篇幅去掉了换行,后文亦同）
 ```
 
-**1.2 filter**  
+**filter**  
 
 ```java
 val list = List(3, 6, 9, 10, 12, 21)
@@ -586,7 +586,7 @@ sc.parallelize(list).filter(_ >= 10).foreach(println)
 // 输出： 10 12 21
 ```
 
-**1.3 flatMap** 
+**flatMap** 
 
 `flatMap(func)` 与 `map` 类似，但每一个输入的 item 会被映射成 0 个或多个输出的 items（ *func* 返回类型需要为 `Seq`）。
 
@@ -612,7 +612,7 @@ map(word=>(word,1)).reduceByKey(_+_).foreach(println)
 (flume,2)
 ```
 
-**1.4 mapPartitions** 
+**mapPartitions** 
 
 与 map 类似，但函数单独在 RDD 的每个分区上运行， *func*函数的类型为 `Iterator<T> => Iterator<U>` (其中 T 是 RDD 的类型)，即输入和输出都必须是可迭代类型。
 
@@ -629,7 +629,7 @@ sc.parallelize(list, 3).mapPartitions(iterator => {
 100 200 300 400 500 600
 ```
 
-**1.5 mapPartitionsWithIndex**
+**mapPartitionsWithIndex**
 
   与 mapPartitions 类似，但 *func* 类型为 `(Int, Iterator<T>) => Iterator<U>` ，其中第一个参数为分区索引。
 
@@ -651,7 +651,7 @@ sc.parallelize(list, 3).mapPartitionsWithIndex((index, iterator) => {
 2 分区:600
 ```
 
-**1.6 sample**
+**sample**
 
   数据采样。有三个可选参数：设置是否放回 (withReplacement)、采样的百分比 (fraction)、随机数生成器的种子 (seed) ：
 
@@ -660,7 +660,7 @@ val list = List(1, 2, 3, 4, 5, 6)
 sc.parallelize(list).sample(withReplacement = false, fraction = 0.5).foreach(println)
 ```
 
-**1.7 union**
+**union**
 
 合并两个 RDD：
 
@@ -671,7 +671,7 @@ sc.parallelize(list1).union(sc.parallelize(list2)).foreach(println)
 // 输出: 1 2 3 4 5 6
 ```
 
-**1.8 intersection**
+**intersection**
 
 求两个 RDD 的交集：
 
@@ -682,7 +682,7 @@ sc.parallelize(list1).intersection(sc.parallelize(list2)).foreach(println)
 // 输出:  4 5
 ```
 
-**1.9 distinct**
+**distinct**
 
 去重：
 
@@ -692,7 +692,7 @@ sc.parallelize(list).distinct().foreach(println)
 // 输出: 4 1 2
 ```
 
-**1.10 groupByKey**
+**groupByKey**
 
 按照键进行分组：
 
@@ -706,7 +706,7 @@ sc.parallelize(list).groupByKey().map(x => (x._1, x._2.toList)).foreach(println)
 (storm,List(6))
 ```
 
-**1.11 reduceByKey**
+**reduceByKey**
 
 按照键进行归约操作：
 
@@ -720,7 +720,7 @@ sc.parallelize(list).reduceByKey(_ + _).foreach(println)
 (storm,6)
 ```
 
-**1.12 sortBy & sortByKey**
+**sortBy & sortByKey**
 
 按照键进行排序：
 
@@ -744,7 +744,7 @@ sc.parallelize(list02).sortBy(x=>x._2,ascending=false).foreach(println)
 (spark,90)
 ```
 
-**1.13 join**
+**join**
 
 在一个 (K, V) 和 (K, W) 类型的 Dataset 上调用时，返回一个 (K, (V, W)) 的 Dataset，等价于内连接操作。如果想要执行外连接，可以使用 `leftOuterJoin`, `rightOuterJoin` 和 `fullOuterJoin` 等算子。
 
@@ -759,7 +759,7 @@ sc.parallelize(list01).join(sc.parallelize(list02)).foreach(println)
 (2,(student02,teacher02))
 ```
 
-**1.14 cogroup**
+**cogroup**
 
 在一个 (K, V) 对的 Dataset 上调用时，返回多个类型为 (K, (Iterable\<V>, Iterable\<W>)) 的元组所组成的 Dataset。
 
@@ -776,7 +776,7 @@ sc.parallelize(list01).cogroup(sc.parallelize(list02),sc.parallelize(list03)).fo
 
 ```
 
-**1.15 cartesian**
+**cartesian**
 
 计算笛卡尔积：
 
@@ -797,7 +797,7 @@ sc.parallelize(list1).cartesian(sc.parallelize(list2)).foreach(println)
 (C,3)
 ```
 
-**1.16 aggregateByKey**
+**aggregateByKey**
 
 当调用（K，V）对的数据集时，返回（K，U）对的数据集，其中使用给定的组合函数和 zeroValue 聚合每个键的值。与 `groupByKey` 类似，reduce 任务的数量可通过第二个参数 `numPartitions` 进行配置。示例如下：
 
@@ -864,7 +864,7 @@ Spark 常用的 Action 算子如下：
 | **countByKey**()                         | 计算每个键出现的次数。                              |
 | **foreach**(*func*)                      | 遍历 RDD 中每个元素，并对其执行*fun*函数                |
 
-**2.1 reduce**
+**reduce**
 
 使用函数*func*执行归约操作：
 
@@ -876,7 +876,7 @@ sc.parallelize(list).reduce(_ + _)
 // 输出 15
 ```
 
-**2.2 takeOrdered**
+**takeOrdered**
 
 按自然顺序（natural order）或自定义比较器（custom comparator）排序后返回前 *n* 个元素。需要注意的是 `takeOrdered` 使用隐式参数进行隐式转换，以下为其源码。所以在使用自定义排序时，需要继承 `Ordering[T]` 实现自定义比较器，然后将其作为隐式参数引入。
 
@@ -903,7 +903,7 @@ sc.parallelize(list).takeOrdered(5)
 // 输出： Array((1,hive), (1,storm), (1,hadoop), (1,azkaban)
 ```
 
-**2.3 countByKey**
+**countByKey**
 
 计算每个键出现的次数：
 
@@ -914,7 +914,7 @@ sc.parallelize(list).countByKey()
 // 输出： Map(hadoop -> 2, storm -> 2, azkaban -> 1)
 ```
 
-**2.4 saveAsTextFile**
+**saveAsTextFile**
 
 将 dataset 中的元素以文本文件的形式写入本地文件系统、HDFS 或其它 Hadoop 支持的文件系统中。Spark 将对每个元素调用 toString 方法，将元素转换为文本文件中的一行记录。
 
@@ -1018,6 +1018,8 @@ num2 = v
 >
 > （2）DataSet
 
+
+
 #### > Spark SQL 的特点
 
 > **Integrated( 易整合)**：无缝的整合了 SQL 查询和 Spark 编程。
@@ -1028,12 +1030,16 @@ num2 = v
 >
 > **Standard Connectivity( 标准的连接方式)**：通过 JDBC 或者 ODBC 来连接。
 
+
+
 #### > 什么是DataFrame
 
 > 1. 与 RDD 类似， DataFrame 也是一个分布式数据容器。
 > 2. 然而 DataFrame 更像传统数据库的二维表格，除了数据以外，还记录数据的结构信息，即 schema 。同时，与 Hive 类似， DataFrame 也支持嵌套数据类型（ struct 、 array 和 map ）。
 > 3. 从 API 易用性的角度上看， DataFrame API 提供的是一套高层的关系操作，比函数式的RDD API 要更加友好，门槛更低。
 > 4. 性能上比  RDD 要高，主要原因： 优化的执行计划：查询计划通过 Spark catalyst optimiser进行优化。
+
+
 
 #### > 什么是DataSet
 
@@ -1082,6 +1088,8 @@ num2 = v
 
 
 
+<br/>
+
   #### > 使用 IDEA  创建 SparkSQL  程序
 
 **步骤 1** :  添加 SparkSQL  依赖
@@ -1124,6 +1132,8 @@ object DataFrameDemo {
 	}
 }
 ```
+
+<br/>
 
 #### > **Columns列操作**
 
@@ -1303,6 +1313,8 @@ object data_process {
 | SaveMode.Overwrite               | "overwrite"       | 如果文件已经存在则覆盖   |
 | SaveMode.Ignore                  | "ignore"          | 如果文件已经存在则忽略   |
 
+<br/>
+
 #### > 数据源 - JDBC
 
 > Spark 同样支持与传统的关系型数据库进行数据读写。但是 Spark 程序默认是没有提供数据库驱动的，所以在使用前需要将对应的数据库驱动上传到安装目录下的 `jars` 目录中。下面示例使用的是 Mysql 数据库，使用前需要将对应的 `mysql-connector-java-x.x.x.jar` 上传到 `jars` 目录下。
@@ -1396,6 +1408,8 @@ df.write
 .save()
 ```
 
+<br/>
+
 #### > 数据源 - CSV
 
 CSV 是一种常见的文本文件格式，其中每一行表示一条记录，记录中的每个字段用逗号分隔。
@@ -1442,6 +1456,8 @@ df.write.format("csv").mode("overwrite").save("/tmp/csv/dept2")
 df.write.format("csv").mode("overwrite").option("sep", "\t").save("/tmp/csv/dept2")
 ```
 
+<br/>
+
 #### > 数据源 - JSON
 
 **读取JSON文件** 
@@ -1470,6 +1486,8 @@ spark.read.format("json").option("mode", "FAILFAST").load("/usr/file/json/dept.j
 df.write.format("json").mode("overwrite").save("/tmp/spark/json/dept")
 ```
 
+<br/>
+
 #### > 数据源 - Parquet
 
  Parquet 是一个开源的面向列的数据存储，它提供了多种存储优化，允许读取单独的列非整个文件，这不仅节省了存储空间而且提升了读取效率，它是 Spark 是默认的文件格式。
@@ -1497,6 +1515,8 @@ Parquet 文件有着自己的存储规则，因此其可选配置项比较少，
 
 > 更多可选配置可以参阅官方文档：https://spark.apache.org/docs/latest/sql-data-sources-parquet.html
 
+<br/>
+
 #### > 数据源 - ORC
 
 ORC 是一种自描述的、类型感知的列文件格式，它针对大型数据的读写进行了优化，也是大数据中常用的文件格式。
@@ -1513,6 +1533,8 @@ spark.read.format("orc").load("/usr/file/orc/dept.orc").show(5)
 spark.write.format("orc").mode("overwrite").save("/tmp/spark/orc/dept")
 ```
 
+<br/>
+
 #### > 数据源 - Text
 
 Text 文件在读写性能方面并没有任何优势，且不能表达明确的数据结构，所以其使用的比较少，读写操作如下：
@@ -1528,6 +1550,8 @@ spark.read.textFile("/usr/file/txt/dept.txt").show()
 ```java
 df.write.text("/tmp/spark/txt/dept")
 ```
+
+<br/>
 
 #### >  数据读写高级特性
 
@@ -1573,6 +1597,8 @@ df.write.format("parquet").mode("overwrite")
  // Spark 将确保文件最多包含 5000 条记录
 df.write.option(“maxRecordsPerFile”, 5000)
 ```
+
+<br/>
 
 #### > 可选配置附录
 
@@ -1717,12 +1743,16 @@ empDF.join(deptDF,joinExpression).select("ename","dname").show()
 spark.sql("SELECT ename,dname FROM emp JOIN dept ON emp.deptno = dept.deptno").show()
 ```
 
+<br/>
+
 #### >  FULL OUTER JOIN
 
 ```java
 empDF.join(deptDF, joinExpression, "outer").show()
 spark.sql("SELECT * FROM emp FULL OUTER JOIN dept ON emp.deptno = dept.deptno").show()
 ```
+
+<br/>
 
 #### >  LEFT OUTER JOIN
 
@@ -1731,12 +1761,16 @@ empDF.join(deptDF, joinExpression, "left_outer").show()
 spark.sql("SELECT * FROM emp LEFT OUTER JOIN dept ON emp.deptno = dept.deptno").show()
 ```
 
+<br/>
+
 #### >  RIGHT OUTER JOIN
 
 ```java
 empDF.join(deptDF, joinExpression, "right_outer").show()
 spark.sql("SELECT * FROM emp RIGHT OUTER JOIN dept ON emp.deptno = dept.deptno").show()
 ```
+
+<br/>
 
 #### >  LEFT SEMI JOIN
 
@@ -1745,6 +1779,8 @@ empDF.join(deptDF, joinExpression, "left_semi").show()
 spark.sql("SELECT * FROM emp LEFT SEMI JOIN dept ON emp.deptno = dept.deptno").show()
 ```
 
+<br/>
+
 #### > LEFT ANTI JOIN
 
 ```java
@@ -1752,12 +1788,16 @@ empDF.join(deptDF, joinExpression, "left_anti").show()
 spark.sql("SELECT * FROM emp LEFT ANTI JOIN dept ON emp.deptno = dept.deptno").show()
 ```
 
+<br/>
+
 #### >  CROSS JOIN
 
 ```java
 empDF.join(deptDF, joinExpression, "cross").show()
 spark.sql("SELECT * FROM emp CROSS JOIN dept ON emp.deptno = dept.deptno").show()
 ```
+
+<br/>
 
 #### >  NATURAL JOIN
 
@@ -1776,6 +1816,8 @@ spark.sql("SELECT * FROM emp JOIN dept ON emp.deptno = dept.deptno").show()
 ![img](./images/spark-sql-NATURAL-JOIN.png) 
 
 由于自然连接常常会产生不可预期的结果，所以并不推荐使用。
+
+<br/>
 
 #### >  连接的执行
 
@@ -1895,7 +1937,7 @@ scala>  empDF.agg(collect_set("job"), collect_list("ename")).show()
 +--------------------+--------------------+
 ```
 
-
+<br/>
 
 #### > 分组聚合
 
@@ -1941,7 +1983,7 @@ spark.sql("SELECT deptno, count(ename) ,sum(sal) FROM emp GROUP BY deptno").show
 +------+----+------+
 ```
 
-
+<br/>
 
 #### > 自定义聚合函数
 
@@ -3003,6 +3045,8 @@ val conf = new SparkConf().set("spark.shuffle.io.retryWait", "60s")
 val conf = new SparkConf().set("spark.shuffle.sort.bypassMergeThreshold", "400")
 ```
 
+<br/>
+
 #### > JVM 调优
 
 > 对于 JVM 调优，首先应该明确，full gc/minor gc，都会导致 JVM 的工作线程停止工作，即 stop the world。
@@ -3010,10 +3054,12 @@ val conf = new SparkConf().set("spark.shuffle.sort.bypassMergeThreshold", "400")
 - **JVM  调优一：降低 cache 操作的内存占比**
 
 1. **静态内存管理机制** 
-  &emsp;根据 Spark 静态内存管理机制，堆内存被划分为了两块，Storage 和 Execution。Storage
-  主要用于缓存 RDD 数据和 broadcast 数据，Execution 主要用于缓存在 shuffle 过程中产生的中间数据，Storage 占系统内存的 60%，Execution 占系统内存的 20%，并且两者完全独立。在一般情况下，Storage 的内存都提供给了 cache 操作，但是如果在某些情况下 cache 操作内存不是很紧张，而 task 的算子中创建的对象很多，Execution 内存又相对较小，这回导致频繁的 minor gc，甚至于频繁的 full gc，进而导致 Spark 频繁的停止工作，性能影响会很大。在 Spark UI 中可以查看每个 stage 的运行情况，包括每个 task 的运行时间、gc 时间等等，如果发现 gc 太频繁，时间太长，就可以考虑调节 Storage 的内存占比，让 task 执行算子函数式，有更多的内存可以使用。
 
-  &emsp;Storage 内存区域可以通过 spark.storage.memoryFraction 参数进行指定，默认为 0.6，即
+     &emsp;根据 Spark 静态内存管理机制，堆内存被划分为了两块，Storage 和 Execution。Storage
+       主要用于缓存 RDD 数据和 broadcast 数据，Execution 主要用于缓存在 shuffle 过程中产生的中间数据，Storage 占系统内存的 60%，Execution 占系统内存的 20%，并且两者完全独立。在一般情况下，Storage 的内存都提供给了 cache 操作，但是如果在某些情况下 cache 操作内存不是很紧张，而 task 的算子中创建的对象很多，Execution 内存又相对较小，这回导致频繁的 minor gc，甚至于频繁的 full gc，进而导致 Spark 频繁的停止工作，性能影响会很大。在 Spark UI 中可以查看每个 stage 的运行情况，包括每个 task 的运行时间、gc 时间等等，如果发现 gc 太频繁，时间太长，就可以考虑调节 Storage 的内存占比，让 task 执行算子函数式，有更多的内存可以使用。
+
+     &emsp;Storage 内存区域可以通过 spark.storage.memoryFraction 参数进行指定，默认为 0.6，即
+
   60%，可以逐级向下递减，如代码清单所示：
 
   ```java
@@ -3021,7 +3067,8 @@ val conf = new SparkConf().set("spark.shuffle.sort.bypassMergeThreshold", "400")
   ```
 
 2. **统一内存管理机制** 
-  &emsp;根据 Spark 统一内存管理机制，堆内存被划分为了两块，Storage 和 Execution。Storage主要用于缓存数据，Execution 主要用于缓存在 shuffle 过程中产生的中间数据，两者所组成的内存部分称为统一内存，Storage 和 Execution 各占统一内存的 50%，由于动态占用机制的实现，shuffle 过程需要的内存过大时，会自动占用 Storage 的内存区域，因此无需手动进行调节。
+
+     &emsp;根据 Spark 统一内存管理机制，堆内存被划分为了两块，Storage 和 Execution。Storage主要用于缓存数据，Execution 主要用于缓存在 shuffle 过程中产生的中间数据，两者所组成的内存部分称为统一内存，Storage 和 Execution 各占统一内存的 50%，由于动态占用机制的实现，shuffle 过程需要的内存过大时，会自动占用 Storage 的内存区域，因此无需手动进行调节。
 
 <br/>
 
