@@ -46,11 +46,11 @@
 
 **下载并解压**
 
-官方下载地址：http://spark.apache.org/downloads.html ，选择 Spark 版本和对应的 Hadoop 版本后再下载：
+&emsp;官方下载地址：http://spark.apache.org/downloads.html ，选择 Spark 版本和对应的 Hadoop 版本后再下载：
 
 ![img](./images/spark-download.png)
 
-解压安装包：
+&emsp;解压安装包：
 
 ```shell
 tar -zxvf  spark-2.2.3-bin-hadoop2.6.tgz
@@ -62,14 +62,14 @@ tar -zxvf  spark-2.2.3-bin-hadoop2.6.tgz
 vim /etc/profile
 ```
 
-添加环境变量：
+&emsp;添加环境变量：
 
 ```shell
 export SPARK_HOME=/usr/app/spark-2.2.3-bin-hadoop2.6
 export  PATH=${SPARK_HOME}/bin:$PATH
 ```
 
-使得配置的环境变量立即生效：
+&emsp;使得配置的环境变量立即生效：
 
 ```shell
 source /etc/profile
@@ -77,7 +77,7 @@ source /etc/profile
 
 **Local模式**
 
-Local 模式是最简单的一种运行方式，它采用单节点多线程方式运行，不用部署，开箱即用，适合日常测试开发。
+&emsp;Local 模式是最简单的一种运行方式，它采用单节点多线程方式运行，不用部署，开箱即用，适合日常测试开发。
 
 ```shell
 # 启动spark-shell
@@ -90,7 +90,7 @@ spark-shell --master local[2]
 
 ![img](./images/spark-shell-local.png)
 
-进入 spark-shell 后，程序已经自动创建好了上下文 `SparkContext`，等效于执行了下面的 Scala 代码：
+&emsp;进入 spark-shell 后，程序已经自动创建好了上下文 `SparkContext`，等效于执行了下面的 Scala 代码：
 
 ```java
 val conf = new SparkConf().setAppName("Spark shell").setMaster("local[2]")
@@ -99,7 +99,7 @@ val sc = new SparkContext(conf)
 
 #### > 词频统计案例
 
-安装完成后可以先做一个简单的词频统计例子，感受 spark 的魅力。准备一个词频统计的文件样本 `wc.txt`，内容如下：
+&emsp;安装完成后可以先做一个简单的词频统计例子，感受 spark 的魅力。准备一个词频统计的文件样本 `wc.txt`，内容如下：
 
 ```text
 hadoop,spark,hadoop
@@ -107,7 +107,7 @@ spark,flink,flink,spark
 hadoop,hadoop
 ```
 
-在 scala 交互式命令行中执行如下 Scala 语句：
+&emsp;在 scala 交互式命令行中执行如下 Scala 语句：
 
 ```java
 val file = spark.sparkContext.textFile("file:///usr/app/wc.txt")
@@ -115,31 +115,31 @@ val wordCounts = file.flatMap(line => line.split(",")).map((word => (word, 1))).
 wordCounts.collect
 ```
 
-执行过程如下，可以看到已经输出了词频统计的结果：
+&emsp;执行过程如下，可以看到已经输出了词频统计的结果：
 
 ![img](./images/spark-shell.png)
 
-同时还可以通过 Web UI 查看作业的执行情况，访问端口为 `4040`：
+&emsp;同时还可以通过 Web UI 查看作业的执行情况，访问端口为 `4040`：
 
 ![img](./images/spark-shell-web-ui.png)
 
 #### > Scala开发环境配置
 
-Spark 是基于 Scala 语言进行开发的，分别提供了基于 Scala、Java、Python 语言的 API，如果你想使用 Scala 语言进行开发，则需要搭建 Scala 语言的开发环境。
+&emsp;Spark 是基于 Scala 语言进行开发的，分别提供了基于 Scala、Java、Python 语言的 API，如果你想使用 Scala 语言进行开发，则需要搭建 Scala 语言的开发环境。
 
 **前置条件**
 
-Scala 的运行依赖于 JDK，所以需要你本机有安装对应版本的 JDK，最新的 Scala 2.12.x 需要 JDK 1.8+。
+&emsp;Scala 的运行依赖于 JDK，所以需要你本机有安装对应版本的 JDK，最新的 Scala 2.12.x 需要 JDK 1.8+。
 
 **安装Scala插件**
 
-IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。打开 IDEA，依次点击 **File** => **settings**=> **plugins** 选项卡，搜索 Scala 插件 (如下图)。找到插件后进行安装，并重启 IDEA 使得安装生效。
+&emsp;IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。打开 IDEA，依次点击 **File** => **settings**=> **plugins** 选项卡，搜索 Scala 插件 (如下图)。找到插件后进行安装，并重启 IDEA 使得安装生效。
 
 ![img](./images/idea-scala-plugin.png)
 
 **创建Scala项目** 
 
-在 IDEA 中依次点击 **File** => **New** => **Project** 选项卡，然后选择创建 `Scala—IDEA` 工程：
+&emsp;在 IDEA 中依次点击 **File** => **New** => **Project** 选项卡，然后选择创建 `Scala—IDEA` 工程：
 
 ![img](./images/idea-newproject-scala.png)
 
@@ -147,13 +147,13 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
 
 1. 方式一
 
-此时看到 `Scala SDK` 为空，依次点击 `Create` => `Download` ，选择所需的版本后，点击 `OK` 按钮进行下载，下载完成点击 `Finish` 进入工程。
+&emsp;此时看到 `Scala SDK` 为空，依次点击 `Create` => `Download` ，选择所需的版本后，点击 `OK` 按钮进行下载，下载完成点击 `Finish` 进入工程。
 
 ![img](./images/idea-scala-select.png)
 
 2. 方式二
 
-方式一是 Scala 官方安装指南里使用的方式，但下载速度通常比较慢，且这种安装下并没有直接提供 Scala 命令行工具。所以个人推荐到官网下载安装包进行安装，下载地址：https://www.scala-lang.org/download/
+&emsp;方式一是 Scala 官方安装指南里使用的方式，但下载速度通常比较慢，且这种安装下并没有直接提供 Scala 命令行工具。所以个人推荐到官网下载安装包进行安装，下载地址：https://www.scala-lang.org/download/
 
 这里我的系统是 Windows，下载 msi 版本的安装包后，一直点击下一步进行安装，安装完成后会自动配置好环境变量。
 
@@ -161,31 +161,31 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
 
 
 
-由于安装时已经自动配置好环境变量，所以 IDEA 会自动选择对应版本的 SDK。
+&emsp;由于安装时已经自动配置好环境变量，所以 IDEA 会自动选择对应版本的 SDK。
 
 ![img](./images/idea-scala-2.1.8.png)
 
 **创建Hello World** 
 
-在工程 `src` 目录上右击 **New** => **Scala class** 创建 `Hello.scala`。输入代码如下，完成后点击运行按钮，成功运行则代表搭建成功。
+&emsp;在工程 `src` 目录上右击 **New** => **Scala class** 创建 `Hello.scala`。输入代码如下，完成后点击运行按钮，成功运行则代表搭建成功。
 
 ![img](./images/scala-hello-world.png)
 
 **切换Scala版本** 
 
-在日常的开发中，由于对应软件（如 Spark）的版本切换，可能导致需要切换 Scala 的版本，则可以在 `Project Structures` 中的 `Global Libraries` 选项卡中进行切换。
+&emsp;在日常的开发中，由于对应软件（如 Spark）的版本切换，可能导致需要切换 Scala 的版本，则可以在 `Project Structures` 中的 `Global Libraries` 选项卡中进行切换。
 
 ![img](./images/idea-scala-change.png)
 
 **可能出现的问题** 
 
-在 IDEA 中有时候重新打开项目后，右击并不会出现新建 `scala` 文件的选项，或者在编写时没有 Scala 语法提示，此时可以先删除 `Global Libraries` 中配置好的 SDK，之后再重新添加：
+&emsp;在 IDEA 中有时候重新打开项目后，右击并不会出现新建 `scala` 文件的选项，或者在编写时没有 Scala 语法提示，此时可以先删除 `Global Libraries` 中配置好的 SDK，之后再重新添加：
 
 ![img](./images/scala-sdk.png)
 
 
 
-**另外在 IDEA 中以本地模式运行 Spark 项目是不需要在本机搭建 Spark 和 Hadoop 环境的。**
+&emsp;**另外在 IDEA 中以本地模式运行 Spark 项目是不需要在本机搭建 Spark 和 Hadoop 环境的。**
 
 
 
@@ -209,7 +209,7 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
 
   **配置**
 
-  在 `spark-env.sh` 中配置 hadoop 的配置目录的位置，可以使用 `YARN_CONF_DIR` 或 `HADOOP_CONF_DIR` 进行指定：
+  &emsp;在 `spark-env.sh` 中配置 hadoop 的配置目录的位置，可以使用 `YARN_CONF_DIR` 或 `HADOOP_CONF_DIR` 进行指定：
 
   ```shell
   YARN_CONF_DIR=/usr/app/hadoop-2.6.0-cdh5.15.2/etc/hadoop
@@ -219,7 +219,7 @@ IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。�
 
   **启动**
 
-  必须要保证 Hadoop 已经启动，这里包括 YARN 和 HDFS 都需要启动，因为在计算过程中 Spark 会使用 HDFS 存储临时文件，如果 HDFS 没有启动，则会抛出异常。
+  &emsp;必须要保证 Hadoop 已经启动，这里包括 YARN 和 HDFS 都需要启动，因为在计算过程中 Spark 会使用 HDFS 存储临时文件，如果 HDFS 没有启动，则会抛出异常。
 
   ```shell
   start-yarn.sh
@@ -542,7 +542,7 @@ nohup spark-submit
 
 #### > Transformation
 
-spark 常用的 Transformation 算子如下表：
+&emsp;spark 常用的 Transformation 算子如下表：
 
 | Transformation 算子                        | Meaning（含义）                              |
 | ---------------------------------------- | ---------------------------------------- |
@@ -588,7 +588,7 @@ sc.parallelize(list).filter(_ >= 10).foreach(println)
 
 **flatMap** 
 
-`flatMap(func)` 与 `map` 类似，但每一个输入的 item 会被映射成 0 个或多个输出的 items（ *func* 返回类型需要为 `Seq`）。
+&emsp;`flatMap(func)` 与 `map` 类似，但每一个输入的 item 会被映射成 0 个或多个输出的 items（ *func* 返回类型需要为 `Seq`）。
 
 ```java
 val list = List(List(1, 2), List(3), List(), List(4, 5))
@@ -597,7 +597,7 @@ sc.parallelize(list).flatMap(_.toList).map(_ * 10).foreach(println)
 // 输出结果 ： 10 20 30 40 50
 ```
 
-flatMap 这个算子在日志分析中使用概率非常高，这里进行一下演示：拆分输入的每行数据为单个单词，并赋值为 1，代表出现一次，之后按照单词分组并统计其出现总次数，代码如下：
+&emsp;flatMap 这个算子在日志分析中使用概率非常高，这里进行一下演示：拆分输入的每行数据为单个单词，并赋值为 1，代表出现一次，之后按照单词分组并统计其出现总次数，代码如下：
 
 ```java
 val lines = List("spark flume spark",
@@ -614,7 +614,7 @@ map(word=>(word,1)).reduceByKey(_+_).foreach(println)
 
 **mapPartitions** 
 
-与 map 类似，但函数单独在 RDD 的每个分区上运行， *func*函数的类型为 `Iterator<T> => Iterator<U>` (其中 T 是 RDD 的类型)，即输入和输出都必须是可迭代类型。
+&emsp;与 map 类似，但函数单独在 RDD 的每个分区上运行， *func*函数的类型为 `Iterator<T> => Iterator<U>` (其中 T 是 RDD 的类型)，即输入和输出都必须是可迭代类型。
 
 ```java
 val list = List(1, 2, 3, 4, 5, 6)
@@ -631,7 +631,7 @@ sc.parallelize(list, 3).mapPartitions(iterator => {
 
 **mapPartitionsWithIndex**
 
-  与 mapPartitions 类似，但 *func* 类型为 `(Int, Iterator<T>) => Iterator<U>` ，其中第一个参数为分区索引。
+&emsp;与 mapPartitions 类似，但 *func* 类型为 `(Int, Iterator<T>) => Iterator<U>` ，其中第一个参数为分区索引。
 
 ```java
 val list = List(1, 2, 3, 4, 5, 6)
@@ -653,7 +653,7 @@ sc.parallelize(list, 3).mapPartitionsWithIndex((index, iterator) => {
 
 **sample**
 
-  数据采样。有三个可选参数：设置是否放回 (withReplacement)、采样的百分比 (fraction)、随机数生成器的种子 (seed) ：
+&emsp;数据采样。有三个可选参数：设置是否放回 (withReplacement)、采样的百分比 (fraction)、随机数生成器的种子 (seed) ：
 
 ```java
 val list = List(1, 2, 3, 4, 5, 6)
@@ -662,7 +662,7 @@ sc.parallelize(list).sample(withReplacement = false, fraction = 0.5).foreach(pri
 
 **union**
 
-合并两个 RDD：
+&emsp;合并两个 RDD：
 
 ```java
 val list1 = List(1, 2, 3)
@@ -673,7 +673,7 @@ sc.parallelize(list1).union(sc.parallelize(list2)).foreach(println)
 
 **intersection**
 
-求两个 RDD 的交集：
+&emsp;求两个 RDD 的交集：
 
 ```java
 val list1 = List(1, 2, 3, 4, 5)
@@ -684,7 +684,7 @@ sc.parallelize(list1).intersection(sc.parallelize(list2)).foreach(println)
 
 **distinct**
 
-去重：
+&emsp;去重：
 
 ```java
 val list = List(1, 2, 2, 4, 4)
@@ -694,7 +694,7 @@ sc.parallelize(list).distinct().foreach(println)
 
 **groupByKey**
 
-按照键进行分组：
+&emsp;按照键进行分组：
 
 ```java
 val list = List(("hadoop", 2), ("spark", 3), ("spark", 5), ("storm", 6), ("hadoop", 2))
@@ -708,7 +708,7 @@ sc.parallelize(list).groupByKey().map(x => (x._1, x._2.toList)).foreach(println)
 
 **reduceByKey**
 
-按照键进行归约操作：
+&emsp;按照键进行归约操作：
 
 ```java
 val list = List(("hadoop", 2), ("spark", 3), ("spark", 5), ("storm", 6), ("hadoop", 2))
@@ -722,7 +722,7 @@ sc.parallelize(list).reduceByKey(_ + _).foreach(println)
 
 **sortBy & sortByKey**
 
-按照键进行排序：
+&emsp;按照键进行排序：
 
 ```java
 val list01 = List((100, "hadoop"), (90, "spark"), (120, "storm"))
@@ -733,7 +733,7 @@ sc.parallelize(list01).sortByKey(ascending = false).foreach(println)
 (100,hadoop)
 ```
 
-按照指定元素进行排序：
+&emsp;按照指定元素进行排序：
 
 ```java
 val list02 = List(("hadoop",100), ("spark",90), ("storm",120))
@@ -746,7 +746,7 @@ sc.parallelize(list02).sortBy(x=>x._2,ascending=false).foreach(println)
 
 **join**
 
-在一个 (K, V) 和 (K, W) 类型的 Dataset 上调用时，返回一个 (K, (V, W)) 的 Dataset，等价于内连接操作。如果想要执行外连接，可以使用 `leftOuterJoin`, `rightOuterJoin` 和 `fullOuterJoin` 等算子。
+&emsp;在一个 (K, V) 和 (K, W) 类型的 Dataset 上调用时，返回一个 (K, (V, W)) 的 Dataset，等价于内连接操作。如果想要执行外连接，可以使用 `leftOuterJoin`, `rightOuterJoin` 和 `fullOuterJoin` 等算子。
 
 ```java
 val list01 = List((1, "student01"), (2, "student02"), (3, "student03"))
@@ -761,7 +761,7 @@ sc.parallelize(list01).join(sc.parallelize(list02)).foreach(println)
 
 **cogroup**
 
-在一个 (K, V) 对的 Dataset 上调用时，返回多个类型为 (K, (Iterable\<V>, Iterable\<W>)) 的元组所组成的 Dataset。
+&emsp;在一个 (K, V) 对的 Dataset 上调用时，返回多个类型为 (K, (Iterable\<V>, Iterable\<W>)) 的元组所组成的 Dataset。
 
 ```java
 val list01 = List((1, "a"),(1, "a"), (2, "b"), (3, "e"))
@@ -778,7 +778,7 @@ sc.parallelize(list01).cogroup(sc.parallelize(list02),sc.parallelize(list03)).fo
 
 **cartesian**
 
-计算笛卡尔积：
+&emsp;计算笛卡尔积：
 
 ```java
 val list1 = List("A", "B", "C")
@@ -799,7 +799,7 @@ sc.parallelize(list1).cartesian(sc.parallelize(list2)).foreach(println)
 
 **aggregateByKey**
 
-当调用（K，V）对的数据集时，返回（K，U）对的数据集，其中使用给定的组合函数和 zeroValue 聚合每个键的值。与 `groupByKey` 类似，reduce 任务的数量可通过第二个参数 `numPartitions` 进行配置。示例如下：
+&emsp;当调用（K，V）对的数据集时，返回（K，U）对的数据集，其中使用给定的组合函数和 zeroValue 聚合每个键的值。与 `groupByKey` 类似，reduce 任务的数量可通过第二个参数 `numPartitions` 进行配置。示例如下：
 
 ```java
 // 为了清晰，以下所有参数均使用具名传参
@@ -814,11 +814,11 @@ sc.parallelize(list,numSlices = 2).aggregateByKey(zeroValue = 0,numPartitions = 
 (spark,7)
 ```
 
-这里使用了 `numSlices = 2` 指定 aggregateByKey 父操作 parallelize 的分区数量为 2，其执行流程如下：
+&emsp;这里使用了 `numSlices = 2` 指定 aggregateByKey 父操作 parallelize 的分区数量为 2，其执行流程如下：
 
 ![img](./images/spark-aggregateByKey.png)
 
-基于同样的执行流程，如果 `numSlices = 1`，则意味着只有输入一个分区，则其最后一步 combOp 相当于是无效的，执行结果为：
+&emsp;基于同样的执行流程，如果 `numSlices = 1`，则意味着只有输入一个分区，则其最后一步 combOp 相当于是无效的，执行结果为：
 
 ```properties
 (hadoop,3)
@@ -826,7 +826,7 @@ sc.parallelize(list,numSlices = 2).aggregateByKey(zeroValue = 0,numPartitions = 
 (spark,4)
 ```
 
-同样的，如果每个单词对一个分区，即 `numSlices = 6`，此时相当于求和操作，执行结果为：
+&emsp;同样的，如果每个单词对一个分区，即 `numSlices = 6`，此时相当于求和操作，执行结果为：
 
 ```properties
 (hadoop,5)
@@ -834,7 +834,7 @@ sc.parallelize(list,numSlices = 2).aggregateByKey(zeroValue = 0,numPartitions = 
 (spark,7)
 ```
 
-`aggregateByKey(zeroValue = 0,numPartitions = 3)` 的第二个参数 `numPartitions` 决定的是输出 RDD 的分区数量，想要验证这个问题，可以对上面代码进行改写，使用 `getNumPartitions` 方法获取分区数量：
+&emsp;`aggregateByKey(zeroValue = 0,numPartitions = 3)` 的第二个参数 `numPartitions` 决定的是输出 RDD 的分区数量，想要验证这个问题，可以对上面代码进行改写，使用 `getNumPartitions` 方法获取分区数量：
 
 ```java
 sc.parallelize(list,numSlices = 6).aggregateByKey(zeroValue = 0,numPartitions = 3)(
@@ -847,7 +847,7 @@ sc.parallelize(list,numSlices = 6).aggregateByKey(zeroValue = 0,numPartitions = 
 
 #### > Action
 
-Spark 常用的 Action 算子如下：
+&emsp;Spark 常用的 Action 算子如下：
 
 | Action（动作）                               | Meaning（含义）                              |
 | ---------------------------------------- | ---------------------------------------- |
@@ -866,7 +866,7 @@ Spark 常用的 Action 算子如下：
 
 **reduce**
 
-使用函数*func*执行归约操作：
+&emsp;使用函数*func*执行归约操作：
 
 ```java
  val list = List(1, 2, 3, 4, 5)
@@ -878,7 +878,7 @@ sc.parallelize(list).reduce(_ + _)
 
 **takeOrdered**
 
-按自然顺序（natural order）或自定义比较器（custom comparator）排序后返回前 *n* 个元素。需要注意的是 `takeOrdered` 使用隐式参数进行隐式转换，以下为其源码。所以在使用自定义排序时，需要继承 `Ordering[T]` 实现自定义比较器，然后将其作为隐式参数引入。
+&emsp;按自然顺序（natural order）或自定义比较器（custom comparator）排序后返回前 *n* 个元素。需要注意的是 `takeOrdered` 使用隐式参数进行隐式转换，以下为其源码。所以在使用自定义排序时，需要继承 `Ordering[T]` 实现自定义比较器，然后将其作为隐式参数引入。
 
 ```java
 def takeOrdered(num: Int)(implicit ord: Ordering[T]): Array[T] = withScope {
@@ -886,7 +886,7 @@ def takeOrdered(num: Int)(implicit ord: Ordering[T]): Array[T] = withScope {
 }
 ```
 
-自定义规则排序：
+&emsp;自定义规则排序：
 
 ```java
 // 继承 Ordering[T],实现自定义比较器，按照 value 值的长度进行排序
@@ -905,7 +905,7 @@ sc.parallelize(list).takeOrdered(5)
 
 **countByKey**
 
-计算每个键出现的次数：
+&emsp;计算每个键出现的次数：
 
 ```java
 val list = List(("hadoop", 10), ("hadoop", 10), ("storm", 3), ("storm", 3), ("azkaban", 1))
@@ -916,7 +916,7 @@ sc.parallelize(list).countByKey()
 
 **saveAsTextFile**
 
-将 dataset 中的元素以文本文件的形式写入本地文件系统、HDFS 或其它 Hadoop 支持的文件系统中。Spark 将对每个元素调用 toString 方法，将元素转换为文本文件中的一行记录。
+&emsp;将 dataset 中的元素以文本文件的形式写入本地文件系统、HDFS 或其它 Hadoop 支持的文件系统中。Spark 将对每个元素调用 toString 方法，将元素转换为文本文件中的一行记录。
 
 ```java
 val list = List(("hadoop", 10), ("hadoop", 10), ("storm", 3), ("storm", 3), ("azkaban", 1))
@@ -953,27 +953,27 @@ println("sum = " + sum.value)
 
 **1. Scala 中闭包的概念**
 
-这里先介绍一下 Scala 中关于闭包的概念：
+&emsp;这里先介绍一下 Scala 中关于闭包的概念：
 
 ```java
 var more = 10
 val addMore = (x: Int) => x + more
 ```
 
-如上函数 `addMore` 中有两个变量 x 和 more:
+&emsp;如上函数 `addMore` 中有两个变量 x 和 more:
 
 - **x** : 是一个绑定变量 (bound variable)，因为其是该函数的入参，在函数的上下文中有明确的定义；
 - **more** : 是一个自由变量 (free variable)，因为函数字面量本生并没有给 more 赋予任何含义。
 
-按照定义：在创建函数时，如果需要捕获自由变量，那么包含指向被捕获变量的引用的函数就被称为闭包函数。
+&emsp;按照定义：在创建函数时，如果需要捕获自由变量，那么包含指向被捕获变量的引用的函数就被称为闭包函数。
 
 **2. Spark 中的闭包**
 
-在实际计算时，Spark 会将对 RDD 操作分解为 Task，Task 运行在 Worker Node 上。在执行之前，Spark 会对任务进行闭包，如果闭包内涉及到自由变量，则程序会进行拷贝，并将副本变量放在闭包中，之后闭包被序列化并发送给每个执行者。因此，当在 foreach 函数中引用 `counter` 时，它将不再是 Driver 节点上的 `counter`，而是闭包中的副本 `counter`，默认情况下，副本 `counter` 更新后的值不会回传到 Driver，所以 `counter` 的最终值仍然为零。
+&emsp;在实际计算时，Spark 会将对 RDD 操作分解为 Task，Task 运行在 Worker Node 上。在执行之前，Spark 会对任务进行闭包，如果闭包内涉及到自由变量，则程序会进行拷贝，并将副本变量放在闭包中，之后闭包被序列化并发送给每个执行者。因此，当在 foreach 函数中引用 `counter` 时，它将不再是 Driver 节点上的 `counter`，而是闭包中的副本 `counter`，默认情况下，副本 `counter` 更新后的值不会回传到 Driver，所以 `counter` 的最终值仍然为零。
 
-需要注意的是：在 Local 模式下，有可能执行 `foreach` 的 Worker Node 与 Diver 处在相同的 JVM，并引用相同的原始 `counter`，这时候更新可能是正确的，但是在集群模式下一定不正确。所以在遇到此类问题时应优先使用累加器。
+&emsp;需要注意的是：在 Local 模式下，有可能执行 `foreach` 的 Worker Node 与 Diver 处在相同的 JVM，并引用相同的原始 `counter`，这时候更新可能是正确的，但是在集群模式下一定不正确。所以在遇到此类问题时应优先使用累加器。
 
-累加器的原理实际上很简单：就是将每个副本变量的最终值传回 Driver，由 Driver 聚合后得到最终值，并更新原始变量。
+&emsp;累加器的原理实际上很简单：就是将每个副本变量的最终值传回 Driver，由 Driver 聚合后得到最终值，并更新原始变量。
 
 
 
@@ -990,15 +990,15 @@ val list = List( ("a",4), ("b", 5), ("c", 6), ("d", 7) )
 val broadcast: Broadcast[List[(String, Int)]] = sc.broadcast(list)
 val resultRDD: RDD[(String, (Int, Int))] = rdd1.map {
 case (key, num) => {
-var num2 = 0
-// 使用广播变量
-for ((k, v) <- broadcast.value) {
-if (k == key) {
-num2 = v
-}
-}
-(key, (num, num2))
-}
+  var num2 = 0
+  // 使用广播变量
+  for ((k, v) <- broadcast.value) {
+    if (k == key) {
+      num2 = v
+    }
+  }
+  (key, (num, num2))
+  }
 }
 ```
 
@@ -1137,9 +1137,9 @@ object DataFrameDemo {
 
 #### > **Columns列操作**
 
-引用列
+**引用列** 
 
-Spark 支持多种方法来构造和引用列，最简单的是使用 `col() ` 或 `column() ` 函数。
+&emsp;Spark 支持多种方法来构造和引用列，最简单的是使用 `col() ` 或 `column() ` 函数。
 
 ```java
 col("colName")
@@ -1150,7 +1150,7 @@ df.select($"ename", $"job").show()
 df.select('ename, 'job).show()
 ```
 
-新增列
+**新增列** 
 
 ```java
 // 基于已有列值新增列
@@ -1159,20 +1159,20 @@ df.withColumn("upSal",$"sal"+1000)
 df.withColumn("intCol",lit(1000))
 ```
 
-删除列
+**删除列** 
 
 ```java
 // 支持删除多个列
 df.drop("comm","job").show()
 ```
 
-重命名列
+**重命名列** 
 
 ```java
 df.withColumnRenamed("comm", "common").show()
 ```
 
-需要说明的是新增，删除，重命名列都会产生新的 DataFrame，原来的 DataFrame 不会被改变。
+&emsp;需要说明的是新增，删除，重命名列都会产生新的 DataFrame，原来的 DataFrame 不会被改变。
 
 <br/>
 
@@ -1300,7 +1300,7 @@ object data_process {
   | `SaveMode.Overwrite`     | 数据以覆盖的方式写入                     |
   | `SaveMode.Ignore`        | 如果给定的路径已经存在文件，则不做任何操作          |
 
-**文件保存选项(SaveMode)**
+- **文件保存选项(SaveMode)**
 
 > 保存操作可以使用 SaveMode, 用来指明如何处理数据. 使用 mode() 方法来设置.
 >
@@ -1331,7 +1331,7 @@ object data_process {
 
  **读取数据** 
 
-读取全表数据示例如下，这里的 `help_keyword` 是 mysql 内置的字典表，只有 `help_keyword_id` 和 `name` 两个字段。
+&emsp;读取全表数据示例如下，这里的 `help_keyword` 是 mysql 内置的字典表，只有 `help_keyword_id` 和 `name` 两个字段。
 
 ```java
 spark.read
@@ -1342,7 +1342,7 @@ spark.read
 .option("user", "root").option("password","root").load().show(10)
 ```
 
-从查询结果读取数据：
+&emsp;从查询结果读取数据：
 
 ```java
 val pushDownQuery = """(SELECT * FROM help_keyword WHERE help_keyword_id <20) AS help_keywords"""
@@ -1354,7 +1354,7 @@ spark.read.format("jdbc")
 .load().show()
 ```
 
-也可以使用如下的写法进行数据的过滤：
+&emsp;也可以使用如下的写法进行数据的过滤：
 
 ```java
 val props = new java.util.Properties
@@ -1365,13 +1365,13 @@ val predicates = Array("help_keyword_id < 10  OR name = 'WHEN'")   //指定数�
 spark.read.jdbc("jdbc:mysql://127.0.0.1:3306/mysql", "help_keyword", predicates, props).show() 
 ```
 
-可以使用 `numPartitions` 指定读取数据的并行度：
+&emsp;可以使用 `numPartitions` 指定读取数据的并行度：
 
 ```java
 option("numPartitions", 10)
 ```
 
-在这里，除了可以指定分区外，还可以设置上界和下界，任何小于下界的值都会被分配在第一个分区中，任何大于上界的值都会被分配在最后一个分区中。
+&emsp;在这里，除了可以指定分区外，还可以设置上界和下界，任何小于下界的值都会被分配在第一个分区中，任何大于上界的值都会被分配在最后一个分区中。
 
 ```java
 val colName = "help_keyword_id"   //用于判断上下界的列
@@ -1382,7 +1382,7 @@ val jdbcDf = spark.read.jdbc("jdbc:mysql://127.0.0.1:3306/mysql","help_keyword",
                              colName,lowerBound,upperBound,numPartitions,props)
 ```
 
-想要验证分区内容，可以使用 `mapPartitionsWithIndex` 这个算子，代码如下：
+&emsp;想要验证分区内容，可以使用 `mapPartitionsWithIndex` 这个算子，代码如下：
 
 ```java
 jdbcDf.rdd.mapPartitionsWithIndex((index, iterator) => {
@@ -1394,7 +1394,7 @@ jdbcDf.rdd.mapPartitionsWithIndex((index, iterator) => {
 }).foreach(println)
 ```
 
-执行结果如下：`help_keyword` 这张表只有 600 条左右的数据，本来数据应该均匀分布在 10 个分区，但是 0 分区里面却有 319 条数据，这是因为设置了下限，所有小于 300 的数据都会被限制在第一个分区，即 0 分区。同理所有大于 500 的数据被分配在 9 分区，即最后一个分区。
+&emsp;执行结果如下：`help_keyword` 这张表只有 600 条左右的数据，本来数据应该均匀分布在 10 个分区，但是 0 分区里面却有 319 条数据，这是因为设置了下限，所有小于 300 的数据都会被限制在第一个分区，即 0 分区。同理所有大于 500 的数据被分配在 9 分区，即最后一个分区。
 
 **写入数据** 
 
@@ -1412,11 +1412,11 @@ df.write
 
 #### > 数据源 - CSV
 
-CSV 是一种常见的文本文件格式，其中每一行表示一条记录，记录中的每个字段用逗号分隔。
+&emsp;CSV 是一种常见的文本文件格式，其中每一行表示一条记录，记录中的每个字段用逗号分隔。
 
 **读取CSV文件**
 
-自动推断类型读取读取示例：
+&emsp;自动推断类型读取读取示例：
 
 ```java
 spark.read.format("csv")
@@ -1427,7 +1427,7 @@ spark.read.format("csv")
 .show()
 ```
 
-使用预定义类型：
+&emsp;使用预定义类型：
 
 ```java
 import org.apache.spark.sql.types.{StructField, StructType, StringType,LongType}
@@ -1450,7 +1450,7 @@ spark.read.format("csv")
 df.write.format("csv").mode("overwrite").save("/tmp/csv/dept2")
 ```
 
-也可以指定具体的分隔符：
+&emsp;也可以指定具体的分隔符：
 
 ```java
 df.write.format("csv").mode("overwrite").option("sep", "\t").save("/tmp/csv/dept2")
@@ -1466,7 +1466,7 @@ df.write.format("csv").mode("overwrite").option("sep", "\t").save("/tmp/csv/dept
 spark.read.format("json").option("mode", "FAILFAST").load("/usr/file/json/dept.json").show(5)
 ```
 
-需要注意的是：默认不支持一条数据记录跨越多行 (如下)，可以通过配置 `multiLine` 为 `true` 来进行更改，其默认值为 `false`。
+&emsp;需要注意的是：默认不支持一条数据记录跨越多行 (如下)，可以通过配置 `multiLine` 为 `true` 来进行更改，其默认值为 `false`。
 
 ```json
 // 默认支持单行
@@ -1490,7 +1490,7 @@ df.write.format("json").mode("overwrite").save("/tmp/spark/json/dept")
 
 #### > 数据源 - Parquet
 
- Parquet 是一个开源的面向列的数据存储，它提供了多种存储优化，允许读取单独的列非整个文件，这不仅节省了存储空间而且提升了读取效率，它是 Spark 是默认的文件格式。
+&emsp; Parquet 是一个开源的面向列的数据存储，它提供了多种存储优化，允许读取单独的列非整个文件，这不仅节省了存储空间而且提升了读取效率，它是 Spark 是默认的文件格式。
 
 **读取Parquet文件**
 
@@ -1506,7 +1506,7 @@ df.write.format("parquet").mode("overwrite").save("/tmp/spark/parquet/dept")
 
 **可选配置**
 
-Parquet 文件有着自己的存储规则，因此其可选配置项比较少，常用的有如下两个：
+&emsp;Parquet 文件有着自己的存储规则，因此其可选配置项比较少，常用的有如下两个：
 
 | 读写操作  | 配置项                  | 可选值                                      | 默认值                                    | 描述                                       |
 | ----- | -------------------- | ---------------------------------------- | -------------------------------------- | ---------------------------------------- |
@@ -1519,7 +1519,7 @@ Parquet 文件有着自己的存储规则，因此其可选配置项比较少，
 
 #### > 数据源 - ORC
 
-ORC 是一种自描述的、类型感知的列文件格式，它针对大型数据的读写进行了优化，也是大数据中常用的文件格式。
+&emsp;ORC 是一种自描述的、类型感知的列文件格式，它针对大型数据的读写进行了优化，也是大数据中常用的文件格式。
 
 **读取ORC文件**
 
@@ -1537,7 +1537,7 @@ spark.write.format("orc").mode("overwrite").save("/tmp/spark/orc/dept")
 
 #### > 数据源 - Text
 
-Text 文件在读写性能方面并没有任何优势，且不能表达明确的数据结构，所以其使用的比较少，读写操作如下：
+&emsp;Text 文件在读写性能方面并没有任何优势，且不能表达明确的数据结构，所以其使用的比较少，读写操作如下：
 
 **读取Text数据** 
 
@@ -1557,28 +1557,28 @@ df.write.text("/tmp/spark/txt/dept")
 
 **并行读**
 
-多个 Executors 不能同时读取同一个文件，但它们可以同时读取不同的文件。这意味着当您从一个包含多个文件的文件夹中读取数据时，这些文件中的每一个都将成为 DataFrame 中的一个分区，并由可用的 Executors 并行读取。
+&emsp;多个 Executors 不能同时读取同一个文件，但它们可以同时读取不同的文件。这意味着当您从一个包含多个文件的文件夹中读取数据时，这些文件中的每一个都将成为 DataFrame 中的一个分区，并由可用的 Executors 并行读取。
 
 **并行写**
 
-写入的文件或数据的数量取决于写入数据时 DataFrame 拥有的分区数量。默认情况下，每个数据分区写一个文件。
+&emsp;写入的文件或数据的数量取决于写入数据时 DataFrame 拥有的分区数量。默认情况下，每个数据分区写一个文件。
 
 **分区写入**
 
-分区和分桶这两个概念和 Hive 中分区表和分桶表是一致的。都是将数据按照一定规则进行拆分存储。需要注意的是 `partitionBy` 指定的分区和 RDD 中分区不是一个概念：这里的**分区表现为输出目录的子目录**，数据分别存储在对应的子目录中。
+&emsp;分区和分桶这两个概念和 Hive 中分区表和分桶表是一致的。都是将数据按照一定规则进行拆分存储。需要注意的是 `partitionBy` 指定的分区和 RDD 中分区不是一个概念：这里的**分区表现为输出目录的子目录**，数据分别存储在对应的子目录中。
 
 ```java
 val df = spark.read.format("json").load("/usr/file/json/emp.json")
 df.write.mode("overwrite").partitionBy("deptno").save("/tmp/spark/partitions")
 ```
 
-输出结果如下：可以看到输出被按照部门编号分为三个子目录，子目录中才是对应的输出文件。
+&emsp;输出结果如下：可以看到输出被按照部门编号分为三个子目录，子目录中才是对应的输出文件。
 
 ![img](./images/spark-分区.png) 
 
 **分桶写入**
 
-分桶写入就是将数据按照指定的列和桶数进行散列，目前分桶写入只支持保存为表，实际上这就是 Hive 的分桶表。
+&emsp;分桶写入就是将数据按照指定的列和桶数进行散列，目前分桶写入只支持保存为表，实际上这就是 Hive 的分桶表。
 
 ```java
 val numberBuckets = 10
@@ -1589,9 +1589,9 @@ df.write.format("parquet").mode("overwrite")
 
 **文件大小管理**
 
-如果写入产生小文件数量过多，这时会产生大量的元数据开销。Spark 和 HDFS 一样，都不能很好的处理这个问题，这被称为“small file problem”。同时数据文件也不能过大，否则在查询时会有不必要的性能开销，因此要把文件大小控制在一个合理的范围内。
+&emsp;如果写入产生小文件数量过多，这时会产生大量的元数据开销。Spark 和 HDFS 一样，都不能很好的处理这个问题，这被称为“small file problem”。同时数据文件也不能过大，否则在查询时会有不必要的性能开销，因此要把文件大小控制在一个合理的范围内。
 
-在上文我们已经介绍过可以通过分区数量来控制生成文件的数量，从而间接控制文件大小。Spark 2.2 引入了一种新的方法，以更自动化的方式控制文件大小，这就是 `maxRecordsPerFile` 参数，它允许你通过控制写入文件的记录数来控制文件大小。
+&emsp;在上文我们已经介绍过可以通过分区数量来控制生成文件的数量，从而间接控制文件大小。Spark 2.2 引入了一种新的方法，以更自动化的方式控制文件大小，这就是 `maxRecordsPerFile` 参数，它允许你通过控制写入文件的记录数来控制文件大小。
 
 ```java
  // Spark 将确保文件最多包含 5000 条记录
@@ -1665,7 +1665,7 @@ df.write.option(“maxRecordsPerFile”, 5000)
 
 - **数据准备**
 
-本文主要介绍 Spark SQL 的多表连接，需要预先准备测试数据。分别创建员工和部门的 Datafame，并注册为临时视图，代码如下：
+&emsp;本文主要介绍 Spark SQL 的多表连接，需要预先准备测试数据。分别创建员工和部门的 Datafame，并注册为临时视图，代码如下：
 
 ```java
 val spark = SparkSession.builder().appName("aggregations").master("local[2]").getOrCreate()
@@ -1677,7 +1677,7 @@ val deptDF = spark.read.json("/usr/file/json/dept.json")
 deptDF.createOrReplaceTempView("dept")
 ```
 
-两表的主要字段如下：
+&emsp;两表的主要字段如下：
 
 ```properties
 emp 员工表
@@ -1700,7 +1700,7 @@ dept 部门表
 
 - **连接类型**
 
-Spark 中支持多种连接类型：
+&emsp;Spark 中支持多种连接类型：
 
 - **Inner Join** : 内连接；
 - **Full Outer Join** :  全外连接；
@@ -1711,11 +1711,11 @@ Spark 中支持多种连接类型：
 - **Natural Join** :  自然连接；
 - **Cross (or Cartesian) Join** :  交叉 (或笛卡尔) 连接。
 
-其中内，外连接，笛卡尔积均与普通关系型数据库中的相同，如下图所示：
+&emsp;其中内，外连接，笛卡尔积均与普通关系型数据库中的相同，如下图所示：
 
 ![img](./images/sql-join.jpg)
 
-这里解释一下左半连接和左反连接，这两个连接等价于关系型数据库中的 `IN` 和 `NOT IN` 字句：
+&emsp;这里解释一下左半连接和左反连接，这两个连接等价于关系型数据库中的 `IN` 和 `NOT IN` 字句：
 
 ```sql
 -- LEFT SEMI JOIN
@@ -1729,7 +1729,9 @@ SELECT * FROM emp LEFT ANTI JOIN dept ON emp.deptno = dept.deptno
 SELECT * FROM emp WHERE deptno NOT IN (SELECT deptno FROM dept)
 ```
 
-所有连接类型的示例代码如下：
+<br/>
+
+&emsp;所有连接类型的示例代码如下：
 
 #### > INNER JOIN
 
@@ -1801,13 +1803,13 @@ spark.sql("SELECT * FROM emp CROSS JOIN dept ON emp.deptno = dept.deptno").show(
 
 #### >  NATURAL JOIN
 
-自然连接是在两张表中寻找那些数据类型和列名都相同的字段，然后自动地将他们连接起来，并返回所有符合条件的结果。
+&emsp;自然连接是在两张表中寻找那些数据类型和列名都相同的字段，然后自动地将他们连接起来，并返回所有符合条件的结果。
 
 ```java
 spark.sql("SELECT * FROM emp NATURAL JOIN dept").show()
 ```
 
-以下是一个自然连接的查询结果，程序自动推断出使用两张表都存在的 dept 列进行连接，其实际等价于：
+&emsp;以下是一个自然连接的查询结果，程序自动推断出使用两张表都存在的 dept 列进行连接，其实际等价于：
 
 ```java
 spark.sql("SELECT * FROM emp JOIN dept ON emp.deptno = dept.deptno").show()
@@ -1815,21 +1817,21 @@ spark.sql("SELECT * FROM emp JOIN dept ON emp.deptno = dept.deptno").show()
 
 ![img](./images/spark-sql-NATURAL-JOIN.png) 
 
-由于自然连接常常会产生不可预期的结果，所以并不推荐使用。
+&emsp;由于自然连接常常会产生不可预期的结果，所以并不推荐使用。
 
 <br/>
 
 #### >  连接的执行
 
-在对大表与大表之间进行连接操作时，通常都会触发 `Shuffle Join`，两表的所有分区节点会进行 `All-to-All` 的通讯，这种查询通常比较昂贵，会对网络 IO 会造成比较大的负担。
+&emsp;在对大表与大表之间进行连接操作时，通常都会触发 `Shuffle Join`，两表的所有分区节点会进行 `All-to-All` 的通讯，这种查询通常比较昂贵，会对网络 IO 会造成比较大的负担。
 
 ![img](./images/spark-Big-table–to–big-table.png)
 
-而对于大表和小表的连接操作，Spark 会在一定程度上进行优化，如果小表的数据量小于 Worker Node 的内存空间，Spark 会考虑将小表的数据广播到每一个 Worker Node，在每个工作节点内部执行连接计算，这可以降低网络的 IO，但会加大每个 Worker Node 的 CPU 负担。
+&emsp;而对于大表和小表的连接操作，Spark 会在一定程度上进行优化，如果小表的数据量小于 Worker Node 的内存空间，Spark 会考虑将小表的数据广播到每一个 Worker Node，在每个工作节点内部执行连接计算，这可以降低网络的 IO，但会加大每个 Worker Node 的 CPU 负担。
 
 ![img](./images/spark-Big-table–to–small-table.png)
 
-是否采用广播方式进行 `Join` 取决于程序内部对小表的判断，如果想明确使用广播方式进行 `Join`，则可以在 DataFrame API 中使用 `broadcast` 方法指定需要广播的小表：
+&emsp;是否采用广播方式进行 `Join` 取决于程序内部对小表的判断，如果想明确使用广播方式进行 `Join`，则可以在 DataFrame API 中使用 `broadcast` 方法指定需要广播的小表：
 
 ```java
 empDF.join(broadcast(deptDF), joinExpression).show()
@@ -1870,7 +1872,7 @@ empDF.select(countDistinct("deptno")).show()
 
 - **approx_count_distinct**
 
-通常在使用大型数据集时，你可能关注的只是近似值而不是准确值，这时可以使用 approx_count_distinct 函数，并可以使用第二个参数指定最大允许误差。
+&emsp;通常在使用大型数据集时，你可能关注的只是近似值而不是准确值，这时可以使用 approx_count_distinct 函数，并可以使用第二个参数指定最大允许误差。
 
 ```java
 empDF.select(approx_count_distinct ("ename",0.1)).show()
@@ -1878,7 +1880,7 @@ empDF.select(approx_count_distinct ("ename",0.1)).show()
 
 - **first & last**
 
-获取 DataFrame 中指定列的第一个值或者最后一个值。
+&emsp;获取 DataFrame 中指定列的第一个值或者最后一个值。
 
 ```java
 empDF.select(first("ename"),last("job")).show()
@@ -1886,7 +1888,7 @@ empDF.select(first("ename"),last("job")).show()
 
 - **min & max**
 
-获取 DataFrame 中指定列的最小值或者最大值。
+&emsp;获取 DataFrame 中指定列的最小值或者最大值。
 
 ```java
 empDF.select(min("sal"),max("sal")).show()
@@ -1894,7 +1896,7 @@ empDF.select(min("sal"),max("sal")).show()
 
 - **sum & sumDistinct**
 
-求和以及求指定列所有不相同的值的和。
+&emsp;求和以及求指定列所有不相同的值的和。
 
 ```java
 empDF.select(sum("sal")).show()
@@ -1903,7 +1905,7 @@ empDF.select(sumDistinct("sal")).show()
 
 - **avg**
 
-内置的求平均数的函数。
+&emsp;内置的求平均数的函数。
 
 ```java
 empDF.select(avg("sal")).show()
@@ -1911,7 +1913,7 @@ empDF.select(avg("sal")).show()
 
 **数学函数**
 
-Spark SQL 中还支持多种数学聚合函数，用于通常的数学计算，以下是一些常用的例子：
+&emsp;Spark SQL 中还支持多种数学聚合函数，用于通常的数学计算，以下是一些常用的例子：
 
 ```java
 // 1.计算总体方差、均方差、总体标准差、样本标准差
@@ -1987,12 +1989,12 @@ spark.sql("SELECT deptno, count(ename) ,sum(sal) FROM emp GROUP BY deptno").show
 
 #### > 自定义聚合函数
 
-Scala 提供了两种自定义聚合函数的方法，分别如下：
+&emsp;Scala 提供了两种自定义聚合函数的方法，分别如下：
 
 - 有类型的自定义聚合函数，主要适用于 DataSet；
 - 无类型的自定义聚合函数，主要适用于 DataFrame。
 
-以下分别使用两种方式来自定义一个求平均值的聚合函数，这里以计算员工平均工资为例。两种自定义方式分别如下：
+&emsp;以下分别使用两种方式来自定义一个求平均值的聚合函数，这里以计算员工平均工资为例。两种自定义方式分别如下：
 
 - **有类型的自定义函数**
 
@@ -2060,13 +2062,13 @@ object SparkSqlApp {
 }
 ```
 
-自定义聚合函数需要实现的方法比较多，这里以绘图的方式来演示其执行流程，以及每个方法的作用：
+&emsp;自定义聚合函数需要实现的方法比较多，这里以绘图的方式来演示其执行流程，以及每个方法的作用：
 
 ![img](./images/spark-sql-自定义函数.png)
 
 
 
-关于 `zero`,`reduce`,`merge`,`finish` 方法的作用在上图都有说明，这里解释一下中间类型和输出类型的编码转换，这个写法比较固定，基本上就是两种情况：
+&emsp;关于 `zero`,`reduce`,`merge`,`finish` 方法的作用在上图都有说明，这里解释一下中间类型和输出类型的编码转换，这个写法比较固定，基本上就是两种情况：
 
 - 自定义类型 Case Class 或者元组就使用 `Encoders.product` 方法；
 - 基本类型就使用其对应名称的方法，如 `scalaByte `，`scalaFloat`，`scalaShort` 等，示例如下：
@@ -2078,7 +2080,7 @@ override def outputEncoder: Encoder[Double] = Encoders.scalaDouble
 
 - **无类型的自定义聚合函数**
 
-理解了有类型的自定义聚合函数后，无类型的定义方式也基本相同，代码如下：
+&emsp;理解了有类型的自定义聚合函数后，无类型的定义方式也基本相同，代码如下：
 
 ```java
 import org.apache.spark.sql.expressions.{MutableAggregationBuffer, UserDefinedAggregateFunction}
@@ -2925,7 +2927,8 @@ val conf = new SparkConf().set("spark.locality.wait", "6")
 
 &emsp;&emsp;➢  对于一个分区内的数据，创建唯一的数据库连接；
 
-&emsp;&emsp;➢  只需要向数据库发送一次 SQL 语句和多组参数；
+&emsp;&emsp;➢  只需要向数据库发送一次 SQL 语句和多组参数;
+
 &emsp;在生产环境中，全部都会使用 foreachPartition 算子完成数据库操作。foreachPartition 算子存在一个问题，与 mapPartitions 算子类似，如果一个分区的数据量特别大，可能会造成 OOM，即内存溢出。
 
 <br/>
@@ -2937,7 +2940,9 @@ val conf = new SparkConf().set("spark.locality.wait", "6")
 ![img](./images/算子调优4.PNG)
 
 &emsp;根据图中信息我们可以发现两个问题：
+
 &emsp;&emsp;➢  每个 partition 的数据量变小了，如果还按照之前与 partition 相等的 task 个数去处理当前数据，有点浪费 task 的计算资源；
+
 &emsp;&emsp;➢  每个 partition 的数据量不一样，会导致后面的每个 task 处理每个 partition 数据的时候，每个 task 要处理的数据量不同，这很有可能导致数据倾斜问题。
 
 &emsp;如上图所示，第二个分区的数据过滤后只剩100条，而第三个分区的数据过滤后剩下800条，在相同的处理逻辑下，第二个分区对应的 task 处理的数据量与第三个分区对应的 task 处理的数据量差距达到了 8 倍，这也会导致运行速度可能存在数倍的差距，这也就是数据倾斜问题。
@@ -2970,6 +2975,8 @@ val conf = new SparkConf().set("spark.locality.wait", "6")
 
 &emsp;注意：local 模式是进程内模拟集群运行，已经对并行度和分区数量有了一定的内部优化，因此不用去设置并行度和分区数量。
 
+<br/>
+
 - **算子调优四：repartition  解决 SparkSQL 低并行度问题**
 
 &emsp;在第一节的常规性能调优中我们讲解了并行度的调节策略，但是，并行度的设置对于Spark SQL 是不生效的，用户设置的并行度只对于 Spark SQL 以外的所有 Spark 的 stage 生效。
@@ -2992,7 +2999,9 @@ val conf = new SparkConf().set("spark.locality.wait", "6")
 - **Shuffle  调优一：调节 map  端缓冲区大小**
 
   &emsp;在 Spark 任务运行过程中，如果 shuffle 的 map 端处理的数据量比较大，但是 map 端缓冲的大小是固定的，可能会出现 map 端缓冲数据频繁 spill 溢写到磁盘文件中的情况，使得性能非常低下，通过调节 map 端缓冲的大小，可以避免频繁的磁盘 IO 操作，进而提升 Spark任务的整体性能。
+
   &emsp;map 端缓冲的默认配置是 32KB，如果每个 task 处理 640KB 的数据，那么会发生 640/32= 20 次溢写，如果每个 task 处理 64000KB 的数据，机会发生 64000/32=2000 此溢写，这对于性能的影响是非常严重的。
+
   &emsp;map 端缓冲的配置方法如代码清单所示：
 
   ```java
@@ -3096,7 +3105,9 @@ val conf = new SparkConf().set("spark.shuffle.sort.bypassMergeThreshold", "400")
 
 &emsp;在 Spark 作业运行过程中，Executor 优先从自己本地关联的 BlockManager 中获取某份数据，如果本地BlockManager没有的话，会通过TransferService远程连接其他节点上Executor的 BlockManager 来获取数据。
 &emsp;如果 task 在运行过程中创建大量对象或者创建的对象较大，会占用大量的内存，这回导致频繁的垃圾回收，但是垃圾回收会导致工作现场全部停止，也就是说，垃圾回收一旦执行，Spark 的 Executor 进程就会停止工作，无法提供相应，此时，由于没有响应，无法建立网络连接，会导致网络连接超时。
+
 &emsp;在生产环境下，有时会遇到 file not found、file lost 这类错误，在这种情况下，很有可能是 Executor 的 BlockManager 在拉取数据的时候，无法建立连接，然后超过默认的连接等待时长 60s 后，宣告数据拉取失败，如果反复尝试都拉取不到数据，可能会导致 Spark 作业的崩溃。这种情况也可能会导致 DAGScheduler 反复提交几次 stage，TaskScheduler 返回提交几次 task，大大延长了我们的 Spark 作业的运行时间。
+
 &emsp;此时，可以考虑调节连接的超时时长，连接等待时长需要在 spark-submit 脚本中进行设置，设置方式如代码清单所示：
 
 ```java
@@ -3344,7 +3355,9 @@ val conf = new SparkConf()
 
 - **故障排除七：解决 SparkSQL  导致的 JVM**
 
-  &emsp;当 SparkSQL 的 sql 语句有成百上千的 or 关键字时，就可能会出现 Driver 端的 JVM 栈内存溢出。&emsp;JVM 栈内存溢出基本上就是由于调用的方法层级过多，产生了大量的，非常深的，超出了 JVM 栈深度限制的递归。 （我们猜测 SparkSQL 有大量 or 语句的时候，在解析 SQL 时，例如转换为语法树或者进行执行计划的生成的时候，对于 or 的处理是递归，or 非常多时，会发生大量的递归）
+  &emsp;当 SparkSQL 的 sql 语句有成百上千的 or 关键字时，就可能会出现 Driver 端的 JVM 栈内存溢出。
+
+  &emsp; JVM 栈内存溢出基本上就是由于调用的方法层级过多，产生了大量的，非常深的，超出了 JVM 栈深度限制的递归。 （我们猜测 SparkSQL 有大量 or 语句的时候，在解析 SQL 时，例如转换为语法树或者进行执行计划的生成的时候，对于 or 的处理是递归，or 非常多时，会发生大量的递归）
 
   &emsp;此时，建议将一条 sql 语句拆分为多条 sql 语句来执行，每条 sql 语句尽量保证 100 个以内的子句。根据实际的生产环境试验，一条 sql 语句的 or 关键字控制在 100 个以内，通常不会导致 JVM 栈内存溢出。
 
@@ -3360,50 +3373,50 @@ val conf = new SparkConf()
 
 ### （1）集群规划
 
-这里搭建一个 3 节点的 Spark 集群，其中三台主机上均部署 `Worker` 服务。同时为了保证高可用，除了在 hadoop001 上部署主 `Master` 服务外，还在 hadoop002 和 hadoop003 上分别部署备用的 `Master` 服务，Master 服务由 Zookeeper 集群进行协调管理，如果主 `Master` 不可用，则备用 `Master` 会成为新的主 `Master`。
+&emsp;这里搭建一个 3 节点的 Spark 集群，其中三台主机上均部署 `Worker` 服务。同时为了保证高可用，除了在 hadoop001 上部署主 `Master` 服务外，还在 hadoop002 和 hadoop003 上分别部署备用的 `Master` 服务，Master 服务由 Zookeeper 集群进行协调管理，如果主 `Master` 不可用，则备用 `Master` 会成为新的主 `Master`。
 
 ![img](./images/spark集群规划.png)
 
 ### （2）前置条件
 
-搭建 Spark 集群前，需要保证 JDK 环境、Zookeeper 集群和 Hadoop 集群已经搭建。
+&emsp;搭建 Spark 集群前，需要保证 JDK 环境、Zookeeper 集群和 Hadoop 集群已经搭建。
 
 ### （3）Spark集群搭建
 
-#### 下载解压
+#### > 下载解压
 
-下载所需版本的 Spark，官网下载地址：http://spark.apache.org/downloads.html
+&emsp;下载所需版本的 Spark，官网下载地址：http://spark.apache.org/downloads.html
 
 ![img](./images/spark-download.png)
 
-下载后进行解压：
+&emsp;下载后进行解压：
 
 ```shell
 tar -zxvf  spark-2.2.3-bin-hadoop2.6.tgz
 ```
 
-#### 配置环境变量
+#### > 配置环境变量
 
 ```shell
 vim /etc/profile
 ```
 
-添加环境变量：
+&emsp;添加环境变量：
 
 ```shell
 export SPARK_HOME=/usr/app/spark-2.2.3-bin-hadoop2.6
 export  PATH=${SPARK_HOME}/bin:$PATH
 ```
 
-使得配置的环境变量立即生效：
+&emsp;使得配置的环境变量立即生效：
 
 ```shell
 source /etc/profile
 ```
 
-#### 集群配置
+#### > 集群配置
 
-进入 `${SPARK_HOME}/conf` 目录，拷贝配置样本进行修改：
+&emsp;进入 `${SPARK_HOME}/conf` 目录，拷贝配置样本进行修改：
 
 **1. spark-env.sh**
 
@@ -3426,7 +3439,7 @@ SPARK_DAEMON_JAVA_OPTS="-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zoo
 cp slaves.template slaves
 ```
 
-配置所有 Woker 节点的位置：
+&emsp;配置所有 Woker 节点的位置：
 
 ```properties
 hadoop001
@@ -3434,9 +3447,9 @@ hadoop002
 hadoop003
 ```
 
-#### 安装包分发
+#### > 安装包分发
 
-将 Spark 的安装包分发到其他服务器，分发后建议在这两台服务器上也配置一下 Spark 的环境变量。
+&emsp;将 Spark 的安装包分发到其他服务器，分发后建议在这两台服务器上也配置一下 Spark 的环境变量。
 
 ```shell
 scp -r /usr/app/spark-2.4.0-bin-hadoop2.6/   hadoop002:usr/app/
@@ -3447,15 +3460,15 @@ scp -r /usr/app/spark-2.4.0-bin-hadoop2.6/   hadoop003:usr/app/
 
 ### （4）启动集群
 
-#### 启动ZooKeeper集群
+#### > 启动ZooKeeper集群
 
-分别到三台服务器上启动 ZooKeeper 服务：
+&emsp;分别到三台服务器上启动 ZooKeeper 服务：
 
 ```shell
  zkServer.sh start
 ```
 
-#### 启动Hadoop集群
+#### > 启动Hadoop集群
 
 ```shell
 # 启动dfs服务
@@ -3464,28 +3477,28 @@ start-dfs.sh
 start-yarn.sh
 ```
 
-#### 启动Spark集群
+#### > 启动Spark集群
 
-进入 hadoop001 的 ` ${SPARK_HOME}/sbin` 目录下，执行下面命令启动集群。执行命令后，会在 hadoop001 上启动 `Maser` 服务，会在 `slaves` 配置文件中配置的所有节点上启动 `Worker` 服务。
+&emsp;进入 hadoop001 的 ` ${SPARK_HOME}/sbin` 目录下，执行下面命令启动集群。执行命令后，会在 hadoop001 上启动 `Maser` 服务，会在 `slaves` 配置文件中配置的所有节点上启动 `Worker` 服务。
 
 ```shell
 start-all.sh
 ```
 
-分别在 hadoop002 和 hadoop003 上执行下面的命令，启动备用的 `Master` 服务：
+&emsp;分别在 hadoop002 和 hadoop003 上执行下面的命令，启动备用的 `Master` 服务：
 
 ```shell
 # ${SPARK_HOME}/sbin 下执行
 start-master.sh
 ```
 
-#### 查看服务
+#### > 查看服务
 
-查看 Spark 的 Web-UI 页面，端口为 `8080`。此时可以看到 hadoop001 上的 Master 节点处于 `ALIVE` 状态，并有 3 个可用的 `Worker` 节点。
+&emsp;查看 Spark 的 Web-UI 页面，端口为 `8080`。此时可以看到 hadoop001 上的 Master 节点处于 `ALIVE` 状态，并有 3 个可用的 `Worker` 节点。
 
 ![img](./images/spark-集群搭建1.png)
 
-而 hadoop002 和 hadoop003 上的 Master 节点均处于 `STANDBY` 状态，没有可用的 `Worker` 节点。
+&emsp;而 hadoop002 和 hadoop003 上的 Master 节点均处于 `STANDBY` 状态，没有可用的 `Worker` 节点。
 
 ![img](./images/spark-集群搭建2.png)
 
@@ -3495,19 +3508,19 @@ start-master.sh
 
 ### （5）验证集群高可用
 
-此时可以使用 `kill` 命令杀死 hadoop001 上的 `Master` 进程，此时备用 `Master` 会中会有一个再次成为 ` 主 Master`，我这里是 hadoop002，可以看到 hadoop2 上的 `Master` 经过 `RECOVERING` 后成为了新的主 `Master`，并且获得了全部可以用的 `Workers`。
+&emsp;此时可以使用 `kill` 命令杀死 hadoop001 上的 `Master` 进程，此时备用 `Master` 会中会有一个再次成为 ` 主 Master`，我这里是 hadoop002，可以看到 hadoop2 上的 `Master` 经过 `RECOVERING` 后成为了新的主 `Master`，并且获得了全部可以用的 `Workers`。
 
 ![img](./images/spark-集群搭建4.png)
 
-Hadoop002 上的 `Master` 成为主 `Master`，并获得了全部可以用的 `Workers`。
+&emsp;Hadoop002 上的 `Master` 成为主 `Master`，并获得了全部可以用的 `Workers`。
 
 ![img](./images/spark-集群搭建5.png)
 
-此时如果你再在 hadoop001 上使用 `start-master.sh` 启动 Master 服务，那么其会作为备用 `Master` 存在。
+&emsp;此时如果你再在 hadoop001 上使用 `start-master.sh` 启动 Master 服务，那么其会作为备用 `Master` 存在。
 
 ### （6）提交作业
 
-和单机环境下的提交到 Yarn 上的命令完全一致，这里以 Spark 内置的计算 Pi 的样例程序为例，提交命令如下：
+&emsp;和单机环境下的提交到 Yarn 上的命令完全一致，这里以 Spark 内置的计算 Pi 的样例程序为例，提交命令如下：
 
 ```shell
 spark-submit \

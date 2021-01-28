@@ -167,7 +167,7 @@ echo "3" > /usr/local/zookeeper-cluster/data/myid
 
 ### （1）节点增删改查
 
-#### 启动服务和连接服务
+#### > 启动服务和连接服务
 
 ```shell
 # 启动服务
@@ -177,11 +177,11 @@ bin/zkServer.sh start
 zkCli.sh -server hadoop001:2181
 ```
 
-#### help命令
+#### > help命令
 
 &emsp;&emsp;使用 `help` 可以查看所有命令及格式。
 
-#### 查看节点列表
+#### > 查看节点列表
 
 &emsp;&emsp;查看节点列表有 `ls path` 和 `ls2 path` 两个命令，后者是前者的增强，不仅可以查看指定路径下的所有节点，还可以查看当前节点的信息。
 
@@ -203,7 +203,7 @@ dataLength = 0
 numChildren = 11
 ```
 
-#### 新增节点
+#### > 新增节点
 
 ```shell
 create [-s] [-e] path data acl   #其中-s 为有序节点，-e 临时节点
@@ -233,7 +233,7 @@ Created /c0000000024
 Created /tmp
 ```
 
-#### 查看节点
+#### > 查看节点
 
 1. 获取节点数据
 
@@ -293,7 +293,7 @@ dataLength = 6
 numChildren = 0
 ```
 
-#### 更新节点
+#### > 更新节点
 
 &emsp;&emsp;更新节点的命令是 `set`，可以直接进行修改，如下：
 
@@ -319,7 +319,7 @@ numChildren = 0
 version No is not valid : /hadoop    #无效的版本号
 ```
 
-#### 删除节点
+#### > 删除节点
 
 &emsp;&emsp;删除节点的语法如下：
 
@@ -340,7 +340,7 @@ version No is not valid : /hadoop   #无效的版本号
 
 ### （2）监听器
 
-#### get path [watch]
+#### > get path [watch]
 
 &emsp;&emsp;使用 `get path [watch]` 注册的监听器能够在节点内容发生改变的时候，向客户端发出通知。需要注意的是 zookeeper 的触发器是一次性的 (One-time trigger)，即触发一次后就会立即失效。
 
@@ -351,7 +351,7 @@ WATCHER::
 WatchedEvent state:SyncConnected type:NodeDataChanged path:/hadoop  #节点值改变
 ```
 
-#### stat path [watch]
+#### > stat path [watch]
 
 &emsp;&emsp;使用 `stat path [watch]` 注册的监听器能够在节点状态发生改变的时候，向客户端发出通知。
 
@@ -362,7 +362,7 @@ WATCHER::
 WatchedEvent state:SyncConnected type:NodeDataChanged path:/hadoop  #节点值改变
 ```
 
-#### ls\ls2 path  [watch]
+#### > ls\ls2 path  [watch]
 
 &emsp;&emsp;使用 `ls path [watch]` 或 `ls2 path [watch]` 注册的监听器能够监听该节点下所有**子节点**的增加和删除操作。
 
