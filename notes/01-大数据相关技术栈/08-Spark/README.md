@@ -2739,7 +2739,7 @@ Time: 1539075292000 ms
 
 ```shell
 bin/spark-submit \
---class com.atguigu.spark.Analysis \
+--class com.martinhub.spark.Analysis \
 --master yarn
 --deploy-mode cluster
 --num-executors 80 \
@@ -2776,7 +2776,7 @@ bin/spark-submit \
 
 ```shell
 bin/spark-submit \
---class com.atguigu.spark.WordCount \
+--class com.martinhub.spark.WordCount \
 --master yarn\
 --deploy-mode cluster\
 --num-executors 80 \
@@ -2851,11 +2851,30 @@ val conf = new SparkConf().set("spark.default.parallelism", "500")
 
 - **常规性能调优四：广播大变量**
 
-&emsp;默认情况下，task 中的算子中如果使用了外部的变量，每个 task 都会获取一份变量的复本，这就造成了内存的极大消耗。一方面，如果后续对 RDD 进行持久化，可能就无法将 RDD数据存入内存，只能写入磁盘，磁盘 IO 将会严重消耗性能；另一方面，task 在创建对象的时候，也许会发现堆内存无法存放新创建的对象，这就会导致频繁的 GC，GC 会导致工作线程停止，进而导致 Spark 暂停工作一段时间，严重影响 Spark 性能。
+&emsp;默认情况下，task 中的算子中如果使用了外部的变量，每个 task 都会获取一份变量的副本，这就造成了内存的极大消耗。一方面，如果后续对 RDD 进行持久化，可能就无法将 RDD数据存入内存，只能写入磁盘，磁盘 IO 将会严重消耗性能；另一方面，task 在创建对象的时候，也许会发现堆内存无法存放新创建的对象，这就会导致频繁的 GC，GC 会导致工作线程停止，进而导致 Spark 暂停工作一段时间，严重影响 Spark 性能。
 
 &emsp; 假设当前任务配置了 20 个 Executor，指定 500 个 task，有一个 20M 的变量被所有 task共用，此时会在 500 个 task 中产生 500 个副本，耗费集群 10G 的内存，如果使用了广播变量， 那么每个 Executor 保存一个副本，一共消耗 400M 内存，内存消耗减少了 5 倍。广播变量在每个 Executor 保存一个副本，此 Executor 的所有 task 共用此广播变量，这让变量产生的副本数量大大减少。
 
 &emsp;在初始阶段，广播变量只在 Driver 中有一份副本。task 在运行的时候，想要使用广播变量中的数据，此时首先会在自己本地的 Executor 对应的 BlockManager 中尝试获取变量，如果本地没有，BlockManager 就会从 Driver 或者其他节点的 BlockManager 上远程拉取变量的复本，并由本地的 BlockManager 进行管理；之后此 Executor 的所有 task 都会直接从本地的BlockManager 中获取变量。
+
+```java
+
+import scala.reflect.ClassTag;
+import scala.reflect.ClassTag$;
+import org.apache.spark.broadcast.Broadcast;
+
+import java.util.*;
+
+Map<String, String> bmap = new HashMap<>();
+bmap.put("obj_type", "01");
+bmap.put("data_source", "xx");
+bmap.put("data_source2", "xx");
+bmap.put("data_source3", "xx");
+bmap.put("data_source4", "xx");
+
+ClassTag<Map<String, String>> ct = ClassTag$.MODULE$.apply(Map.class);
+Broadcast<Map<String, String>> broad = spark.sparkContext().broadcast(bmap,ct);
+```
 
 <br/>
 
@@ -2879,7 +2898,7 @@ val conf = new SparkConf().set("spark.default.parallelism", "500")
 
 &emsp;在 Spark 项目开发阶段，可以使用 client 模式对程序进行测试，此时，可以在本地看到比较全的日志信息，日志信息中有明确的 task 数据本地化的级别，如果大部分都是PROCESS_LOCAL，那么就无需进行调节，但是如果发现很多的级别都是 NODE_LOCAL、ANY，那么需要对本地化的等待时长进行调节，通过延长本地化等待时长，看看 task 的本地化级别有没有提升，并观察 Spark 作业的运行时间有没有缩短。
 
-&emsp;注意，过犹不及，不要将本地化等待时长延长地过长，导致因为大量的等待时长，使得Spark 作业的运行时间反而增加了。
+&emsp;<font color='red'>注意，过犹不及，不要将本地化等待时长延长地过长，导致因为大量的等待时长，使得Spark 作业的运行时间反而增加了。</font>
 
 &emsp;Spark 本地化等待时长的设置如代码所示：
 
@@ -2955,7 +2974,7 @@ val conf = new SparkConf().set("spark.locality.wait", "6")
 
 &emsp;那么具体应该如何实现上面的解决思路？我们需要 coalesce 算子。
 
-&emsp;repartition 与 coalesce 都可以用来进行重分区，其中 repartition 只是 coalesce 接口中 shuffle为 true 的简易实现，coalesce 默认情况下不进行 shuffle，但是可以通过参数进行设置
+&emsp;<font color='red'>repartition 与 coalesce 都可以用来进行重分区，其中 repartition 只是 coalesce 接口中 shuffle为 true 的简易实现，coalesce 默认情况下不进行 shuffle，但是可以通过参数进行设置。</font>
 
 &emsp;假设我们希望将原本的分区个数 A 通过重新分区变为 B，那么有以下几种情况：
 
@@ -3067,9 +3086,7 @@ val conf = new SparkConf().set("spark.shuffle.sort.bypassMergeThreshold", "400")
      &emsp;根据 Spark 静态内存管理机制，堆内存被划分为了两块，Storage 和 Execution。Storage
        主要用于缓存 RDD 数据和 broadcast 数据，Execution 主要用于缓存在 shuffle 过程中产生的中间数据，Storage 占系统内存的 60%，Execution 占系统内存的 20%，并且两者完全独立。在一般情况下，Storage 的内存都提供给了 cache 操作，但是如果在某些情况下 cache 操作内存不是很紧张，而 task 的算子中创建的对象很多，Execution 内存又相对较小，这回导致频繁的 minor gc，甚至于频繁的 full gc，进而导致 Spark 频繁的停止工作，性能影响会很大。在 Spark UI 中可以查看每个 stage 的运行情况，包括每个 task 的运行时间、gc 时间等等，如果发现 gc 太频繁，时间太长，就可以考虑调节 Storage 的内存占比，让 task 执行算子函数式，有更多的内存可以使用。
 
-     &emsp;Storage 内存区域可以通过 spark.storage.memoryFraction 参数进行指定，默认为 0.6，即
-
-  60%，可以逐级向下递减，如代码清单所示：
+     &emsp;Storage 内存区域可以通过 spark.storage.memoryFraction 参数进行指定，默认为 0.6，即  60%，可以逐级向下递减，如代码清单所示：
 
   ```java
   val conf = new SparkConf().set("spark.storage.memoryFraction", "0.4")
@@ -3089,7 +3106,7 @@ val conf = new SparkConf().set("spark.shuffle.sort.bypassMergeThreshold", "400")
 
 &emsp;stage 的 task 在运行的时候，可能要从一些 Executor 中去拉取 shuffle map output 文件，但是 Executor 可能已经由于内存溢出挂掉了，其关联的 BlockManager 也没有了，这就可能会报出 shuffle output file cannot find，executor lost，task lost，out of memory 等错误，此时，就可以考虑调节一下 Executor 的堆外内存，也就可以避免报错，与此同时，堆外内存调节的比较大的时候，对于性能来讲，也会带来一定的提升。
 
-&emsp;默认情况下，Executor 堆外内存上限大概为 300 多 MB，在实际的生产环境下，对海量数据进行处理的时候，这里都会出现问题，导致 Spark 作业反复崩溃，无法运行，此时就会去调节这个参数，到至少 1G，甚至于 2G、4G。
+&emsp;默认情况下，Executor 堆外内存上限大概为 300 多 MB，在实际的生产环境下，对海量数据进行处理的时候，这里都会出现问题，导致 Spark 作业反复崩溃，无法运行，此时就会去调节这个参数到至少 1G，甚至于 2G、4G。
 
 &emsp;Executor 堆外内存的配置需要在 spark-submit 脚本里配置，如代码清单所示：
 
