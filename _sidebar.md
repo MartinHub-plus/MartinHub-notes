@@ -42,6 +42,7 @@
   - [Redis](./notes/03-数据库/02-Redis/README.md)
   - [Elasticsearch](./notes/03-数据库/03-Elasticsearch/README.md)
   - [JanusGraph](./notes/03-数据库/04-JanusGraph/README.md)
+  - [ClickHouse](./notes/03-数据库/05-ClickHouse/README.md)
 - **Linux相关** 
   - [Linux基础](./notes/04-Linux相关/01-Linux基础/README.md)
   - [Docker](./notes/04-Linux相关/02-Docker/README.md)
