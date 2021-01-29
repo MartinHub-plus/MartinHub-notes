@@ -56,7 +56,8 @@
 - **IT 书籍** 
   - [大数据书籍](./notes/08-IT书籍/README.md)
 - **面   经**
-  - [loading..........](./notes/09-面经/README.md)
+  - [大数据面试](./notes/09-面经/大数据面试/README.md)
+  - [Java面试](./notes/09-面经/Java面试/README.md)
 - **杂  记**
   - [loading..........](./notes/10-杂记/README.md)
 
