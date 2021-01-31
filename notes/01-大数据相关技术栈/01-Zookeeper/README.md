@@ -66,13 +66,122 @@
 
 ## 五、Zookeeper的内部原理
 
-### 选举机制
+### （1）选举机制
 
 &emsp;1）半数机制：集群中半数以上机器存活，集群可用。所以 Zookeeper 适合安装奇数台服务器。
 
 &emsp;2）Zookeeper 虽然在配置文件中并没有指定 Master 和 Slave。但是，Zookeeper 工作时，是有一个节点为Leader，其他则为 Follower，Leader 是通过内部的选举机制临时产生的。
 
-## 六、Zookeeper集群环境搭建
+
+
+## 六、Zookeeper单机环境搭建
+
+### （1）下载
+
+下载对应版本 Zookeeper，这里我下载的版本 `3.4.14`。官方下载地址：https://archive.apache.org/dist/zookeeper/
+
+```shell
+# wget https://archive.apache.org/dist/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz
+```
+
+### （2）解压
+
+```shell
+# tar -zxvf zookeeper-3.4.14.tar.gz
+```
+
+### （3）配置环境变量
+
+```shell
+# vim /etc/profile
+```
+
+添加环境变量：
+
+```shell
+export ZOOKEEPER_HOME=/usr/app/zookeeper-3.4.14
+export PATH=$ZOOKEEPER_HOME/bin:$PATH
+```
+
+使得配置的环境变量生效：
+
+```shell
+# source /etc/profile
+```
+
+### （4）修改配置
+
+进入安装目录的 `conf/` 目录下，拷贝配置样本并进行修改：
+
+```
+# cp zoo_sample.cfg  zoo.cfg
+```
+
+指定数据存储目录和日志文件目录（目录不用预先创建，程序会自动创建），修改后完整配置如下：
+
+```properties
+# The number of milliseconds of each tick
+tickTime=2000
+# The number of ticks that the initial
+# synchronization phase can take
+initLimit=10
+# The number of ticks that can pass between
+# sending a request and getting an acknowledgement
+syncLimit=5
+# the directory where the snapshot is stored.
+# do not use /tmp for storage, /tmp here is just
+# example sakes.
+dataDir=/usr/local/zookeeper/data
+dataLogDir=/usr/local/zookeeper/log
+# the port at which the clients will connect
+clientPort=2181
+# the maximum number of client connections.
+# increase this if you need to handle more clients
+#maxClientCnxns=60
+#
+# Be sure to read the maintenance section of the
+# administrator guide before turning on autopurge.
+#
+# http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance
+#
+# The number of snapshots to retain in dataDir
+#autopurge.snapRetainCount=3
+# Purge task interval in hours
+# Set to "0" to disable auto purge feature
+#autopurge.purgeInterval=1
+```
+
+> 配置参数说明：
+>
+> - **tickTime**：用于计算的基础时间单元。比如 session 超时：N*tickTime；
+> - **initLimit**：用于集群，允许从节点连接并同步到 master 节点的初始化连接时间，以 tickTime 的倍数来表示；
+> - **syncLimit**：用于集群， master 主节点与从节点之间发送消息，请求和应答时间长度（心跳机制）；
+> - **dataDir**：数据存储位置；
+> - **dataLogDir**：日志目录；
+> - **clientPort**：用于客户端连接的端口，默认 2181
+
+
+
+### （5）启动
+
+由于已经配置过环境变量，直接使用下面命令启动即可：
+
+```
+zkServer.sh start
+```
+
+### （6）验证
+
+使用 JPS 验证进程是否已经启动，出现 `QuorumPeerMain` 则代表启动成功。
+
+```shell
+[root@hadoop001 bin]# jps
+3814 QuorumPeerMain
+```
+
+
+
+## 七、Zookeeper集群环境搭建
 
 &emsp;&emsp;为保证集群高可用，Zookeeper 集群的节点数最好是奇数，最少有三个节点，所以这里演示搭建一个三个节点的集群。这里我使用三台主机进行搭建，主机名分别为 hadoop101，hadoop102，hadoop103。
 
@@ -161,7 +270,7 @@ echo "3" > /usr/local/zookeeper-cluster/data/myid
 	JMX enabled by default Using  config:  /opt/module/zookeeper- 3.4.10/bin/../conf/zoo.cfg Mode: follower
 ```
 
-## 七、Zookeeper常用shell命令
+## 八、Zookeeper常用shell命令
 
 ![img](./images/zook1.PNG)
 
@@ -411,7 +520,7 @@ Mode: standalone
 Node count: 167
 ```
 
-## 八、企业面试题
+## 九、企业面试题
 
 - 请简述 ZooKeeper  的选举机制
 

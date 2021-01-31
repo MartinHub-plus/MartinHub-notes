@@ -15,11 +15,11 @@
   - [Spark](./notes/01-大数据相关技术栈/08-Spark/README.md)
   - [Flink](./notes/01-大数据相关技术栈/09-Flink/README.md)
   - [Kafka](./notes/01-大数据相关技术栈/10-Kafka/README.md)
-  - <!--[Flume](./notes/01-大数据相关技术栈/11-Flume/README.md)-->
+  - [Flume](./notes/01-大数据相关技术栈/11-Flume/README.md)
   - [Sqoop](./notes/01-大数据相关技术栈/12-Sqoop/README.md)
-  - <!--[Oozie](./notes/01-大数据相关技术栈/13-Oozie/README.md)-->
-  - <!--[Azkaban](./notes/01-大数据相关技术栈/14-Azkaban/README.md)-->
-  - <!--[Storm](./notes/01-大数据相关技术栈/15-Storm/README.md)-->
+  - [Oozie](./notes/01-大数据相关技术栈/13-Oozie/README.md)
+  - [Azkaban](./notes/01-大数据相关技术栈/14-Azkaban/README.md)
+  - [Storm](./notes/01-大数据相关技术栈/15-Storm/README.md)
   - [DataX](./notes/01-大数据相关技术栈/16-DataX/README.md)
   - [DataHub](./notes/01-大数据相关技术栈/17-DataHub/README.md)
   - [运维笔记](./notes/01-大数据相关技术栈/运维笔记/README.md)
@@ -43,6 +43,7 @@
   - [Elasticsearch](./notes/03-数据库/03-Elasticsearch/README.md)
   - [JanusGraph](./notes/03-数据库/04-JanusGraph/README.md)
   - [ClickHouse](./notes/03-数据库/05-ClickHouse/README.md)
+  - [MongoDB](./notes/03-数据库/06-Mongo/README.md)
 - **Linux相关** 
   - [Linux基础](./notes/04-Linux相关/01-Linux基础/README.md)
   - [Docker](./notes/04-Linux相关/02-Docker/README.md)
