@@ -1,12 +1,6 @@
-## 一、常用操作以及概念
-
-### （1）快捷键
+## 快捷键
 
 - Tab：命令和文件名补全；
-
-- Ctrl+C：中断正在运行的程序；
-
-- Ctrl+D：结束键盘输入（End Of File，EOF）
 
 - Ctrl + a/Home 切换到命令行开始
 
@@ -55,970 +49,709 @@
   一般的做法是先用↑ 显示最后一条命令，然后用 Home 移动到命令最前，删除 cat，然后再输入 vim 命
   令。其实完全可以用 vim !$来代替。
 
-### （2）求助
+## 一、Linux目录结构
+
+| 目录名称        | 应放置文件的内容                          |
+| ----------- | --------------------------------- |
+| /boot       | 开机所需文件—内核、开机菜单以及所需配置文件等           |
+| /dev        | 以文件形式存放任何设备与接口                    |
+| /etc        | 配置文件                              |
+| /home       | 用户主目录                             |
+| /bin        | 存放单用户模式下还可以操作的命令                  |
+| /lib        | 开机时用到的函数库，以及/bin与/sbin下面的命令要调用的函数 |
+| /sbin       | 开机过程中需要的命令                        |
+| /media      | 用于挂载设备文件的目录                       |
+| /opt        | 放置第三方的软件                          |
+| /root       | 系统管理员的家目录                         |
+| /srv        | 一些网络服务的数据文件目录                     |
+| /tmp        | 任何人均可使用的“共享”临时目录                  |
+| /proc       | 虚拟文件系统，例如系统内核、进程、外部设备及网络状态等       |
+| /usr/local  | 用户自行安装的软件                         |
+| /usr/sbin   | Linux系统开机时不会使用到的软件/命令/脚本          |
+| /usr/share  | 帮助与说明文件，也可放置共享文件                  |
+| /var        | 主要存放经常变化的文件，如日志                   |
+| /lost+found | 当文件系统发生错误时，将一些丢失的文件片段存放在这里        |
+
+## 二、帮助命令
+
+想要查看某个命令的帮助信息，可以使用 man 命令。执行 man 命令后，就进入到浏览页面，浏览页面常用按键如下：
+
+| 按键        | 用处                    |
+| --------- | --------------------- |
+| 空格键       | 向下翻一页                 |
+| PaGe down | 向下翻一页                 |
+| PaGe up   | 向上翻一页                 |
+| home      | 直接前往首页                |
+| end       | 直接前往尾页                |
+| /         | 从上至下搜索某个关键词，如“/linux” |
+| ?         | 从下至上搜索某个关键词，如“?linux” |
+| n         | 定位到下一个搜索到的关键词         |
+| N         | 定位到上一个搜索到的关键词         |
+| q         | 退出帮助文档                |
 
-#### > --help
+## 三、Yum相关命令
+
+| 命令                    | 列出所有仓库         |
+| --------------------- | -------------- |
+| yum repolist all      | 列出所有仓库         |
+| yum list all          | 列出仓库中所有软件包     |
+| yum info 软件包名称        | 查看软件包信息        |
+| yum install 软件包名称     | 安装软件包          |
+| yum reinstall 软件包名称   | 重新安装软件包        |
+| yum update 软件包名称      | 升级软件包          |
+| yum remove 软件包名称      | 移除软件包          |
+| yum clean all         | 清除所有仓库缓存       |
+| yum check-update      | 检查可更新的软件包      |
+| yum grouplist         | 查看系统中已经安装的软件包组 |
+| yum groupinstall 软件包组 | 安装指定的软件包组      |
+| yum groupremove 软件包组  | 移除指定的软件包组      |
+| yum groupinfo 软件包组    | 查询指定的软件包组信息    |
 
-指令的基本用法与选项介绍。
+## 四、服务相关命令
 
-#### > man
+服务的启动、重启、停止、重载、查看状态等常用命令如下：
 
-man 是 manual 的缩写，将指令的具体信息显示出来。
+| System V init 命令（RHEL 6系统） | systemctl命令（RHEL 7 系统）        | 作用              |
+| -------------------------- | ----------------------------- | --------------- |
+| service foo start          | systemctl start foo.service   | 启动服务            |
+| service foo restart        | systemctl restart foo.service | 重启服务            |
+| service foo stop           | systemctl stop foo.service    | 停止服务            |
+| service foo reload         | systemctl reload foo.service  | 重新加载配置文件（不终止服务） |
+| service foo status         | systemctl status foo.service  | 查看服务状态          |
 
-当执行 `man date` 时，有 DATE(1) 出现，其中的数字代表指令的类型，常用的数字及其类型如下：
+服务开机启动、不启动、查看各级别下服务启动状态等常用命令：
 
-|  代号  | 类型                          |
-| :--: | --------------------------- |
-|  1   | 用户在 shell 环境中可以操作的指令或者可执行文件 |
-|  5   | 配置文件                        |
-|  8   | 系统管理员可以使用的管理指令              |
+| System V init 命令（RHEL 6系统） | systemctl命令（RHEL 7 系统）                   | 作用                |
+| -------------------------- | ---------------------------------------- | ----------------- |
+| chkconfig foo in           | systemctl enable foo.service             | 开机自动启动            |
+| chkconfig foo off          | systemctl disable foo.service            | 开机不自动启动           |
+| chkconfig foo              | systemctl is-enable foo.service          | 查看特定服务是否为开启自动启动   |
+| chkconfig --list           | systemctl list-unit-files --type=service | 查看各个级别下服务的启动与禁用情况 |
 
-#### > info
+## 五、常用系统命令
 
-info 与 man 类似，但是 info 将文档分成一个个页面，每个页面可以跳转。
+### 1. echo
 
-#### > doc
+echo 命令用于在终端输出字符串或变量提取后的值，格式为：echo [字符串 | $变量] 。
 
-/usr/share/doc 存放着软件的一整套说明文件。
-
-### （3）关机
-
-#### > who
-
-在关机前需要先使用 who 命令查看有没有其它用户在线。
-
-#### > sync
-
-为了加快对磁盘文件的读写速度，位于内存中的文件数据不会立即同步到磁盘，因此关机之前需要先进行 sync 同步操作。
-
-#### > shutdown
-
-```html
-## shutdown [-krhc] 时间 [信息]
--k ： 不会关机，只是发送警告信息，通知所有在线的用户
--r ： 将系统的服务停掉后就重新启动
--h ： 将系统的服务停掉后就立即关机
--c ： 取消已经在进行的 shutdown
-```
-
-### （4）PATH
-
-可以在环境变量 PATH 中声明可执行文件的路径，路径之间用 : 分隔。
-
-```html
-/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/dmtsai/.local/bin:/home/dmtsai/bin
+```shell
+[root@hadoop001 ~]# echo hello
+hello
+[root@hadoop001 ~]# echo $JAVA_HOME
+/usr/java/jdk1.8.0_201
 ```
-
-### （4）sudo
-
-sudo 允许一般用户使用 root 可执行的命令，不过只有在 /etc/sudoers 配置文件中添加的用户才能使用该指令。
-
-### （5）包管理工具
-
-RPM 和 DPKG 为最常见的两类软件包管理工具：
-
-- RPM 全称为 Redhat Package Manager，最早由 Red Hat 公司制定实施，随后被 GNU 开源操作系统接受并成为许多 Linux 系统的既定软件标准。YUM 基于 RPM，具有依赖管理和软件升级功能。
-- 与 RPM 竞争的是基于 Debian 操作系统的 DEB 软件包管理工具 DPKG，全称为 Debian Package，功能方面与 RPM 相似。
-
-### （6）发行版
-
-Linux 发行版是 Linux 内核及各种应用软件的集成版本。
-
-| 基于的包管理工具 |  商业发行版  |      社区发行版      |
-| :------: | :-----: | :-------------: |
-|   RPM    | Red Hat | Fedora / CentOS |
-|   DPKG   | Ubuntu  |     Debian      |
-
-### （7）VIM 三个模式
-
-<div align="center"> <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/04-Linux相关/01-Linux基础/images/image-20191209002818626.png"/> </div><br>
-
-
-
-- 一般指令模式（Command mode）：VIM 的默认模式，可以用于移动游标查看内容；
-- 编辑模式（Insert mode）：按下 "i" 等按键之后进入，可以对文本进行编辑；
-- 指令列模式（Bottom-line mode）：按下 ":" 按键之后进入，用于保存退出等操作。
-
-在指令列模式下，有以下命令用于离开或者保存文件。
-
-|  命令  |                 作用                  |
-| :--: | :---------------------------------: |
-|  :w  |                写入磁盘                 |
-| :w!  | 当文件为只读时，强制写入磁盘。到底能不能写入，与用户对该文件的权限有关 |
-|  :q  |                 离开                  |
-| :q!  |               强制离开不保存               |
-| :wq  |               写入磁盘后离开               |
-| :wq! |              强制写入磁盘后离开              |
-
-## 二、文件
-
-### （1）文件属性
-
-用户分为三种：文件拥有者、群组以及其它人，对不同的用户有不同的文件权限。
-
-使用 ls 查看一个文件时，会显示一个文件的信息，例如 `drwxr-xr-x 3 root root 17 May 6 00:14 .config`，对这个信息的解释如下：
-
-- drwxr-xr-x：文件类型以及权限，第 1 位为文件类型字段，后 9 位为文件权限字段
-- 3：链接数
-- root：文件拥有者
-- root：所属群组
-- 17：文件大小
-- May 6 00:14：文件最后被修改的时间
-- .config：文件名
-
-常见的文件类型及其含义有：
-
-- d：目录
-- -：文件
-- l：链接文件
-
-9 位的文件权限字段中，每 3 个为一组，共 3 组，每一组分别代表对文件拥有者、所属群组以及其它人的文件权限。一组权限中的 3 位分别为 r、w、x 权限，表示可读、可写、可执行。
 
-文件时间有以下三种：
+### 2. date
 
-- modification time (mtime)：文件的内容更新就会更新；
-- status time (ctime)：文件的状态（权限、属性）更新就会更新；
-- access time (atime)：读取文件时就会更新。
+date 命令用于显示及设置系统的时间或日期。常用参数如下：
 
-### （2）文件与目录的基本操作
+| 参数   | 作用        |
+| ---- | --------- |
+| %t   | 跳格[Tab键]  |
+| %H   | 小时（00～23） |
+| %I   | 小时（00～12） |
+| %M   | 分钟（00～59） |
+| %S   | 秒（00～59）  |
+| %j   | 今年中的第几天   |
 
-#### > ls
+按照默认格式查看当前时间：
 
-列出文件或者目录的信息，目录的信息就是其中包含的文件。
-
-```html
-## ls [-aAdfFhilnrRSt] file|dir
--a ：列出全部的文件
--d ：仅列出目录本身
--l ：以长数据串行列出，包含文件的属性与权限等等数据
-```
-
-#### > cd
-
-更换当前目录。
-
-```
-cd [相对路径或绝对路径]
+```shell
+[root@hadoop001 ~]# date
+2019年 07月 02日 星期二 14:07:34 CST
 ```
 
-#### > mkdir
+按照“年-月-日 小时:分钟:秒”的格式查看当前系统时间的date命令如下所示：
 
-创建目录。
-
-```
-## mkdir [-mp] 目录名称
--m ：配置目录权限
--p ：递归创建目录
+```shell
+[root@hadoop001 ~]# date "+%Y-%m-%d %H:%M:%S"
+2019-07-02 14:07:52 
 ```
 
-#### > rmdir
+设置系统时间：
 
-删除目录，目录必须为空。
-
-```html
-rmdir [-p] 目录名称
--p ：递归删除目录
+```shell
+[root@hadoop001 ~]# date -s "20190702 14:10:10"
+2019年 07月 02日 星期二 14:10:10 CST
 ```
-
-#### > touch
 
-更新文件时间或者建立新文件。
+### 3. reboot
 
-```html
-## touch [-acdmt] filename
--a ： 更新 atime
--c ： 更新 ctime，若该文件不存在则不建立新文件
--m ： 更新 mtime
--d ： 后面可以接更新日期而不使用当前日期，也可以使用 --date="日期或时间"
--t ： 后面可以接更新时间而不使用当前时间，格式为[YYYYMMDDhhmm]
-```
+reboot 命令用于重启系统，其格式为 reboot。 
 
-#### > cp
-
-复制文件。如果源文件有两个以上，则目的文件一定要是目录才行。
-
-```html
-cp [-adfilprsu] source destination
--a ：相当于 -dr --preserve=all
--d ：若来源文件为链接文件，则复制链接文件属性而非文件本身
--i ：若目标文件已经存在时，在覆盖前会先询问
--p ：连同文件的属性一起复制过去
--r ：递归复制
--u ：destination 比 source 旧才更新 destination，或 destination 不存在的情况下才复制
---preserve=all ：除了 -p 的权限相关参数外，还加入 SELinux 的属性, links, xattr 等也复制了
-```
+### 4. poweroff
 
-#### > rm
+poweroff 命令用于关闭系统，其格式为 poweroff。 
 
-删除文件。
+### 5. wget
 
-```html
-## rm [-fir] 文件或目录
--r ：递归删除
-```
+wget 命令用于在终端中下载网络文件，格式为： wget [参数] 下载地址。 常用参数如下：
 
-#### > mv
+| 参数   | 作用                 |
+| ---- | ------------------ |
+| -b   | 后台下载模式             |
+| -P   | 下载到指定目录            |
+| -t   | 最大尝试次数             |
+| -c   | 断点续传               |
+| -p   | 下载页面内所有资源，包括图片、视频等 |
+| -r   | 递归下载               |
 
-移动文件。
+示例下载百度首页的内容到`/usr/baidu`目录下：
 
-```html
-## mv [-fiu] source destination
-## mv [options] source1 source2 source3 .... directory
--f ： force 强制的意思，如果目标文件已经存在，不会询问而直接覆盖
+```shell
+[root@hadoop001 usr]# wget -r -p www.baidu.com -P /usr/baidu
 ```
-
-### （3）修改权限
 
-可以将一组权限用数字来表示，此时一组权限的 3 个位当做二进制数字的位，从左到右每个位的权值为 4、2、1，即每个权限对应的数字权值为 r : 4、w : 2、x : 1。
+### 6. ps
 
-```html
-## chmod [-R] xyz dirname/filename
-```
+ps 命令用于查看系统中的进程状态，格式为：ps [参数] ，常用参数如下：
 
-示例：将 .bashrc 文件的权限修改为 -rwxr-xr--。
+| 参数   | 作用                |
+| ---- | ----------------- |
+| -a   | 显示所有进程（包括其他用户的进程） |
+| -u   | 用户以及其他详细信息        |
+| -x   | 显示没有控制终端的进程       |
 
-```html
-## chmod 754 .bashrc
-```
+在 Linux 系统中，有5种常见的进程状态，分别为运行、中断、不可中断、僵死与停止：
 
-也可以使用符号来设定权限。
-
-```html
-## chmod [ugoa]  [+-=] [rwx] dirname/filename
-- u：拥有者
-- g：所属群组
-- o：其他人
-- a：所有人
-- +：添加权限
-- -：移除权限
-- =：设定权限
-```
+- **R (运行)** ：进程正在运行或在运行队列中等待。
+- **S (中断)** ：进程处于休眠中，当某个条件形成后或者接收到信号时，则脱离该   状态。
+- **D (不可中断)** ：进程不响应系统异步信号，即便用kill命令也不能将其中断。
+- **Z (僵死)** ：进程已经终止，但进程描述符依然存在, 直到父进程调用wait4()系统函数后将进程释放。
+- **T (停止)** ：进程收到停止信号后停止运行。
 
-示例：为 .bashrc 文件的所有用户添加写权限。
+示例如下：
 
-```html
-## chmod a+w .bashrc
+```shell
+[root@hadoop001 usr]# ps -u
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root      2688  0.0  0.0 110092   856 tty1     Ss+  13:45   0:00 /sbin/agetty --
+root      3679  0.0  0.1 115572  2216 pts/0    Ss   13:52   0:00 -bash
+root     12471  0.0  0.1 155360  1888 pts/0    R+   14:17   0:00 ps -u
 ```
 
-### （4）默认权限
+| USER   | PID   | %CPU   | %MEM  | VSZ            | RSS             | TTY  | STAT | START  | TIME       | COMMAND |
+| ------ | ----- | ------ | ----- | -------------- | --------------- | ---- | ---- | ------ | ---------- | ------- |
+| 进程的所有者 | 进程ID号 | 运算器占用率 | 内存占用率 | 虚拟内存使用量(单位是KB) | 占用的固定内存量(单位是KB) | 所在终端 | 进程状态 | 被启动的时间 | 实际使用CPU的时间 | 命令名称与参数 |
 
-- 文件默认权限：文件默认没有可执行权限，因此为 666，也就是 -rw-rw-rw- 。
-- 目录默认权限：目录必须要能够进入，也就是必须拥有可执行权限，因此为 777 ，也就是 drwxrwxrwx。
+### 7. top
 
-可以通过 umask 设置或者查看默认权限，通常以掩码的形式来表示，例如 002 表示其它用户的权限去除了一个 2 的权限，也就是写权限，因此建立新文件时默认的权限为 -rw-rw-r--。
+top 命令用于动态地监视进程活动与系统负载等信息，其格式为 top。 
 
-### （5）目录的权限
+```shell
+top - 14:21:25 up 35 min,  1 user,  load average: 0.00, 0.02, 0.05
+Tasks: 104 total,   1 running, 103 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.5 us,  0.7 sy,  0.0 ni, 98.7 id,  0.0 wa,  0.0 hi,  0.2 si,  0.0 st
+KiB Mem :  1882148 total,  1316728 free,   203592 used,   361828 buff/cache
+KiB Swap:  2097148 total,  2097148 free,        0 used.  1497748 avail Mem
 
-文件名不是存储在一个文件的内容中，而是存储在一个文件所在的目录中。因此，拥有文件的 w 权限并不能对文件名进行修改。
-
-目录存储文件列表，一个目录的权限也就是对其文件列表的权限。因此，目录的 r 权限表示可以读取文件列表；w 权限表示可以修改文件列表，具体来说，就是添加删除文件，对文件名进行修改；x 权限可以让该目录成为工作目录，x 权限是 r 和 w 权限的基础，如果不能使一个目录成为工作目录，也就没办法读取文件列表以及对文件列表进行修改了。
-
-### （6）链接
-
-<div align="center"> <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/04-Linux相关/01-Linux基础/images/1e46fd03-0cda-4d60-9b1c-0c256edaf6b2.png" width="450px"> </div><br>
-
-```html
-## ln [-sf] source_filename dist_filename
--s ：默认是实体链接，加 -s 为符号链接
--f ：如果目标文件存在时，先删除目标文件
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+ 3680 root      20   0  113444   1776   1344 S   0.3  0.1   0:06.45 bash
+13685 root      20   0  161880   2200   1560 R   0.3  0.1   0:00.09 top
+    1 root      20   0  193696   6656   4180 S   0.0  0.4   0:03.10 systemd
 ```
 
-#### > 实体链接
+top 命令执行结果的前5行为系统整体的统计信息，其所代表的含义如下：
 
-在目录下创建一个条目，记录着文件名与 inode 编号，这个 inode 就是源文件的 inode。
+**第1行**：系统时间、运行时间、登录终端数、系统负载（三个数值分别为1分钟、5分钟、15分钟内的平均值，数值越小意味着负载越低）。
 
-删除任意一个条目，文件还是存在，只要引用数量不为 0。
+**第2行**：进程总数、运行中的进程数、睡眠中的进程数、停止的进程数、僵死的进程数。
 
-有以下限制：不能跨越文件系统、不能对目录进行链接。
+**第3行**：用户占用资源百分比（us）、系统内核占用资源百分比（sy）、改变过优先级的进程资源百分比（ni）、空闲的资源百分比（id）等。其中数据均为CPU数据并以百分比格式显示，例如 `98.7 id` 意味着有 98.7% 的 CPU 处理器资源处于空闲。
 
-```html
-## ln /etc/crontab .
-## ll -i /etc/crontab crontab
-34474855 -rw-r--r--. 2 root root 451 Jun 10 2014 crontab
-34474855 -rw-r--r--. 2 root root 451 Jun 10 2014 /etc/crontab
-```
-
-#### > 符号链接
+**第4行**：物理内存总量、内存使用量、内存空闲量、作为内核缓存的内存量。
 
-符号链接文件保存着源文件所在的绝对路径，在读取时会定位到源文件上，可以理解为 Windows 的快捷方式。
+**第5行**：虚拟内存总量、虚拟内存使用量、虚拟内存空闲量、已被提前加载的内存量。
 
-当源文件被删除了，链接文件就打不开了。
-
-因为记录的是路径，所以可以为目录建立符号链接。
-
-```html
-## ll -i /etc/crontab /root/crontab2
-34474855 -rw-r--r--. 2 root root 451 Jun 10 2014 /etc/crontab
-53745909 lrwxrwxrwx. 1 root root 12 Jun 23 22:31 /root/crontab2 -> /etc/crontab
-```
+### 8. pidof
 
-### （7）获取文件内容
+pidof 命令用于查询某个指定服务进程的 PID 值，格式为：pidof \[参数][服务名称]。 
 
-#### > cat
+### 9. kill
 
-取得文件内容。
+kill 命令用于终止某个指定 PID 的服务进程，格式为：kill \[参数][进程 PID]。 
 
-```html
-## cat [-AbEnTv] filename
--n ：打印出行号，连同空白行也会有行号，-b 不会
-```
+### 10. killall
 
-#### > tac
+killall 命令用于终止某个指定名称的服务所对应的全部进程，格式为：killall \[参数][服务名称]。 
 
-是 cat 的反向操作，从最后一行开始打印。
 
-#### > more
 
-和 cat 不同的是它可以一页一页查看文件内容，比较适合大文件的查看。
+## 六、状态检测命令
 
-#### > less
+### 1. ifconfig
 
-和 more 类似，但是多了一个向前翻页的功能。
+ifconfig 命令用于获取网卡配置与网络状态等信息，格式为：ifconfig \[网络设备][参数]。
 
-#### > head
+### 2. uname
 
-取得文件前几行。
+uname 命令用于查看系统内核与系统版本等信息，格式为：uname [-a]。-a 参数用来查看详细信息，主要有内核名称、主机名、内核发行版本、节点名、系统时间、硬件名称、硬件平台、处理器类型以及操作系统名称等信息。
 
-```html
-## head [-n number] filename
--n ：后面接数字，代表显示几行的意思
+```shell
+[root@hadoop001 ~]# uname -a
+Linux hadoop001 3.10.0-957.el7.x86_64 #1 SMP Thu Nov 8 23:39:32 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
 ```
-
-#### > tail
-
-是 head 的反向操作，只是取得是后几行。
-
-#### > od
 
-以字符或者十六进制的形式显示二进制文件。
+如果要查看当前系统版本的详细信息，可以使用如下命令：
 
-### （8）指令与文件搜索
-
-#### > which
-
-指令搜索。
-
-```html
-## which [-a] command
--a ：将所有指令列出，而不是只列第一个
+```shell
+[root@hadoop001 ~]# cat /etc/redhat-release
+CentOS Linux release 7.6.1810 (Core)
 ```
 
-#### > whereis
+### 3. uptime
 
-文件搜索。速度比较快，因为它只搜索几个特定的目录。
+uptime 用于查看系统的负载信息。显示**当前系统时间**、**系统已运行时间**、**启用终端数量**以及**平均负载值**等信息。平均负载值指的是系统在最近1分钟、5分钟、15分钟内的压力情况。
 
-```html
-## whereis [-bmsu] dirname/filename
+```shell
+[root@hadoop001 ~]# uptime
+ 14:32:06 up 46 min,  1 user,  load average: 0.00, 0.01, 0.05
 ```
 
-#### > locate
+### 4. free
 
-文件搜索。可以用关键字或者正则表达式进行搜索。
+free 用于显示当前系统中内存的使用量信息，格式为：free [-h]。 执行`free -h`命令后的输出信息如下：
 
-locate 使用 /var/lib/mlocate/ 这个数据库来进行搜索，它存储在内存中，并且每天更新一次，所以无法用 locate 搜索新建的文件。可以使用 updatedb 来立即更新数据库。
+|       | 内存总量  | 已用量  | 可用量  | 进程共享的内存量 | 磁盘缓存的内存量 | 缓存的内存量 |
+| ----- | ----- | ---- | ---- | -------- | -------- | ------ |
+|       | total | used | free | shared   | buffers  | cached |
+| Mem:  | 1.8G  | 198M | 1.3G | 8.5M     | 353M     | 1.4G   |
+| Swap: | 2.0G  | 0B   | 2.0G |          |          |        |
 
-```html
-## locate [-ir] keyword
--r：正则表达式
-```
+swap 全称为 swap place，即交换区，当内存不够的时候，被踢出的进程被暂时存储到交换区。当需要这条被踢出的进程的时候，就从交换区重新加载到内存，否则它不会主动交换到真实内存中。
 
-#### > find
+### 5. who
 
-文件搜索。可以使用文件的属性和权限进行搜索。
+who 用于查看当前登入主机的用户终端信息，格式为：who [参数]。
 
-```html
-## find [basedir] [option]
-example: find . -name "shadow*"
-```
+### 6. last
 
-**① 与时间有关的选项**  
+last 命令用于查看所有系统的登录记录，格式为：last [参数]。 
 
-```html
--mtime  n ：列出在 n 天前的那一天修改过内容的文件
--mtime +n ：列出在 n 天之前 (不含 n 天本身) 修改过内容的文件
--mtime -n ：列出在 n 天之内 (含 n 天本身) 修改过内容的文件
--newer file ： 列出比 file 更新的文件
-```
+### 7. history
 
-+4、4 和 -4 的指示的时间范围如下：
+history 命令用于显示历史执行过的命令，格式为：history [-c]，默认显示最近1000条命令记录。可以使用 `!序号` 的方式来重复执行某条命令。
 
-<div align="center"> <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/04-Linux相关/01-Linux基础/images/658fc5e7-79c0-4247-9445-d69bf194c539.png" width=""/> </div><br>
+### 8. sosreport
 
-**② 与文件拥有者和所属群组有关的选项**  
+sosreport 命令用于收集系统配置及架构信息并输出诊断文档。使用时如果找不到该命令，则需要先使用`yum install sos`命令来安装 sos 包。
 
-```html
--uid n
--gid n
--user name
--group name
--nouser ：搜索拥有者不存在 /etc/passwd 的文件
--nogroup：搜索所属群组不存在于 /etc/group 的文件
-```
 
-**③ 与文件权限和名称有关的选项**  
-
-```html
--name filename
--size [+-]SIZE：搜寻比 SIZE 还要大 (+) 或小 (-) 的文件。这个 SIZE 的规格有：c: 代表 byte，k: 代表 1024bytes。所以，要找比 50KB 还要大的文件，就是 -size +50k
--type TYPE
--perm mode  ：搜索权限等于 mode 的文件
--perm -mode ：搜索权限包含 mode 的文件
--perm /mode ：搜索权限包含任一 mode 的文件
-```
 
-## 三、压缩与打包
+## 七、目录相关命令
 
-### （1）压缩文件名
+### 1. pwd
 
-Linux 底下有很多压缩文件名，常见的如下：
+显示当前所在的路径信息。
 
-| 扩展名        | 压缩程序                     |
-| ---------- | ------------------------ |
-| \*.Z       | compress                 |
-| \*.zip     | zip                      |
-| \*.gz      | gzip                     |
-| \*.bz2     | bzip2                    |
-| \*.xz      | xz                       |
-| \*.tar     | tar 程序打包的数据，没有经过压缩       |
-| \*.tar.gz  | tar 程序打包的文件，经过 gzip 的压缩  |
-| \*.tar.bz2 | tar 程序打包的文件，经过 bzip2 的压缩 |
-| \*.tar.xz  | tar 程序打包的文件，经过 xz 的压缩    |
+### 2. cd
 
-### （2）压缩指令
+切换到指定目录，`cd -`命令返回到上一次所处的目录。
 
-#### > gzip
+### 3. ls
 
-gzip 是 Linux 使用最广的压缩指令，可以解开 compress、zip 与 gzip 所压缩的文件。
+显示当前路径下的文件信息。想要查看文件的详细信息可以使用`ls -l `，也可以简写为`ll`。
 
-经过 gzip 压缩过，源文件就不存在了。
+## 八、文件编辑命令
 
-有 9 个不同的压缩等级可以使用。
+### 1. cat
 
-可以使用 zcat、zmore、zless 来读取压缩文件的内容。
+cat 命令用于查看内容较少的纯文本文件，格式为：cat \[选项][文件]。常用参数为`-n`，代表带行号显示。
 
-```html
-$ gzip [-cdtv#] filename
--c ：将压缩的数据输出到屏幕上
--d ：解压缩
--t ：检验压缩文件是否出错
--v ：显示压缩比等信息
--# ： # 为数字的意思，代表压缩等级，数字越大压缩比越高，默认为 6
-```
+### 2. more
 
-#### > bzip2
+more 命令用于查看内容较多的纯文本文件，格式为：more [选项]文件。可以使用空格键或回车键向下翻页。 
 
-提供比 gzip 更高的压缩比。
+### 3. head
 
-查看命令：bzcat、bzmore、bzless、bzgrep。
+head 命令用于查看纯文本文档的前N行，格式为：head \[选项][文件]。 
 
-```html
-$ bzip2 [-cdkzv#] filename
--k ：保留源文件
+```shell
+head -n 20 hdfs-site.xml
 ```
 
-#### > xz
+### 4. tail
 
-提供比 bzip2 更佳的压缩比。
-
-可以看到，gzip、bzip2、xz 的压缩比不断优化。不过要注意的是，压缩比越高，压缩的时间也越长。
-
-查看命令：xzcat、xzmore、xzless、xzgrep。
-
-```html
-$ xz [-dtlkc#] filename
-```
+tail 命令用于查看纯文本文档的后N行或持续刷新内容，格式为：tail \[选项][文件]。
 
-### （3）打包
-
-压缩指令只能对一个文件进行压缩，而打包能够将多个文件打包成一个大文件。tar 不仅可以用于打包，也可以使用 gzip、bzip2、xz 将打包文件进行压缩。
-
-```html
-$ tar [-z|-j|-J] [cv] [-f 新建的 tar 文件] filename...  ==打包压缩
-$ tar [-z|-j|-J] [tv] [-f 已有的 tar 文件]              ==查看
-$ tar [-z|-j|-J] [xv] [-f 已有的 tar 文件] [-C 目录]    ==解压缩
--z ：使用 zip；
--j ：使用 bzip2；
--J ：使用 xz；
--c ：新建打包文件；
--t ：查看打包文件里面有哪些文件；
--x ：解打包或解压缩的功能；
--v ：在压缩/解压缩的过程中，显示正在处理的文件名；
--f : filename：要处理的文件；
--C 目录 ： 在特定目录解压缩。
+```shell
+head -n 20 hdfs-site.xml
 ```
 
-| 使用方式 | 命令                                       |
-| :--: | ---------------------------------------- |
-| 打包压缩 | tar -jcv -f filename.tar.bz2 要被压缩的文件或目录名称 |
-| 查 看  | tar -jtv -f filename.tar.bz2             |
-| 解压缩  | tar -jxv -f filename.tar.bz2 -C 要解压缩的目录  |
+tail 命令可以持续观察一个文件新写入的内容，此时命令为：tail -f 文件名。 
 
-## 四、Bash
+### 5. stat
 
-可以通过 Shell 请求内核提供服务，Bash 正是 Shell 的一种。
+stat 命令用于查看文件的具体存储信息和时间等信息，示例如下：
 
-### （1）特性
-
-- 命令历史：记录使用过的命令
-- 命令与文件补全：快捷键：tab
-- 命名别名：例如 ll 是 ls -al 的别名
-- shell scripts
-- 通配符：例如 ls -l /usr/bin/X\* 列出 /usr/bin 下面所有以 X 开头的文件
-
-### （2）变量操作
-
-对一个变量赋值直接使用 =。
-
-对变量取用需要在变量前加上 \$ ，也可以用 \${} 的形式；
-
-输出变量使用 echo 命令。
-
-```bash
-$ x=abc
-$ echo $x
-$ echo ${x}
+```shell
+[root@hadoop001 hadoop]# stat hdfs-site.xml
+  文件："hdfs-site.xml"
+  大小：1021            块：8          IO 块：4096   普通文件
+设备：fd00h/64768d      Inode：3305180     硬链接：1
+权限：(0644/-rw-r--r--)  Uid：( 1106/ UNKNOWN)   Gid：( 4001/ UNKNOWN)
+环境：unconfined_u:object_r:usr_t:s0
+最近访问：2019-07-02 14:50:22.700674460 +0800
+最近更改：2019-04-30 16:06:24.421716553 +0800
+最近改动：2019-04-30 16:06:24.423716557 +0800
+创建时间：-
 ```
-
-变量内容如果有空格，必须使用双引号或者单引号。
-
-- 双引号内的特殊字符可以保留原本特性，例如 x="lang is \$LANG"，则 x 的值为 lang is zh_TW.UTF-8；
-- 单引号内的特殊字符就是特殊字符本身，例如 x='lang is \$LANG'，则 x 的值为 lang is \$LANG。
-
-可以使用 \`指令\` 或者 \$(指令) 的方式将指令的执行结果赋值给变量。例如 version=\$(uname -r)，则 version 的值为 4.15.0-22-generic。
 
-可以使用 export 命令将自定义变量转成环境变量，环境变量可以在子程序中使用，所谓子程序就是由当前 Bash 而产生的子 Bash。
+### 6. diff
 
-Bash 的变量可以声明为数组和整数数字。注意数字类型没有浮点数。如果不进行声明，默认是字符串类型。变量的声明使用 declare 命令：
+diff 命令用于比较多个文本文件的差异，格式为：diff [参数] 文件。 常用参数如下：
 
-```html
-$ declare [-aixr] variable
--a ： 定义为数组类型
--i ： 定义为整数类型
--x ： 定义为环境变量
--r ： 定义为 readonly 类型
-```
-
-使用 [ ] 来对数组进行索引操作：
+- 使用`-c`参数来详细比较出多个文件的差异之处 ；
+- 使用`--brief`参数来确认两个文件是否不同。
 
-```bash
-$ array[1]=a
-$ array[2]=b
-$ echo ${array[1]}
+```shell
+diff -c diff_A.txt diff_B.txt
+diff --brief diff_A.txt diff_B.txt
 ```
-
-### （3）指令搜索顺序
-
-- 以绝对或相对路径来执行指令，例如 /bin/ls 或者 ./ls ；
-- 由别名找到该指令来执行；
-- 由 Bash 内置的指令来执行；
-- 按 \$PATH 变量指定的搜索路径的顺序找到第一个指令来执行。
 
-### （4）数据流重定向
+## 九、文件管理命令
 
-重定向指的是使用文件代替标准输入、标准输出和标准错误输出。
+### 1. touch
 
-|        1        |  代码  |     运算符     |
-| :-------------: | :--: | :---------: |
-|  标准输入 (stdin)   |  0   |  \< 或 \<\<  |
-|  标准输出 (stdout)  |  1   | &gt; 或 \>\> |
-| 标准错误输出 (stderr) |  2   | 2\> 或 2\>\> |
+touch 命令用于创建空白文件或设置文件的时间，格式为：touch \[选项][文件]。常用参数如下：
 
-其中，有一个箭头的表示以覆盖的方式重定向，而有两个箭头的表示以追加的方式重定向。
+| 参数   | 作用              |
+| ---- | --------------- |
+| -a   | 仅修改读取时间（atime）  |
+| -m   | 仅修改修改时间（mtime）  |
+| -d   | 同时修改atime与mtime |
 
-可以将不需要的标准输出以及标准错误输出重定向到 /dev/null，相当于扔进垃圾箱。
-
-如果需要将标准输出以及标准错误输出同时重定向到一个文件，需要将某个输出转换为另一个输出，例如 2\>&1 表示将标准错误输出转换为标准输出。
-
-```bash
-$ find /home -name .bashrc > list 2>&1
+```shell
+[root@hadoop001 hadoop]# touch -d "2018-08-08 08:08" hdfs-site.xml
 ```
 
-## 五、管道指令
+### 2. mkdir
 
-管道是将一个命令的标准输出作为另一个命令的标准输入，在数据需要经过多个步骤的处理之后才能得到我们想要的内容时就可以使用管道。
+mkdir 命令用于创建空白的目录，格式为：mkdir [选项] 目录。常用参数为`-p`，代表递归创建：
 
-在命令之间使用 | 分隔各个管道命令。
-
-```bash
-$ ls -al /etc | less
+```shell
+mkdir -p a/b/c/d/e
 ```
 
-### （1）提取指令
+### 3. cp
 
-cut 对数据进行切分，取出想要的部分。
+cp 命令用于复制文件或目录，格式为：`cp [选项] 源文件 目标文件`。 常用参数如下：
 
-切分过程一行一行地进行。
-
-```html
-$ cut
--d ：分隔符
--f ：经过 -d 分隔后，使用 -f n 取出第 n 个区间
--c ：以字符为单位取出区间
-```
+| 参数   | 作用                       |
+| ---- | ------------------------ |
+| -p   | 保留原始文件的属性                |
+| -d   | 若对象为“链接文件”，则保留该“链接文件”的属性 |
+| -r   | 递归持续复制（用于目录）             |
+| -i   | 若目标文件存在则询问是否覆盖           |
+| -a   | 相当于 -pdr（p、d、r为上述参数）     |
 
-示例 1：last 显示登入者的信息，取出用户名。
+### 4. mv
 
-```html
-$ last
-root pts/1 192.168.201.101 Sat Feb 7 12:35 still logged in
-root pts/1 192.168.201.101 Fri Feb 6 12:13 - 18:46 (06:33)
-root pts/1 192.168.201.254 Thu Feb 5 22:37 - 23:53 (01:16)
+mv 命令用于剪切文件或将文件重命名，格式为：`mv [选项] 源文件 [目标路径|目标文件名]`。 如果在同一个目录中对一个文件进行剪切操作，等价于对其进行重命名： 
 
-$ last | cut -d ' ' -f 1
+```shell
+ mv yarn-site.xml hello.xml
 ```
 
-示例 2：将 export 输出的信息，取出第 12 字符以后的所有字符串。
+### 5. rm
 
-```html
-$ export
-declare -x HISTCONTROL="ignoredups"
-declare -x HISTSIZE="1000"
-declare -x HOME="/home/dmtsai"
-declare -x HOSTNAME="study.centos.vbird"
-.....(其他省略).....
+rm 命令用于删除文件或目录，格式为：rm [选项] 文件。 常用参数如下：
 
-$ export | cut -c 12-
-```
-
-### （2）排序指令
-
-**sort**   用于排序。
-
-```html
-$ sort [-fbMnrtuk] [file or stdin]
--f ：忽略大小写
--b ：忽略最前面的空格
--M ：以月份的名字来排序，例如 JAN，DEC
--n ：使用数字
--r ：反向排序
--u ：相当于 unique，重复的内容只出现一次
--t ：分隔符，默认为 tab
--k ：指定排序的区间
-```
-
-示例：/etc/passwd 文件内容以 : 来分隔，要求以第三列进行排序。
-
-```html
-$ cat /etc/passwd | sort -t ':' -k 3
-root:x:0:0:root:/root:/bin/bash
-dmtsai:x:1000:1000:dmtsai:/home/dmtsai:/bin/bash
-alex:x:1001:1002::/home/alex:/bin/bash
-arod:x:1002:1003::/home/arod:/bin/bash
-```
+- `-f`：参数来强制删除； 
+- `-r` ：参数递归删除文件夹。
 
-**uniq**   可以将重复的数据只取一个。
+### 6. file
 
-```html
-$ uniq [-ic]
--i ：忽略大小写
--c ：进行计数
-```
+file 命令用于查看文件的类型，格式为：file 文件名。 
 
-示例：取得每个人的登录总次数
-
-```html
-$ last | cut -d ' ' -f 1 | sort | uniq -c
-1
-6 (unknown
-47 dmtsai
-4 reboot
-7 root
-1 wtmp
+```shell
+[root@hadoop001 hadoop]# file yarn-site.xml
+yarn-site.xml: XML 1.0 document, UTF-8 Unicode text
 ```
 
-### （3）双向输出重定向
 
-输出重定向会将输出内容重定向到文件中，而   **tee**   不仅能够完成这个功能，还能保留屏幕上的输出。也就是说，使用 tee 指令，一个输出会同时传送到文件和屏幕上。
 
-```html
-$ tee [-a] file
-```
+## 十、压缩与搜索命令
 
-### （4）字符转换指令
+### 1. tar
 
-**tr**   用来删除一行中的字符，或者对字符进行替换。
-
-```html
-$ tr [-ds] SET1 ...
--d ： 删除行中 SET1 这个字符串
-```
+tar 命令用于对文件进行压缩或解压，格式为：tar \[选项] [文件]。 常用参数如下：
 
-示例，将 last 输出的信息所有小写转换为大写。
+| 参数   | 作用          |
+| ---- | ----------- |
+| -c   | 创建压缩文件      |
+| -x   | 解开压缩文件      |
+| -t   | 查看压缩包内有哪些文件 |
+| -z   | 用Gzip压缩或解压  |
+| -j   | 用bzip2压缩或解压 |
+| -v   | 显示压缩或解压的过程  |
+| -f   | 目标文件名       |
+| -p   | 保留原始的权限与属性  |
+| -P   | 使用绝对路径来压缩   |
+| -C   | 指定解压到的目录    |
 
-```html
-$ last | tr '[a-z]' '[A-Z]'
-```
+常用打包命令：`tar -czvf 压缩包名称.tar.gz 要打包的目录`；
 
-   **col**   将 tab 字符转为空格字符。
+常用解压命令：`tar -xzvf 压缩包名称.tar.gz`。 
 
-```html
-$ col [-xb]
--x ： 将 tab 键转换成对等的空格键
-```
+### 2. grep
 
-**expand**   将 tab 转换一定数量的空格，默认是 8 个。
+grep 命令用于执行关键词搜索，并显示匹配的结果，格式为：grep \[选项][文件]。 常用参数如下：
 
-```html
-$ expand [-t] file
--t ：tab 转为空格的数量
-```
+| 参数   | 作用                            |
+| ---- | ----------------------------- |
+| -b   | 将可执行文件（binary）当作文本文件（text）来搜索 |
+| -c   | 仅显示找到的行数                      |
+| -i   | 忽略大小写                         |
+| -n   | 显示行号                          |
+| -v   | 反向选择——仅列出没有关键词的行。             |
 
-**join**   将有相同数据的那一行合并在一起。
-
-```html
-$ join [-ti12] file1 file2
--t ：分隔符，默认为空格
--i ：忽略大小写的差异
--1 ：第一个文件所用的比较字段
--2 ：第二个文件所用的比较字段
+```shell
+[root@hadoop001 hadoop]# cat core-site.xml | grep hadoop -n
+22:    <value>hdfs://hadoop001:8020</value>
+25:    <name>hadoop.proxyuser.root.hosts</name>
+29:    <name>hadoop.proxyuser.root.groups</name>
 ```
 
-**paste**   直接将两行粘贴在一起。
+### 3. find
 
-```html
-$ paste [-d] file1 file2
--d ：分隔符，默认为 tab
-```
+find 命令用于按照指定条件来查找文件，格式为：`find [查找路径] 寻找条件 操作`。 常用命令如下：
 
-### （5）分区指令
+| 参数                 | 作用                                       |
+| ------------------ | ---------------------------------------- |
+| -name              | 匹配名称                                     |
+| -perm              | 匹配权限（mode为完全匹配，-mode为包含即可）               |
+| -user              | 匹配所有者                                    |
+| -group             | 匹配所有组                                    |
+| -mtime -n +n       | 匹配修改内容的时间（-n指n天以内，+n指n天以前）               |
+| -atime -n +n       | 匹配访问文件的时间（-n指n天以内，+n指n天以前）               |
+| -ctime -n +n       | 匹配修改文件权限的时间（-n指n天以内，+n指n天以前）             |
+| -nouser            | 匹配无所有者的文件                                |
+| -nogroup           | 匹配无所有组的文件                                |
+| -newer f1 !f2      | 匹配比文件f1新但比f2旧的文件                         |
+| --type b/d/c/p/l/f | 匹配文件类型（后面的字幕字母依次表示块设备、目录、字符设备、管道、链接文件、文本文件） |
+| -size              | 匹配文件的大小（+50KB为查找超过50KB的文件，而-50KB为查找小于50KB的文件） |
+| -prune             | 忽略某个目录                                   |
+| -exec …… {}\;      | 后面可跟用于进一步处理搜索结果的命令                       |
 
-**split**   将一个文件划分成多个文件。
+获取到指定目录中所有以 host 开头的文件列表，可以执行如下命令： 
 
-```html
-$ split [-bl] file PREFIX
--b ：以大小来进行分区，可加单位，例如 b, k, m 等
--l ：以行数来进行分区。
-- PREFIX ：分区文件的前导名称
+```shell
+find /etc -name "host*" -print
 ```
 
-## 六、正则表达式
 
-### （1）grep
 
-g/re/p（globally search a regular expression and print)，使用正则表示式进行全局查找并打印。
+## 十一、用户管理相关命令
 
-```html
-$ grep [-acinv] [--color=auto] 搜寻字符串 filename
--c ： 统计匹配到行的个数
--i ： 忽略大小写
--n ： 输出行号
--v ： 反向选择，也就是显示出没有 搜寻字符串 内容的那一行
---color=auto ：找到的关键字加颜色显示
-```
+### 1. useradd
 
-示例：把含有 the 字符串的行提取出来（注意默认会有 --color=auto 选项，因此以下内容在 Linux 中有颜色显示 the 字符串）
-
-```html
-$ grep -n 'the' regular_express.txt
-8:I can't finish the test.
-12:the symbol '*' is represented as start.
-15:You are the best is mean you are the no. 1.
-16:The world Happy is the same with "glad".
-18:google is the best tools for search keyword
-```
+useradd 命令用于创建新的用户，格式为：useradd [选项] 用户名。使用该命令创建用户账户时，默认的用户家目录会被存放在`/home`目录中，默认的 Shell 解释器为`/bin/bash`，默认会创建一个与该用户同名的基本用户组。常用配置如下：
 
-示例：正则表达式 a{m,n} 用来匹配字符 a m\~n 次，这里需要将 { 和 } 进行转义，因为它们在 shell 是有特殊意义的。
+| 参数   | 作用                          |
+| ---- | --------------------------- |
+| -d   | 指定用户的家目录（默认为/home/username） |
+| -e   | 账户的到期时间，格式为YYYY-MM-DD.      |
+| -u   | 指定该用户的默认UID                 |
+| -g   | 指定一个初始的用户基本组（必须已存在）         |
+| -G   | 指定一个或多个扩展用户组                |
+| -N   | 不创建与用户同名的基本用户组              |
+| -s   | 指定该用户的默认 Shell 解释器          |
 
-```html
-$ grep -n 'a\{2,5\}' regular_express.txt
+```shell
+[root@hadoop001 ~]# id heibaiying
+uid=1000(heibaiying) gid=1000(heibaiying) 组=1000(heibaiying)
 ```
 
-### （2）printf
+UID就相当是用户的唯一标识，其赋值规则如下：
 
-用于格式化输出。它不属于管道命令，在给 printf 传数据时需要使用 $( ) 形式。
-
-```html
-$ printf '%10s %5i %5i %5i %8.2f \n' $(cat printf.txt)
-    DmTsai    80    60    92    77.33
-     VBird    75    55    80    70.00
-       Ken    60    90    70    73.33
-```
+- 管理员 UID 为0：系统的管理员用户。
+- 系统用户 UID 为1～999： Linux 系统为了避免因某个服务程序出现漏洞而被黑客提权至整台服务器，默认服务程序会有独立的系统用户负责运行，进而有效控制被破坏范围。
+- 普通用户 UID 从1000 开始：是由管理员创建的用于日常工作的用户。
 
-### （3）awk
+### 2. groupadd
 
-是由 Alfred Aho，Peter Weinberger 和 Brian Kernighan 创造，awk 这个名字就是这三个创始人名字的首字母。
+groupadd 命令用于创建用户组，格式为：groupadd [选项] 群组名。 
 
-awk 每次处理一行，处理的最小单位是字段，每个字段的命名方式为：\$n，n 为字段号，从 1 开始，\$0 表示一整行。
+### 3. usermod
 
-示例：取出最近五个登录用户的用户名和 IP。首先用 last -n 5 取出用最近五个登录用户的所有信息，可以看到用户名和 IP 分别在第 1 列和第 3 列，我们用 \$1 和 \$3 就能取出这两个字段，然后用 print 进行打印。
+创建后用户的信息保存在`/etc/passwd`文件中，可以直接对其进行编辑来修改用户参数，或使用 usermod 命令。常用参数如下：
 
-```html
-$ last -n 5
-dmtsai pts/0 192.168.1.100 Tue Jul 14 17:32 still logged in
-dmtsai pts/0 192.168.1.100 Thu Jul 9 23:36 - 02:58 (03:22)
-dmtsai pts/0 192.168.1.100 Thu Jul 9 17:23 - 23:36 (06:12)
-dmtsai pts/0 192.168.1.100 Thu Jul 9 08:02 - 08:17 (00:14)
-dmtsai tty1 Fri May 29 11:55 - 12:11 (00:15)
-```
+| 参数    | 作用                                  |
+| ----- | ----------------------------------- |
+| -c    | 填写用户账户的备注信息                         |
+| -d -m | 参数-m与参数-d连用，可重新指定用户的家目录并自动把旧的数据转移过去 |
+| -e    | 账户的到期时间，格式为YYYY-MM-DD               |
+| -g    | 变更所属用户组                             |
+| -G    | 变更扩展用户组                             |
+| -L    | 锁定用户禁止其登录系统                         |
+| -U    | 解锁用户，允许其登录系统                        |
+| -s    | 变更默认终端                              |
+| -u    | 修改用户的UID                            |
 
-```html
-$ last -n 5 | awk '{print $1 "\t" $3}'
-dmtsai   192.168.1.100
-dmtsai   192.168.1.100
-dmtsai   192.168.1.100
-dmtsai   192.168.1.100
-dmtsai   Fri
+```shell
+[root@hadoop001 ~]# usermod -u 9999 heibaiying
+[root@hadoop001 ~]# id heibaiying
+uid=9999(heibaiying) gid=1000(heibaiying) 组=1000(heibaiying)
 ```
-
-可以根据字段的某些条件进行匹配，例如匹配字段小于某个值的那一行数据。
 
-```html
-$ awk '条件类型 1 {动作 1} 条件类型 2 {动作 2} ...' filename
-```
+### 4. passwd
 
-示例：/etc/passwd 文件第三个字段为 UID，对 UID 小于 10 的数据进行处理。
+passwd 命令用于设置或修改用户密码、过期时间、认证信息等，格式为：passwd \[选项][用户名]。常用参数如下：
 
-```text
-$ cat /etc/passwd | awk 'BEGIN {FS=":"} $3 < 10 {print $1 "\t " $3}'
-root 0
-bin 1
-daemon 2
-```
+| 参数      | 作用                                       |
+| ------- | ---------------------------------------- |
+| -l      | 锁定用户，禁止其登录                               |
+| -u      | 解除锁定，允许用户登录                              |
+| --stdin | 允许通过标准输入修改用户密码，如echo "NewPassWord" \| passwd --stdin Username |
+| -d      | 使该用户可用空密码登录系统                            |
+| -e      | 强制用户在下次登录时修改密码                           |
+| -S      | 显示用户的密码是否被锁定，以及密码所采用的加密算法名称              |
 
-awk 变量：
-
-| 变量名称 | 代表意义           |
-| :--: | -------------- |
-|  NF  | 每一行拥有的字段总数     |
-|  NR  | 目前所处理的是第几行数据   |
-|  FS  | 目前的分隔字符，默认是空格键 |
-
-示例：显示正在处理的行号以及每一行有多少字段
-
-```html
-$ last -n 5 | awk '{print $1 "\t lines: " NR "\t columns: " NF}'
-dmtsai lines: 1 columns: 10
-dmtsai lines: 2 columns: 10
-dmtsai lines: 3 columns: 10
-dmtsai lines: 4 columns: 10
-dmtsai lines: 5 columns: 9
+```shell
+[root@hadoop001 ~]# passwd
+更改用户 root 的密码 。
+新的 密码：
+重新输入新的 密码：
+passwd：所有的身份验证令牌已经成功更新。
 ```
 
-## 七、进程管理
+### 5. userdel
 
-### （1）查看进程
+userdel 命令用于删除用户，格式为：userdel [选项] 用户名。常用参数如下：
 
-#### > ps
+| 参数   | 作用           |
+| ---- | ------------ |
+| -f   | 强制删除用户       |
+| -r   | 同时删除用户及用户家目录 |
 
-查看某个时间点的进程信息。
+## 十二、文件权限相关命令
 
-示例：查看自己的进程
+使用 `ll` 命令可以查看到文件的详细属性，各个属性的含义如下：
 
-```sh
-## ps -l
-```
-
-示例：查看系统所有进程
+<div align="center"> <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/01-Linux基础/images/文件属性信息.png"/> </div>
 
-```sh
-## ps aux
-```
+文件类型可以分为以下几类：
 
-示例：查看特定的进程
-
-```sh
-## ps aux | grep threadx
-```
+- \-：普通文件。
+- d：目录文件。
+- l：链接文件。
+- b：块设备文件。
+- c：字符设备文件。
+- p：管道文件。
 
-#### > pstree
+### 1. chmod
 
-查看进程树。
+chmod 用于设置文件或目录的权限，格式为：chmod [参数] 权限 文件或目录名称。 权限支持字符表示和数字表示两种形式，其对应关系如下：
 
-示例：查看所有进程树
+<div align="center"> <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/01-Linux基础/images/文件权限的字符与数字表示.png"/> </div>
+示例如下：
 
-```sh
-## pstree -A
 ```
-
-#### > top
-
-实时显示进程信息。
-
-示例：两秒钟刷新一次
-
-```sh
-## top -d 2
+[root@hadoop001 ~]# ll test.txt
+-rw-r--r--. 1 root root 0 7月   3 14:49 test.txt
+[root@hadoop001 ~]# chmod 760  test.txt
+[root@hadoop001 ~]# ll test.txt
+-rwxrw----. 1 root root 0 7月   3 14:49 test.txt
 ```
 
-#### > netstat
+### 2. chown
 
-查看占用端口的进程
+chown 设置文件或目录的所有者和所属组，格式为：chown [参数] 所有者:所属组 文件或目录名称。
 
-示例：查看特定端口的进程
-
-```sh
-## netstat -anp | grep port
+```shell
+[root@hadoop001 ~]# stat test.txt
+......
+权限：(0760/-rwxrw----)  Uid：(    0/    root)   Gid：(    0/    root)
+......
+[root@hadoop001 ~]# chown  heibaiying:heibaiying test.txt
+[root@hadoop001 ~]# stat test.txt
+......
+权限：(0760/-rwxrw----)  Uid：( 9999/heibaiying)   Gid：( 1000/heibaiying)
+......
 ```
-
-### （2）进程状态
-
-|  状态  | 说明                                       |
-| :--: | ---------------------------------------- |
-|  R   | running or runnable (on run queue)<br>正在执行或者可执行，此时进程位于执行队列中。 |
-|  D   | uninterruptible sleep (usually I/O)<br>不可中断阻塞，通常为 IO 阻塞。 |
-|  S   | interruptible sleep (waiting for an event to complete) <br> 可中断阻塞，此时进程正在等待某个事件完成。 |
-|  Z   | zombie (terminated but not reaped by its parent)<br>僵死，进程已经终止但是尚未被其父进程获取信息。 |
-|  T   | stopped (either by a job control signal or because it is being traced) <br> 结束，进程既可以被作业控制信号结束，也可能是正在被追踪。 |
-
-<br>
-
-<div align="center"> <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/04-Linux相关/01-Linux基础/images/2bab4127-3e7d-48cc-914e-436be859fb05.png" width="490px"/> </div><br>
 
-### （3）SIGCHLD
+### 3. 软硬链接
 
-当一个子进程改变了它的状态时（停止运行，继续运行或者退出），有两件事会发生在父进程中：
+**硬链接（hard link）**：可以将它理解为一个“指向原始文件 inode 的指针”，系统不为它分配独立的 inode 和文件。所以，硬链接文件与原始文件其实是同一个文件，只是名字不同。我们每添加一个硬链接，该文件的 inode 连接数就会增加 1；而且只有当该文件的 inode 连接数为 0 时，才算彻底将它删除。换言之，由于硬链接实际上是指向原文件 inode 的指针，因此即便原始文件被删除，依然可以通过硬链接文件来访问。
 
-- 得到 SIGCHLD 信号；
-- waitpid() 或者 wait() 调用会返回。
+**软链接（也称为符号链接）**：仅仅包含所链接文件的路径名，因此能链接目录文件，也可以跨越文件系统进行链接。但是，当原始文件被删除后，链接文件也将失效，与 Windows 系统中的快捷方式类似。
 
-其中子进程发送的 SIGCHLD 信号包含了子进程的信息，比如进程 ID、进程状态、进程使用 CPU 的时间等。
+ln 命令用于创建链接文件，格式为：ln [选项]  目标。常用参数如下：
 
-在子进程退出时，它的进程描述符不会立即释放，这是为了让父进程得到子进程信息，父进程通过 wait() 和 waitpid() 来获得一个已经退出的子进程的信息。
+| 参数   | 作用                        |
+| ---- | ------------------------- |
+| -s   | 创建符号链接（如果不带-s参数，则默认创建硬链接） |
+| -f   | 强制创建文件或目录的链接              |
+| -i   | 覆盖前先询问                    |
+| -v   | 显示创建链接的过程                 |
 
-<div align="center"> <!-- <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/flow.png" width=""/> --> </div><br>
-
-### （4）wait()
-
-```c
-pid_t wait(int *status)
-```
-
-父进程调用 wait() 会一直阻塞，直到收到一个子进程退出的 SIGCHLD 信号，之后 wait() 函数会销毁子进程并返回。
-
-如果成功，返回被收集的子进程的进程 ID；如果调用进程没有子进程，调用就会失败，此时返回 -1，同时 errno 被置为 ECHILD。
-
-参数 status 用来保存被收集的子进程退出时的一些状态，如果对这个子进程是如何死掉的毫不在意，只想把这个子进程消灭掉，可以设置这个参数为 NULL。
-
-### （5）waitpid()
-
-```c
-pid_t waitpid(pid_t pid, int *status, int options)
-```
+## 十三、Vim编辑器常用命令
 
-作用和 wait() 完全相同，但是多了两个可由用户控制的参数 pid 和 options。
+Vim编辑器有三种状态模式：
 
-pid 参数指示一个子进程的 ID，表示只关心这个子进程退出的 SIGCHLD 信号。如果 pid=-1 时，那么和 wait() 作用相同，都是关心所有子进程退出的 SIGCHLD 信号。
+- 命令模式：控制光标移动，可对文本进行复制、粘贴、删除和查找等工作。
+- 输入模式：正常的文本录入。
+- 末行模式：保存或退出文档，以及设置编辑环境。
 
-options 参数主要有 WNOHANG 和 WUNTRACED 两个选项，WNOHANG 可以使 waitpid() 调用变成非阻塞的，也就是说它会立即返回，父进程可以继续执行其它任务。
+<div align="center"> <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/01-Linux基础/images/vim不同模式间的切换.png"/> </div>
+命令模式中常用的命令如下：
 
-### （6）孤儿进程
+| 命令   | 作用                          |
+| ---- | --------------------------- |
+| dd   | 删除（剪切）光标所在整行                |
+| 5dd  | 删除（剪切）从光标处开始的5行             |
+| yy   | 复制光标所在整行                    |
+| 5yy  | 复制从光标处开始的5行                 |
+| n    | 显示搜索命令定位到的下一个字符串            |
+| N    | 显示搜索命令定位到的上一个字符串            |
+| u    | 撤销上一步的操作                    |
+| p    | 将之前删除（dd）或复制（yy）过的数据粘贴到光标后面 |
 
-一个父进程退出，而它的一个或多个子进程还在运行，那么这些子进程将成为孤儿进程。
+末行模式中可用的命令如下：
 
-孤儿进程将被 init 进程（进程号为 1）所收养，并由 init 进程对它们完成状态收集工作。
+| 命令            | 作用                       |
+| ------------- | ------------------------ |
+| :w            | 保存                       |
+| :q            | 退出                       |
+| :q!           | 强制退出（放弃对文档的修改内容）         |
+| :wq!          | 强制保存退出                   |
+| :set nu       | 显示行号                     |
+| :set nonu     | 不显示行号                    |
+| :命令           | 执行该命令                    |
+| :整数           | 跳转到该行                    |
+| :s/one/two    | 将当前光标所在行的第一个 one 替换成 two |
+| :s/one/two/g  | 将当前光标所在行的所有 one 替换成 two  |
+| :%s/one/two/g | 将全文中的所有 one 替换成 two      |
+| ?字符串          | 在文本中从下至上搜索该字符串           |
+| /字符串          | 在文本中从上至下搜索该字符串           |
 
-由于孤儿进程会被 init 进程收养，所以孤儿进程不会对系统造成危害。
+使用 a、 i、 o 三个键从命令模式切换到输入模式。其中， `a` 键与 `i` 键分别是在光标后面一位和光标当前位置切换到输入模式，而 `o`  键则是在光标的下面再创建一个空行，此时可敲击 `a` 键进入到输入模式。
 
-### （7）僵尸进程
+## 十四、输入输出重定向
 
-一个子进程的进程描述符在子进程退出时不会释放，只有当父进程通过 wait() 或 waitpid() 获取了子进程信息后才会释放。如果子进程退出，而父进程并没有调用 wait() 或 waitpid()，那么子进程的进程描述符仍然保存在系统中，这种进程称之为僵尸进程。
+输入重定向是指把文件导入到命令中，而输出重定向则是指把原本要输出到屏幕的数据信息写入到指定文件中。同时输出重定向又分为标准输出重定向和错误输出重定向。
 
-僵尸进程通过 ps 命令显示出来的状态为 Z（zombie）。
+- 标准输入重定向（STDIN，文件描述符为0）：默认从键盘输入，也可从其他文件或命令中输入。
+- 标准输出重定向（STDOUT，文件描述符为1）：默认输出到屏幕。
+- 错误输出重定向（STDERR，文件描述符为2）：默认输出到屏幕。
 
-系统所能使用的进程号是有限的，如果产生大量僵尸进程，将因为没有可用的进程号而导致系统不能产生新的进程。
+输入重定向中用到的符号及其作用如下：
 
-要消灭系统中大量的僵尸进程，只需要将其父进程杀死，此时僵尸进程就会变成孤儿进程，从而被 init 进程所收养，这样 init 进程就会释放所有的僵尸进程所占有的资源，从而结束僵尸进程。
+| 符号             | 作用                      |
+| -------------- | ----------------------- |
+| 命令 < 文件        | 将文件作为命令的标准输入            |
+| 命令 << 分界符      | 从标准输入中读入，直到遇见分界符才停止     |
+| 命令 < 文件1 > 文件2 | 将文件1作为命令的标准输入并将标准输出到文件2 |
 
+输出重定向中用到的符号及其作用如下：
 
+| 符号                           | 作用                             |
+| ---------------------------- | ------------------------------ |
+| 命令 > 文件                      | 将标准输出重定向到一个文件中（清空原有文件的数据）      |
+| 命令 2> 文件                     | 将错误输出重定向到一个文件中（清空原有文件的数据）      |
+| 命令 >> 文件                     | 将标准输出重定向到一个文件中（追加到原有内容的后面）     |
+| 命令 2>> 文件                    | 将错误输出重定向到一个文件中（追加到原有内容的后面）     |
+| 命令 >> 文件 2>&1   或  命令 &>> 文件 | 将标准输出与错误输出共同写入到文件中（追加到原有内容的后面） |
 
 <div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

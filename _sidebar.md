@@ -46,6 +46,7 @@
   - [MongoDB](./notes/03-数据库/06-Mongo/README.md)
 - **Linux相关** 
   - [Linux基础](./notes/04-Linux相关/01-Linux基础/README.md)
+  - [Shell](./notes/04-Linux相关/04-Shell/README.md)
   - [Docker](./notes/04-Linux相关/02-Docker/README.md)
   - [Nginx](./notes/04-Linux相关/03-Nginx/README.md)
   - [常用脚本](./notes/04-Linux相关/常用脚本/README.md)
