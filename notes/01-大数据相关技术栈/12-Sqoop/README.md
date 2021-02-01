@@ -1,6 +1,6 @@
 ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/12-Sqoop/images/sqoop.png)
 
-##  一、Sqoop  安装
+##  一、Sqoop 的安装部署
 
 ### （1）前提条件
 

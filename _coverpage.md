@@ -10,7 +10,7 @@
 
   ![star](https://gitee.com/MartinHub/MartinHub-notes/badge/star.svg?theme=dark) ![fork](https://gitee.com/MartinHub/MartinHub-notes/badge/fork.svg?theme=dark)
 
-  ![start](https://img.shields.io/github/stars/MartinHub-plus/MartinHub-notes?style=flat) ![fork](https://img.shields.io/github/forks/MartinHub-plus/MartinHub-notes?style=flat)
+  ![start](https://img.shields.io/github/stars/MartinHub-plus/MartinHub-notes?style=flat) ![fork](https://img.shields.io/github/forks/MartinHub-plus/MartinHub-notes)
 
   [![Fork me on Gitee](https://gitee.com/MartinHub/MartinHub-notes/widgets/widget_3.svg)](https://gitee.com/MartinHub/MartinHub-notes)
 

@@ -1,6 +1,6 @@
 ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/11-Flume/images/flume.png)
 
-## 一、Linux下Flume的安装
+## 一、Flume 的安装部署
 
 ### （1）前置条件
 

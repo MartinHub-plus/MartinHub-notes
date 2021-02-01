@@ -1,6 +1,6 @@
 ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/14-Azkaban/images/azkaban.png)
 
-## 一、Azkaban 3.x 编译及部署
+## 一、Azkaban 的安装部署
 
 ### （1）Azkaban 源码编译
 

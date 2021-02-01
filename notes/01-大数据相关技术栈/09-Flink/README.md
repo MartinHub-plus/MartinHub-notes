@@ -1,6 +1,90 @@
 ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/09-Flink/images/flink.png)
 
-## 一、Flink Standalone Cluster
+## 一、Flink 的简介
+
+&emsp;Apache Flink 是一个框架和分布式处理引擎，用于对无界和有界数据流进行有状态计算。Flink 被设计在所有常见的集群环境中运行，以内存执行速度和任意规模来执行计算。
+
+### （1）特点
+
+- **事件驱动型(Event-driven)**
+
+  &emsp;事件驱动型应用是一类具有状态的应用，它从一个或多个事件流提取数据，并根据到来的事件触发计算、状态更新或其他外部动作。比较典型的就是以 kafka 为代表的消息队列几乎都是事件驱动型应用。
+
+  &emsp;与之不同的就是 SparkStreaming 微批次，如图：
+
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/09-Flink/images/spark.PNG)
+
+​	&emsp;事件驱动型：
+
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/09-Flink/images/event.PNG)
+
+- **流与批的世界观**
+
+  &emsp;**批处理**的特点是有界、持久、大量，非常适合需要访问全套记录才能完成的计算工作，一般用于离线统计。
+
+  &emsp;**流处理**的特点是无界、实时, 无需针对整个数据集执行操作，而是对通过系统传输的每个数据项执行操作，一般用于实时统计。
+
+  <br/>
+
+  &emsp;在 spark 的世界观中，一切都是由批次组成的，离线数据是一个大批次，而实时数据是由一个一个无限的小批次组成的。
+
+  &emsp;而在 flink 的世界观中，一切都是由流组成的，离线数据是有界限的流，实时数据是一个没有界限的流，这就是所谓的有界流和无界流。
+
+  &emsp;**无界数据流**：无界数据流有一个开始但是没有结束，它们不会在生成时终止并提供数据，必须连续处理无界流，也就是说必须在获取后立即处理 event。对于无界数据流我们无法等待所有数据都到达，因为输入是无界的，并且在任何时间点都不会完成。处理无界数据通常要求以特定顺序（例如事件发生的顺序）获取 event以
+  便能够推断结果完整性。
+
+  &emsp;**有界数据流**：有界数据流有明确定义的开始和结束，可以在执行任何计算之前通过获取所有数据来处理有界流，处理有界流不需要有序获取，因为可以始终对有界数据集进行排序，有界流的处理也称为批处理。
+
+  <font color='red'>这种以流为世界观的架构，获得的最大好处就是具有极低的延迟。</font>
+
+  ### （2）Flink 核心架构
+
+  &emsp;Flink 采用分层的架构设计，从而保证各层在功能和职责上的清晰。如下图所示，由上而下分别是 API & Libraries 层、Runtime 核心层以及物理部署层：
+
+  <div align="center"> <img width="600px"  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/09-Flink/images/flink-stack.png"/> </div>
+
+  ​
+
+  #### > API & Libraries 层
+
+  这一层主要提供了编程 API 和 顶层类库：
+
+  - 编程 API : 用于进行流处理的 DataStream API 和用于进行批处理的 DataSet API；
+  - 顶层类库：包括用于复杂事件处理的 CEP 库；用于结构化数据查询的 SQL & Table 库，以及基于批处理的机器学习库 FlinkML 和 图形处理库 Gelly。
+
+  #### > Runtime 核心层
+
+  这一层是 Flink 分布式计算框架的核心实现层，包括作业转换，任务调度，资源分配，任务执行等功能，基于这一层的实现，可以在流式引擎下同时运行流处理程序和批处理程序。
+
+  #### > 物理部署层
+
+  Flink 的物理部署层，用于支持在不同平台上部署运行 Flink 应用。
+
+  ### （3）Flink 分层 API
+
+  在上面介绍的 API & Libraries 这一层，Flink 又进行了更为具体的划分。具体如下：
+
+  <div align="center"> <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/09-Flink/images/flink-api-stack.png"/> </div>
+
+  ​
+
+  按照如上的层次结构，API 的一致性由下至上依次递增，接口的表现能力由下至上依次递减，各层的核心功能如下：
+
+  #### > SQL & Table API
+
+  SQL & Table API 同时适用于批处理和流处理，这意味着你可以对有界数据流和无界数据流以相同的语义进行查询，并产生相同的结果。除了基本查询外， 它还支持自定义的标量函数，聚合函数以及表值函数，可以满足多样化的查询需求。 
+
+  #### > DataStream & DataSet API
+
+  DataStream &  DataSet API 是 Flink 数据处理的核心 API，支持使用 Java 语言或 Scala 语言进行调用，提供了数据读取，数据转换和数据输出等一系列常用操作的封装。
+
+  #### > Stateful Stream Processing
+
+  Stateful Stream Processing 是最低级别的抽象，它通过 Process Function 函数内嵌到 DataStream API 中。 Process Function 是 Flink 提供的最底层 API，具有最大的灵活性，允许开发者对于时间和状态进行细粒度的控制。
+
+
+
+## 二、Flink Standalone Cluster
 
 ### （1）部署模式
 

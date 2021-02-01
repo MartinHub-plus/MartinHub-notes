@@ -52,14 +52,14 @@
   - [常用脚本](./notes/04-Linux相关/常用脚本/README.md)
 - **算法相关** 
   - [Leetcode](./notes/05-算法/01-LeetCode/README.md)
-  - [牛 客](./notes/05-算法/02-牛客/README.md)
-- **前端技术** 
-  - [Vue](./notes/07-前端相关技术栈/01-Vue/README.md)
+  - <!--[牛 客](./notes/05-算法/02-牛客/README.md)-->
+- <!--**前端技术**-->
+  - <!--[Vue](./notes/07-前端相关技术栈/01-Vue/README.md)-->
 - **IT 书籍** 
   - [大数据书籍](./notes/08-IT书籍/README.md)
 - **面   经**
   - [大数据面试](./notes/09-面经/大数据面试/README.md)
   - [Java面试](./notes/09-面经/Java面试/README.md)
-- **杂  记**
-  - [loading..........](./notes/10-杂记/README.md)
+- <!--**杂  记**-->
+  - <!--[loading..........](./notes/10-杂记/README.md)-->
 
