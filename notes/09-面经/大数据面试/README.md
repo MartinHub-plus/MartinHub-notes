@@ -17,7 +17,7 @@
   (5) 数据块传送完成以后，`dataNode`向`Client`通信，同时向`NameNode`报告；
 
   (6) 依照上⾯ (4) 到 (5) 的原理将所有的数据块都上传，结束后向 `NameNode `报告 表明已经传完所有的数据块。
-  ![img](./images/Hadoop面试1.PNG)
+  ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/09-面经/大数据面试/images/Hadoop面试1.PNG)
 
 - **2. HDFS在上传⽂件的时候，如果其中⼀个块突然损坏了怎么办？** 
 

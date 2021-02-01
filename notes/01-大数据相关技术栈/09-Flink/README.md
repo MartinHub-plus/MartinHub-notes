@@ -298,7 +298,7 @@ the classpath/dependencies.
 
 &emsp;可以看到是因为在 classpath 目录下找不到 Hadoop 的相关依赖，此时需要检查是否在环境变量中配置了 Hadoop 的安装路径，如果路径已经配置但仍然存在上面的问题，可以从 [Flink 官网](https://flink.apache.org/downloads.html)下载对应版本的 Hadoop 组件包：
 
-![img](./images/flink-optional-components.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/09-Flink/images/flink-optional-components.png)
 
 
 

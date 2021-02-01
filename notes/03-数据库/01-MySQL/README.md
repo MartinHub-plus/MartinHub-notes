@@ -6,7 +6,7 @@
 
 这里我采用的是二进制安装包的方式进行安装，安装包的下载地址为：https://dev.mysql.com/downloads/mysql/ ，按需选择对应的版本后进行下载：
 
-<div align="center"> <img src="https://gitee.com/heibaiying/Full-Stack-Notes/raw/master/pictures/mysql-version.png"/> </div>
+<div align="center"> <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/01-MySQL/images/mysql-version.png"/> </div>
 下载后进行解压，并对解压后的文件夹进行重命名，以便在后面的配置中进行引用：
 
 ```shell
