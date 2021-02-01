@@ -6,7 +6,7 @@
 
 |             微信公众号【MartinHub】             |             个人微信号【MartinHub】             |
 | :--------------------------------------: | :--------------------------------------: |
-| <img src="./images/weixin.png" width="200" /> | <img src="./images/myself.jpg" width="200" /> |
+| <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images//weixin.png" width="200" /> | <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images//myself.jpg" width="200" /> |
 
 ## 项目介绍
 

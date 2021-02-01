@@ -1,4 +1,4 @@
-<img width="180px" style="border-radius: 50%" bor src="favicon.jpg">
+<img width="180px" style="border-radius: 50%" bor src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/favicon.jpg">
 
 # MartinHub-Notes
 
