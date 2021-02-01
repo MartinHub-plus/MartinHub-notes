@@ -196,7 +196,7 @@ public final class String
 
 &emsp;如果一个 String 对象已经被创建过了，那么就会从 String Pool 中取得引用。只有 String 是不可变的，才可能使用 String Pool。
 
-![img](./images/474e5579-38b1-47d2-8f76-a13ae086b039.jpg)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/01-Java基础/images/474e5579-38b1-47d2-8f76-a13ae086b039.jpg)
 
 **3. 安全性** 
 
@@ -1352,7 +1352,7 @@ public InitialOrderTest() {
 -  **受检异常** ：需要用 try...catch... 语句捕获并进行处理，并且可以从异常中恢复；
 -  **非受检异常** ：是程序运行时错误，例如除 0 会引发 Arithmetic Exception，此时程序崩溃并且无法恢复。
 
-![img](./images/PPjwP.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/01-Java基础/images/PPjwP.png)
 
 - [Java 入门之异常处理](https://www.tianmaying.com/tutorial/Java-Exception)
 - [Java 异常的面试问题及答案 -Part 1](http://www.importnew.com/7383.html)
@@ -1435,3 +1435,5 @@ public class Box<T> {
 
 - Eckel B. Java 编程思想[M]. 机械工业出版社, 2002.
 - Bloch J. Effective java[M]. Addison-Wesley Professional, 2017.
+
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

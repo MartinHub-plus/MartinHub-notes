@@ -444,3 +444,5 @@ data name namesecondary
 
 &emsp;&emsp;4）集群运行中可以安全加入和退出一些机器。
 
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>
+

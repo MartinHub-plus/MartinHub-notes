@@ -80,7 +80,7 @@ Redis 支持很多特性，例如将内存中的数据持久化到硬盘中，�
 
 ### （1）STRING
 
-![img](./images/6019b2db-bc3e-4408-b6d8-96025f4481d6.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/02-Redis/images/6019b2db-bc3e-4408-b6d8-96025f4481d6.png) 
 
 ```html
 > set hello world
@@ -95,7 +95,7 @@ OK
 
 ### （2）LIST
 
-![img](./images/fb327611-7e2b-4f2f-9f5b-38592d408f07.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/02-Redis/images/fb327611-7e2b-4f2f-9f5b-38592d408f07.png)
 
 ```html
 > rpush list-key item
@@ -123,7 +123,7 @@ OK
 
 ### （3）SET
 
-![img](./images/cd5fbcff-3f35-43a6-8ffa-082a93ce0f0e.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/02-Redis/images/cd5fbcff-3f35-43a6-8ffa-082a93ce0f0e.png)
 
 ```html
 > sadd set-key item
@@ -157,7 +157,7 @@ OK
 
 ### （4）HASH
 
-![img](./images/7bd202a7-93d4-4f3a-a878-af68ae25539a.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/02-Redis/images/7bd202a7-93d4-4f3a-a878-af68ae25539a.png)
 
 ```html
 > hset hash-key sub-key1 value1
@@ -188,7 +188,7 @@ OK
 
 ### （5）ZSET
 
-![img](./images/1202b2d6-9469-4251-bd47-ca6034fb6116.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/02-Redis/images/1202b2d6-9469-4251-bd47-ca6034fb6116.png)
 
 ```html
 > zadd zset-key 728 member1
@@ -330,11 +330,11 @@ int dictRehash(dict *d, int n) {
 
 跳跃表是基于多指针有序链表实现的，可以看成多个有序链表。
 
-![img](./images/beba612e-dc5b-4fc2-869d-0b23408ac90a.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/02-Redis/images/beba612e-dc5b-4fc2-869d-0b23408ac90a.png)
 
 在查找时，从上层指针开始查找，找到对应的区间之后再到下一层去查找。下图演示了查找 22 的过程。
 
-![img](./images/0ea37ee2-c224-4c79-b895-e131c6805c40.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/02-Redis/images/0ea37ee2-c224-4c79-b895-e131c6805c40.png)
 
 与红黑树等平衡树相比，跳跃表具有以下优点：
 
@@ -484,7 +484,7 @@ Redis 服务器是一个事件驱动程序。
 
 Redis 基于 Reactor 模式开发了自己的网络事件处理器，使用 I/O 多路复用程序来同时监听多个套接字，并将到达的事件传送给文件事件分派器，分派器会根据套接字产生的事件类型调用相应的事件处理器。
 
-![img](./images/9ea86eb5-000a-4281-b948-7b567bd6f1d8.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/02-Redis/images/9ea86eb5-000a-4281-b948-7b567bd6f1d8.png)
 
 ### （2）时间事件
 
@@ -537,7 +537,7 @@ def main():
 
 从事件处理的角度来看，服务器运行流程如下：
 
-![img](./images/c0a9fa91-da2e-4892-8c9f-80206a6f7047.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/02-Redis/images/c0a9fa91-da2e-4892-8c9f-80206a6f7047.png)
 
 ## 十一、复制
 
@@ -555,7 +555,7 @@ def main():
 
 随着负载不断上升，主服务器可能无法很快地更新所有从服务器，或者重新连接和重新同步从服务器将导致系统超载。为了解决这个问题，可以创建一个中间层来分担主服务器的复制工作。中间层的服务器是最上层服务器的从服务器，又是最下层服务器的主服务器。
 
-![img](./images/395a9e83-b1a1-4a1d-b170-d081e7bb5bab.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/02-Redis/images/395a9e83-b1a1-4a1d-b170-d081e7bb5bab.png)
 
 ## 十二、Sentinel
 
@@ -590,7 +590,7 @@ Sentinel（哨兵）可以监听集群中的服务器，并在主服务器进入
 
 Redis 没有关系型数据库中的表这一概念来将同种类型的数据存放在一起，而是使用命名空间的方式来实现这一功能。键名的前面部分存储命名空间，后面部分的内容存储 ID，通常使用 : 来进行分隔。例如下面的 HASH 的键名为 article:92617，其中 article 为命名空间，ID 为 92617。
 
-![img](./images/7c54de21-e2ff-402e-bc42-4037de1c1592.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/02-Redis/images/7c54de21-e2ff-402e-bc42-4037de1c1592.png)
 
 ### （2）点赞功能
 
@@ -598,13 +598,13 @@ Redis 没有关系型数据库中的表这一概念来将同种类型的数据�
 
 为了节约内存，规定一篇文章发布满一周之后，就不能再对它进行投票，而文章的已投票集合也会被删除，可以为文章的已投票集合设置一个一周的过期时间就能实现这个规定。
 
-![img](./images/485fdf34-ccf8-4185-97c6-17374ee719a0.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/02-Redis/images/485fdf34-ccf8-4185-97c6-17374ee719a0.png)
 
 ### （3）对文章进行排序
 
 为了按发布时间和点赞数进行排序，可以建立一个文章发布时间的有序集合和一个文章点赞数的有序集合。（下图中的 score 就是这里所说的点赞数；下面所示的有序集合分值并不直接是时间和点赞数，而是根据时间和点赞数间接计算出来的）
 
-![img](./images/f7d170a3-e446-4a64-ac2d-cb95028f81a8.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/02-Redis/images/f7d170a3-e446-4a64-ac2d-cb95028f81a8.png)
 
 ## 参考资料
 
@@ -616,3 +616,7 @@ Redis 没有关系型数据库中的表这一概念来将同种类型的数据�
 - [Redis 3.0 中文版- 分片](http://wiki.jikexueyuan.com/project/redis-guide)
 - [Redis 应用场景](http://www.scienjus.com/redis-use-case/)
 - [Using Redis as an LRU cache](https://redis.io/topics/lru-cache)
+
+
+
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

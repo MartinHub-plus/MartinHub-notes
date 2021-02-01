@@ -2,7 +2,7 @@
 
 
 
-![img](./images/hadoop.jpg)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/hadoop.jpg)
 
 ```shell
 bin    
@@ -325,7 +325,7 @@ cp mapred-site.xml.template mapred-site.xml
 
 方式二：查看 Web UI 界面，端口号为 `8088`：
 
-![img](./images/hadoop-yarn安装验证.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/hadoop-yarn安装验证.png)
 
 
 
@@ -335,7 +335,7 @@ cp mapred-site.xml.template mapred-site.xml
 
 &emsp;&emsp;这里搭建一个 3 节点的 Hadoop 集群，其中三台主机均部署 `DataNode` 和 `NodeManager` 服务，但只有 hadoop001 上部署 `NameNode` 和 `ResourceManager` 服务。
 
-![img](./images/hadoop集群规划.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/hadoop集群规划.png)
 
 ### （2）安装JDK
 
@@ -665,15 +665,15 @@ start-yarn.sh
 
 &emsp;&emsp;在每台服务器上使用 `jps` 命令查看服务进程，或直接进入 Web-UI 界面进行查看，端口为 `50070`。可以看到此时有三个可用的 `Datanode`：
 
-![img](./images/hadoop-集群环境搭建.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/hadoop-集群环境搭建.png)
 
 &emsp;&emsp;点击 `Live Nodes` 进入，可以看到每个 `DataNode` 的详细情况：
 
-![img](./images/hadoop-集群搭建2.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/hadoop-集群搭建2.png)
 
 &emsp;&emsp;接着可以查看 Yarn 的情况，端口号为 `8088` ：
 
-![img](./images/hadoop-集群搭建3.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/hadoop-集群搭建3.png)
 
 ### （5）提交服务到集群
 
@@ -695,7 +695,7 @@ hadoop jar /usr/app/hadoop-2.6.0-cdh5.15.2/share/hadoop/mapreduce/hadoop-mapredu
 
 &emsp;&emsp;HDFS 高可用架构如下：
 
-![img](./images/HDFS-HA-Architecture-Edureka.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/HDFS-HA-Architecture-Edureka.png)
 
 > *图片引用自：https://www.edureka.co/blog/how-to-set-up-hadoop-cluster-with-hdfs-high-availability/*
 
@@ -713,13 +713,13 @@ HDFS 高可用架构主要由以下组件所构成：
 
 &emsp;&emsp;需要说明的是向 JournalNode 集群写入 EditLog 是遵循 “过半写入则成功” 的策略，所以你至少要有 3 个 JournalNode 节点，当然你也可以继续增加节点数量，但是应该保证节点总数是奇数。同时如果有 2N+1 台 JournalNode，那么根据过半写的原则，最多可以容忍有 N 台 JournalNode 节点挂掉。
 
-![img](./images/hadoop-QJM-同步机制.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/hadoop-QJM-同步机制.png)
 
 #### > NameNode 主备切换
 
 &emsp;&emsp;NameNode 实现主备切换的流程下图所示：
 
-![img](./images/hadoop-namenode主备切换.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/hadoop-namenode主备切换.png)
 
 1. HealthMonitor 初始化完成之后会启动内部的线程来定时调用对应 NameNode 的 HAServiceProtocol RPC 接口的方法，对 NameNode 的健康状态进行检测。
 2. HealthMonitor 如果检测到 NameNode 的健康状态发生变化，会回调 ZKFailoverController 注册的相应方法进行处理。
@@ -732,13 +732,13 @@ HDFS 高可用架构主要由以下组件所构成：
 
 &emsp;&emsp;&emsp;YARN ResourceManager 的高可用与 HDFS NameNode 的高可用类似，但是 ResourceManager 不像 NameNode ，没有那么多的元数据信息需要维护，所以它的状态信息可以直接写到 Zookeeper 上，并依赖 Zookeeper 来进行主备选举。
 
-![img](./images/hadoop-rm-ha-overview.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/hadoop-rm-ha-overview.png)
 
 ### （2）集群规划
 
 &emsp;&emsp;&emsp;按照高可用的设计目标：需要保证至少有两个 NameNode (一主一备)  和 两个 ResourceManager (一主一备)  ，同时为满足“过半写入则成功”的原则，需要至少要有 3 个 JournalNode 节点。这里使用三台主机进行搭建，集群规划如下：
 
-![img](./images/hadoop高可用集群规划.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/hadoop高可用集群规划.png)
 
 ### （3）前置条件
 
@@ -1113,23 +1113,23 @@ yarn-daemon.sh start resourcemanager
 
 &emsp;&emsp;此时 hadoop001 上的 `NameNode` 处于可用状态：
 
-![img](./images/hadoop高可用集群1.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/hadoop高可用集群1.png)
 
 &emsp;&emsp;而 hadoop002 上的 `NameNode` 则处于备用状态：
 
-![img](./images/hadoop高可用集群3.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/hadoop高可用集群3.png)
 
 &emsp;&emsp;hadoop002 上的 `ResourceManager` 处于可用状态：
 
-![img](./images/hadoop高可用集群4.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/hadoop高可用集群4.png)
 
 &emsp;&emsp;hadoop003 上的 `ResourceManager` 则处于备用状态：
 
-![img](./images/hadoop高可用集群5.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/hadoop高可用集群5.png)
 
 &emsp;&emsp;同时界面上也有 `Journal Manager` 的相关信息：
 
-![img](./images/hadoop高可用集群2.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/hadoop高可用集群2.png)
 
 ### （7）集群的二次启动
 
@@ -1192,7 +1192,7 @@ rsync 和 scp 区别：用 rsync 做文件的复制要比 scp 的速度快，rsy
   命令   选项参数 要拷贝的文件路径/名称  目的用户@主机:目的路径
 ```
 
-![img](./images/image1.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop/images/image1.png)
 
 **3. xsync 集群分发脚本**
 
@@ -1231,4 +1231,8 @@ done
 &emsp;&emsp;调用脚本形式：xsync 文件名称       
 
 **注意** ：如果将xsync放到/home/martinhub/bin目录下仍然不能实现全局使用，可以将xsync移动到/usr/local/bin 目录下。
+
+
+
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>
 

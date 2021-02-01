@@ -1,4 +1,4 @@
-![img](./images/hive.jpg)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/04-Hive/images/hive.jpg)
 
 ## 一、Hive基础
 
@@ -162,7 +162,7 @@ export HIVE_CONF_DIR=/opt/module/hive/conf
 
 &emsp;&emsp;将 MySQL 驱动包拷贝到 Hive 安装目录的 `lib` 目录下, MySQL 驱动的下载地址为：https://dev.mysql.com/downloads/connector/j/  。
 
-![img](./images/hive-mysql.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/04-Hive/images/hive-mysql.png)
 
 ### （5）初始化元数据库
 
@@ -185,11 +185,11 @@ export HIVE_CONF_DIR=/opt/module/hive/conf
 hive
 ```
 
-![img](./images/hive-install-2.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/04-Hive/images/hive-install-2.png)
 
 &emsp;&emsp;在 Mysql 中也能看到 Hive 创建的库和存放元数据信息的表
 
-![img](./images/hive-mysql-tables.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/04-Hive/images/hive-mysql-tables.png)
 
 ```text
 1）Default 数据仓库的最原始位置是在 hdfs 上的：/user/hive/warehouse 路径下。
@@ -244,7 +244,7 @@ nohup hiveserver2 &
 beeline -u jdbc:hive2://hadoop001:10000 -n root
 ```
 
-![img](./images/hive-beeline-cli.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/04-Hive/images/hive-beeline-cli.png)
 
 ## 四、Hive CLI和Beeline命令行的基本使用
 
@@ -282,7 +282,7 @@ usage: hive
 hive -e 'select * from emp';
 ```
 
-![img](./images/hive-e.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/04-Hive/images/hive-e.png)
 
 
 
@@ -356,7 +356,7 @@ hive >  select ${hivevar:j} from emp;
 
 &emsp;&emsp;结果如下：
 
-![img](./images/hive-n-j.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/04-Hive/images/hive-n-j.png)
 
 ### （2）Beeline
 
@@ -1158,7 +1158,7 @@ SELECT empno, deptno, sal FROM emp CLUSTER  BY deptno ;
 
 &emsp;&emsp;需要特别强调：JOIN 语句的关联条件必须用 ON 指定，不能用 WHERE 指定，否则就会先做笛卡尔积，再过滤，这会导致你得不到预期的结果 (下面的演示会有说明)。
 
-![img](./images/sql-join.jpg)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/04-Hive/images/sql-join.jpg)
 
 #### > INNER JOIN
 
@@ -1195,7 +1195,7 @@ ON e.deptno = d.deptno;
 
 &emsp;&emsp;执行右连接后，由于 40 号部门下没有任何员工，所以此时员工信息为 NULL。这个查询可以很好的复述上面提到的——JOIN 语句的关联条件必须用 ON 指定，不能用 WHERE 指定。你可以把 ON 改成 WHERE，你会发现无论如何都查不出 40 号部门这条数据，因为笛卡尔运算不会有 (NULL, 40) 这种情况。
 
-![img](./images/hive-right-join.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/04-Hive/images/hive-right-join.png)
 
 #### > FULL OUTER  JOIN
 
@@ -1296,7 +1296,7 @@ SET hive.exec.mode.local.auto=true;
 
 
 
-
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>
 
 
 

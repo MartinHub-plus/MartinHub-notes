@@ -1,4 +1,4 @@
-![img](./images/spark.jpg)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark.jpg)
 
 
 
@@ -18,7 +18,7 @@
 
 ### （2）Spark的核心模块
 
-![img](./images/模块.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/模块.PNG)
 
 ➢  Spark Core
 
@@ -48,7 +48,7 @@
 
 &emsp;官方下载地址：http://spark.apache.org/downloads.html ，选择 Spark 版本和对应的 Hadoop 版本后再下载：
 
-![img](./images/spark-download.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-download.png)
 
 &emsp;解压安装包：
 
@@ -88,7 +88,7 @@ spark-shell --master local[2]
 - **local[k]**：启动 k 个工作线程；
 - **local[*]**：启动跟 cpu 数目相同的工作线程数。
 
-![img](./images/spark-shell-local.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-shell-local.png)
 
 &emsp;进入 spark-shell 后，程序已经自动创建好了上下文 `SparkContext`，等效于执行了下面的 Scala 代码：
 
@@ -117,11 +117,11 @@ wordCounts.collect
 
 &emsp;执行过程如下，可以看到已经输出了词频统计的结果：
 
-![img](./images/spark-shell.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-shell.png)
 
 &emsp;同时还可以通过 Web UI 查看作业的执行情况，访问端口为 `4040`：
 
-![img](./images/spark-shell-web-ui.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-shell-web-ui.png)
 
 #### > Scala开发环境配置
 
@@ -135,13 +135,13 @@ wordCounts.collect
 
 &emsp;IDEA 默认不支持 Scala 语言的开发，需要通过插件进行扩展。打开 IDEA，依次点击 **File** => **settings**=> **plugins** 选项卡，搜索 Scala 插件 (如下图)。找到插件后进行安装，并重启 IDEA 使得安装生效。
 
-![img](./images/idea-scala-plugin.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/idea-scala-plugin.png)
 
 **创建Scala项目** 
 
 &emsp;在 IDEA 中依次点击 **File** => **New** => **Project** 选项卡，然后选择创建 `Scala—IDEA` 工程：
 
-![img](./images/idea-newproject-scala.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/idea-newproject-scala.png)
 
 **下载Scala SDK** 
 
@@ -149,7 +149,7 @@ wordCounts.collect
 
 &emsp;此时看到 `Scala SDK` 为空，依次点击 `Create` => `Download` ，选择所需的版本后，点击 `OK` 按钮进行下载，下载完成点击 `Finish` 进入工程。
 
-![img](./images/idea-scala-select.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/idea-scala-select.png)
 
 2. 方式二
 
@@ -157,31 +157,31 @@ wordCounts.collect
 
 这里我的系统是 Windows，下载 msi 版本的安装包后，一直点击下一步进行安装，安装完成后会自动配置好环境变量。
 
-![img](./images/scala-other-resources.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/scala-other-resources.png)
 
 
 
 &emsp;由于安装时已经自动配置好环境变量，所以 IDEA 会自动选择对应版本的 SDK。
 
-![img](./images/idea-scala-2.1.8.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/idea-scala-2.1.8.png)
 
 **创建Hello World** 
 
 &emsp;在工程 `src` 目录上右击 **New** => **Scala class** 创建 `Hello.scala`。输入代码如下，完成后点击运行按钮，成功运行则代表搭建成功。
 
-![img](./images/scala-hello-world.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/scala-hello-world.png)
 
 **切换Scala版本** 
 
 &emsp;在日常的开发中，由于对应软件（如 Spark）的版本切换，可能导致需要切换 Scala 的版本，则可以在 `Project Structures` 中的 `Global Libraries` 选项卡中进行切换。
 
-![img](./images/idea-scala-change.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/idea-scala-change.png)
 
 **可能出现的问题** 
 
 &emsp;在 IDEA 中有时候重新打开项目后，右击并不会出现新建 `scala` 文件的选项，或者在编写时没有 Scala 语法提示，此时可以先删除 `Global Libraries` 中配置好的 SDK，之后再重新添加：
 
-![img](./images/scala-sdk.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/scala-sdk.png)
 
 
 
@@ -201,7 +201,7 @@ wordCounts.collect
 
   集群规划：
 
-  ![img](./images/独立模式-集群规划.PNG)
+  ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/独立模式-集群规划.PNG)
 
 - **Yarn 模式**
 
@@ -252,7 +252,7 @@ wordCounts.collect
 
   **部署模式对比**： 
 
-  ![img](./images/部署模式对比.PNG)
+  ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/部署模式对比.PNG)
 
   **端口号**：
 
@@ -279,7 +279,7 @@ wordCounts.collect
 | Executor        | 位于工作节点上的应用进程，负责执行计算任务并且将输出数据保存到内存或者磁盘中   |
 | Task            | 被发送到 Executor 中的工作单元                     |
 
-![img](./images/spark-集群模式.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-集群模式.png)
 
 **核心组件**：
 
@@ -322,7 +322,7 @@ wordCounts.collect
 
 应用程序相关启动参数如下:
 
-![img](./images/应用程序相关启动参数.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/应用程序相关启动参数.PNG)
 
 - **并行度（Parallelism)**
 
@@ -332,7 +332,7 @@ wordCounts.collect
 
 &emsp;所谓的提交流程，其实就是我们开发人员根据需求写的应用程序通过 Spark 客户端提交给 Spark 运行环境执行计算的流程。在不同的部署环境中，这个提交过程基本相同，但是又有细微的区别，我们这里不进行详细的比较，但是因为国内工作中，将 Spark 引用部署到Yarn 环境中会更多一些，所以本课程中的提交流程是基于 Yarn 环境的。
 
-![img](./images/提交流程.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/提交流程.PNG)
 
 &emsp;Spark 应用程序提交到 Yarn 环境中执行的时候，一般会有两种部署执行的方式：Client和 Cluster。两种模式主要区别在于：Driver 程序的运行节点位置。
 
@@ -816,7 +816,7 @@ sc.parallelize(list,numSlices = 2).aggregateByKey(zeroValue = 0,numPartitions = 
 
 &emsp;这里使用了 `numSlices = 2` 指定 aggregateByKey 父操作 parallelize 的分区数量为 2，其执行流程如下：
 
-![img](./images/spark-aggregateByKey.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-aggregateByKey.png)
 
 &emsp;基于同样的执行流程，如果 `numSlices = 1`，则意味着只有输入一个分区，则其最后一步 combOp 相当于是无效的，执行结果为：
 
@@ -843,7 +843,7 @@ sc.parallelize(list,numSlices = 6).aggregateByKey(zeroValue = 0,numPartitions = 
 ).getNumPartitions
 ```
 
-![img](./images/spark-getpartnum.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-getpartnum.png) 
 
 #### > Action
 
@@ -1084,7 +1084,7 @@ case (key, num) => {
 >     3.  DataFrame 与 DataSet 均支持 SparkSQL 的操作，比如 select ， groupby之类，还能注册临时表/视窗，进行 sql 语句操作。
 >     4.  DataFrame 与 DataSet 支持一些特别方便的保存方式，比如保存成 csv ，可以带上表头，这样每一列的字段名一目了然。
 
-![img](./images/互换.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/互换.PNG)
 
 
 
@@ -1574,7 +1574,7 @@ df.write.mode("overwrite").partitionBy("deptno").save("/tmp/spark/partitions")
 
 &emsp;输出结果如下：可以看到输出被按照部门编号分为三个子目录，子目录中才是对应的输出文件。
 
-![img](./images/spark-分区.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-分区.png) 
 
 **分桶写入**
 
@@ -1713,7 +1713,7 @@ dept 部门表
 
 &emsp;其中内，外连接，笛卡尔积均与普通关系型数据库中的相同，如下图所示：
 
-![img](./images/sql-join.jpg)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/sql-join.jpg)
 
 &emsp;这里解释一下左半连接和左反连接，这两个连接等价于关系型数据库中的 `IN` 和 `NOT IN` 字句：
 
@@ -1815,7 +1815,7 @@ spark.sql("SELECT * FROM emp NATURAL JOIN dept").show()
 spark.sql("SELECT * FROM emp JOIN dept ON emp.deptno = dept.deptno").show()
 ```
 
-![img](./images/spark-sql-NATURAL-JOIN.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-sql-NATURAL-JOIN.png) 
 
 &emsp;由于自然连接常常会产生不可预期的结果，所以并不推荐使用。
 
@@ -1825,11 +1825,11 @@ spark.sql("SELECT * FROM emp JOIN dept ON emp.deptno = dept.deptno").show()
 
 &emsp;在对大表与大表之间进行连接操作时，通常都会触发 `Shuffle Join`，两表的所有分区节点会进行 `All-to-All` 的通讯，这种查询通常比较昂贵，会对网络 IO 会造成比较大的负担。
 
-![img](./images/spark-Big-table–to–big-table.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-Big-table–to–big-table.png)
 
 &emsp;而对于大表和小表的连接操作，Spark 会在一定程度上进行优化，如果小表的数据量小于 Worker Node 的内存空间，Spark 会考虑将小表的数据广播到每一个 Worker Node，在每个工作节点内部执行连接计算，这可以降低网络的 IO，但会加大每个 Worker Node 的 CPU 负担。
 
-![img](./images/spark-Big-table–to–small-table.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-Big-table–to–small-table.png)
 
 &emsp;是否采用广播方式进行 `Join` 取决于程序内部对小表的判断，如果想明确使用广播方式进行 `Join`，则可以在 DataFrame API 中使用 `broadcast` 方法指定需要广播的小表：
 
@@ -2064,7 +2064,7 @@ object SparkSqlApp {
 
 &emsp;自定义聚合函数需要实现的方法比较多，这里以绘图的方式来演示其执行流程，以及每个方法的作用：
 
-![img](./images/spark-sql-自定义函数.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-sql-自定义函数.png)
 
 
 
@@ -2161,11 +2161,11 @@ object SparkSqlApp {
   > Spark Streaming 用于流式数据的处理。Spark Streaming 支持的数据输入源很多，例如：Kafka、Flume、Twitter、ZeroMQ 和简单的 TCP 套接字等等。数据输入后可以用 Spark 的高度抽象原语
   > 如：map、reduce、join、window 等进行运算。而结果也能保存在很多地方，如 HDFS，数据库等。
 
-![img](./images/streaming1.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/streaming1.PNG)
 
 > 在 Spark Streaming 中，处理数据的单位是一批而不是单条，而数据采集却是逐条进行的，因此 Spark Streaming 系统需要设置间隔使得数据汇总到一定的量后再一并操作，这个间隔就是批处理间隔。批处理间隔是 Spark Streaming 的核心概念和关键参数，它决定了 Spark Streaming 提交作业的频率和数据处理的延迟，同时也影响着数据处理的吞吐量和性能。
 
-![img](./images/streaming2.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/streaming2.PNG)
 
 > Spark Streaming 提供了一个高级抽象: discretized stream(SStream), DStream 表示一个连续的数据流.
 >
@@ -2178,7 +2178,7 @@ object SparkSqlApp {
   - 缺点：Spark Streaming 是一种“微量批处理”架构, 和其他基于“一次处理一条记录”架构的系统相比, 它的延迟会相对高一些
 - **Spark-Streaming架构** 
 
-![img](./images/架构.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/架构.PNG)
 
 - **背压机制**
 
@@ -2357,7 +2357,7 @@ Time: 1539075292000 ms
 
 > 无状态转化操作就是把简单的 `RDD` 转化操作应用到每个批次上，也就是转化` DStream` 中的每一个 `RDD`。部分无状态转化操作列在了下表中。注意，针对键值对的` DStream` 转化操作(比如`reduceByKey())`要添加 `import StreamingContext._`才能在 `Scala` 中使用。
 
-![img](./images/无状态转换.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/无状态转换.PNG)
 
 > 需要记住的是，尽管这些函数看起来像作用在整个流上一样，但事实上每个 DStream 在内部是由许多 RDD（批次）组成，且无状态转化操作是分别应用到每个 RDD 上的。
 
@@ -2617,7 +2617,7 @@ Time: 1539075292000 ms
 
 ### （2）Spark  通用运行流程
 
-![img](./images/通用运行流程.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/通用运行流程.PNG)
 
 
 
@@ -2809,11 +2809,11 @@ bin/spark-submit \
 
     在对 RDD 进行算子时，要避免相同的算子和计算逻辑之下对 RDD 进行重复的计算.
 
-    ![img](./images/优化1.PNG)
+    ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/优化1.PNG)
 
      &emsp; &emsp; 对上图中的 RDD 计算架构进行修改，得到如下图所示的优化结果：
 
-    ![img](./images/优化2.PNG)
+    ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/优化2.PNG)
 
   - **RDD 持久化**
 
@@ -2914,11 +2914,11 @@ val conf = new SparkConf().set("spark.locality.wait", "6")
 
   &emsp;普通的 map 算子对 RDD 中的每一个元素进行操作，而 mapPartitions 算子对 RDD 中每一个分区进行操作。如果是普通的 map 算子，假设一个 partition 有 1 万条数据，那么 map算子中的 function 要执行 1 万次，也就是对每个元素进行操作。
 
-  ![img](./images/算子调优1.PNG)
+  ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/算子调优1.PNG)
 
   &emsp;如果是 mapPartition 算子，由于一个 task 处理一个 RDD 的 partition，那么一个 task 只会执行一次 function，function 一次接收所有的 partition 数据，效率比较高。
 
-  ![img](./images/算子调优2.PNG)
+  ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/算子调优2.PNG)
 
   &emsp;比如，当要把 RDD 中的所有数据通过 JDBC 写入数据，如果使用 map 算子，那么需要对 RDD 中的每一个元素都创建一个数据库连接，这样对资源的消耗很大，如果使用mapPartitions 算子，那么针对一个分区的数据，只需要建立一个数据库连接。
 
@@ -2938,7 +2938,7 @@ val conf = new SparkConf().set("spark.locality.wait", "6")
 
 &emsp;与 mapPartitions 算子非常相似，foreachPartition 是将 RDD 的每个分区作为遍历对象，一次处理一个分区的数据，也就是说，如果涉及数据库的相关操作，一个分区的数据只需要创建一次数据库连接，如图所示：
 
-![img](./images/算子调优3.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/算子调优3.PNG)
 
 &emsp;使用了 foreachPartition 算子后，可以获得以下的性能提升：
 
@@ -2956,7 +2956,7 @@ val conf = new SparkConf().set("spark.locality.wait", "6")
 
 &emsp;在 Spark 任务中我们经常会使用 filter 算子完成 RDD 中数据的过滤，在任务初始阶段，从各个分区中加载到的数据量是相近的，但是一旦进过 filter 过滤后，每个分区的数据量有可能会存在较大差异，如图所示：
 
-![img](./images/算子调优4.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/算子调优4.PNG)
 
 &emsp;根据图中信息我们可以发现两个问题：
 
@@ -3006,7 +3006,7 @@ val conf = new SparkConf().set("spark.locality.wait", "6")
 
 &emsp;为了解决 Spark SQL 无法设置并行度和 task 数量的问题，我们可以使用 repartition 算子。
 
-![img](./images/算子调优5.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/算子调优5.PNG)
 
 &emsp;Spark SQL 这一步的并行度和 task 数量肯定是没有办法去改变了，但是，对于Spark SQL 查询出来的 RDD，立即使用 repartition 算子，去重新进行分区，这样可以重新分区为多个 partition，从 repartition 之后的 RDD 操作，由于不再设计 SparkSQL，因此 stage 的并行度就会等于你手动设置的值，这样就避免了 Spark SQL 所在
 的 stage 只能用少量的 task 去处理大量数据并执行复杂的算法逻辑。
@@ -3209,7 +3209,7 @@ val conf = new SparkConf().set("spark.shuffle.sort.bypassMergeThreshold", "400")
   &emsp;当使用了类似于 groupByKey、reduceByKey 这样的算子时，可以考虑使用随机 key 实
   现双重聚合，如图所示：
 
-  ![img](./images/数据倾斜1.PNG)
+  ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/数据倾斜1.PNG)
 
 &emsp;首先，通过 map 算子给每个数据的 key 添加随机数前缀，对 key 进行打散，将原先一样的 key 变成不一样的 key，然后进行第一次聚合，这样就可以让原本被一个 task 处理的数据分散到多个 task 上去做局部聚合；随后，去除掉每个 key 的前缀，再次进行聚合。
 
@@ -3223,7 +3223,7 @@ val conf = new SparkConf().set("spark.shuffle.sort.bypassMergeThreshold", "400")
 
 &emsp;正常情况下，join 操作都会执行 shuffle 过程，并且执行的是 reduce join，也就是先将所有相同的 key 和对应的 value 汇聚到一个 reduce task 中，然后再进行 join。普通 join 的过程如下图所示：
 
-![img](./images/数据倾斜2.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/数据倾斜2.PNG)
 
 &emsp;普通的 join 是会走 shuffle 过程的，而一旦 shuffle，就相当于会将相同 key 的数据拉取到一个 shuffle read task 中再进行 join，此时就是 reduce join。但是如果一个 RDD 是比较小的，则可以采用广播小RDD全量数据+map算子来实现与join同样的效果，也就是map join，此时就不会发生 shuffle 操作，也就不会发生数据倾斜。
 
@@ -3237,7 +3237,7 @@ val conf = new SparkConf().set("spark.shuffle.sort.bypassMergeThreshold", "400")
 
 &emsp;当 join 操作有数据倾斜问题并且其中一个 RDD 的数据量较小时，可以优先考虑这种方式，效果非常好。map join 的过程如图所示：
 
-![img](./images/数据倾斜3.PNG) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/数据倾斜3.PNG) 
 
 **不适用场景分析：**
 
@@ -3252,7 +3252,7 @@ val conf = new SparkConf().set("spark.shuffle.sort.bypassMergeThreshold", "400")
 
 &emsp;当由单个 key 导致数据倾斜时，可有将发生数据倾斜的 key 单独提取出来，组成一个RDD，然后用这个原本会导致倾斜的 key 组成的 RDD 根其他 RDD 单独 join，此时，根据Spark 的运行机制，此 RDD 中的数据会在 shuffle 阶段被分散到多个 task 中去进行 join 操作。倾斜 key 单独 join 的流程如图所示：
 
-![img](./images/数据倾斜4.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/数据倾斜4.PNG)
 
 1． 适用场景分析：
 
@@ -3334,7 +3334,7 @@ val conf = new SparkConf()
 
 &emsp;YARN-client 模式的运行原理如下图所示：
 
-![img](./images/故障处理2.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/故障处理2.PNG)
 
 &emsp;在 YARN-client 模式下，Driver 启动在本地机器上，而 Driver 负责所有的任务调度，需要与 YARN 集群上的多个 Executor 进行频繁的通信。
 
@@ -3350,7 +3350,7 @@ val conf = new SparkConf()
 
   &emsp;YARN-cluster 模式的运行原理如下图所示：
 
-![img](./images/故障处理1.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/故障处理1.PNG)
 
 &emsp;当 Spark 作业中包含 SparkSQL 的内容时，可能会碰到 YARN-client 模式下可以运行，但是YARN-cluster 模式下无法提交运行（报出 OOM 错误）的情况。
 
@@ -3392,7 +3392,7 @@ val conf = new SparkConf()
 
 &emsp;这里搭建一个 3 节点的 Spark 集群，其中三台主机上均部署 `Worker` 服务。同时为了保证高可用，除了在 hadoop001 上部署主 `Master` 服务外，还在 hadoop002 和 hadoop003 上分别部署备用的 `Master` 服务，Master 服务由 Zookeeper 集群进行协调管理，如果主 `Master` 不可用，则备用 `Master` 会成为新的主 `Master`。
 
-![img](./images/spark集群规划.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark集群规划.png)
 
 ### （2）前置条件
 
@@ -3404,7 +3404,7 @@ val conf = new SparkConf()
 
 &emsp;下载所需版本的 Spark，官网下载地址：http://spark.apache.org/downloads.html
 
-![img](./images/spark-download.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-download.png)
 
 &emsp;下载后进行解压：
 
@@ -3513,13 +3513,13 @@ start-master.sh
 
 &emsp;查看 Spark 的 Web-UI 页面，端口为 `8080`。此时可以看到 hadoop001 上的 Master 节点处于 `ALIVE` 状态，并有 3 个可用的 `Worker` 节点。
 
-![img](./images/spark-集群搭建1.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-集群搭建1.png)
 
 &emsp;而 hadoop002 和 hadoop003 上的 Master 节点均处于 `STANDBY` 状态，没有可用的 `Worker` 节点。
 
-![img](./images/spark-集群搭建2.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-集群搭建2.png)
 
-![img](./images/spark-集群搭建3.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-集群搭建3.png)
 
 
 
@@ -3527,11 +3527,11 @@ start-master.sh
 
 &emsp;此时可以使用 `kill` 命令杀死 hadoop001 上的 `Master` 进程，此时备用 `Master` 会中会有一个再次成为 ` 主 Master`，我这里是 hadoop002，可以看到 hadoop2 上的 `Master` 经过 `RECOVERING` 后成为了新的主 `Master`，并且获得了全部可以用的 `Workers`。
 
-![img](./images/spark-集群搭建4.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-集群搭建4.png)
 
 &emsp;Hadoop002 上的 `Master` 成为主 `Master`，并获得了全部可以用的 `Workers`。
 
-![img](./images/spark-集群搭建5.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/08-Spark/images/spark-集群搭建5.png)
 
 &emsp;此时如果你再在 hadoop001 上使用 `start-master.sh` 启动 Master 服务，那么其会作为备用 `Master` 存在。
 
@@ -3552,7 +3552,7 @@ spark-submit \
 
 
 
-
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>
 
 
 

@@ -1,4 +1,4 @@
-![img](./images/flink.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/09-Flink/images/flink.png)
 
 ## 一、Flink Standalone Cluster
 
@@ -81,7 +81,7 @@ bin/start-cluster.sh
 
 &emsp;Flink 提供了 WEB 界面用于直观的管理 Flink 集群，访问端口为 `8081`：
 
-![img](./images/flink-dashboard.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/09-Flink/images/flink-dashboard.png)
 
 &emsp;Flink 的 WEB UI 界面支持大多数常用功能，如提交作业，取消作业，查看各个节点运行情况，查看作业执行情况等，大家可以在部署完成后，进入该页面进行详细的浏览。
 
@@ -115,11 +115,11 @@ a a b b c c c a e
 
 &emsp;可以通过 WEB UI 的控制台查看作业统运行情况：
 
-![img](./images/flink-socket-wordcount.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/09-Flink/images/flink-socket-wordcount.png)
 
 &emsp;也可以通过 WEB 控制台查看到统计结果：
 
-![img](./images/flink-socket-wordcount-stdout.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/09-Flink/images/flink-socket-wordcount-stdout.png)
 
 
 
@@ -194,7 +194,7 @@ bin/start-cluster.sh
 
 &emsp;此时控制台输出如下：
 
-![img](./images/flink-start-cluster-shell.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/09-Flink/images/flink-start-cluster-shell.png)
 
 
 
@@ -264,13 +264,13 @@ bin/start-cluster.sh
 
 &emsp;此时输出如下：
 
-![img](./images/flink-standalone-cluster-ha.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/09-Flink/images/flink-standalone-cluster-ha.png)
 
 
 
 &emsp;可以看到集群已经以 HA 的模式启动，此时还需要在各个节点上使用 `jps` 命令来查看进程是否启动成功，正常情况如下：
 
-![img](./images/flink-standalone-cluster-jps.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/09-Flink/images/flink-standalone-cluster-jps.png)
 
 
 
@@ -303,3 +303,7 @@ the classpath/dependencies.
 
 
 &emsp;下载完成后，将该 JAR 包上传至**所有** Flink 安装目录的 `lib` 目录即可。
+
+
+
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

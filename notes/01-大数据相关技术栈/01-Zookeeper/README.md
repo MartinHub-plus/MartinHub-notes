@@ -272,7 +272,7 @@ echo "3" > /usr/local/zookeeper-cluster/data/myid
 
 ## 八、Zookeeper常用shell命令
 
-![img](./images/zook1.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/01-Zookeeper/images/zook1.PNG)
 
 ### （1）节点增删改查
 
@@ -529,9 +529,15 @@ Node count: 167
 - ZooKeeper  的部署方式有哪几种？集群中的角色有哪些？集群最少需要几台机器？
 
   （1）部署方式单机模式、集群模式
+
   （2）角色：Leader 和 Follower
+
   （3）集群最少需要机器数：3
 
+
+
+
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>
 
 
 

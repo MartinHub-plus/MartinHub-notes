@@ -1,4 +1,4 @@
-![img](./images/phoenix.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/06-Phoenix/images/phoenix.PNG)
 
 
 
@@ -25,13 +25,13 @@
 
 ### （3）Phoenix架构
 
-![img](./images/架构.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/06-Phoenix/images/架构.PNG)
 
 ### （4）Phoenix数据存储
 
 &emsp;&emsp;phoenix将HBase数据模型映射到关系型世界。
 
-![img](./images/sql.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/06-Phoenix/images/sql.PNG)
 
 ## 二、Phoenix入门
 
@@ -90,7 +90,7 @@ start-hbase.sh
 
 &emsp;&emsp;启动后则进入了 Phoenix 交互式 SQL 命令行，可以使用 `!table` 或 `!tables` 查看当前所有表的信息
 
-![img](./images/phoenix-shell.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/06-Phoenix/images/phoenix-shell.png) 
 
 ### （2）Phoenix表操作
 
@@ -104,10 +104,10 @@ CREATE TABLE IF NOT EXISTS us_population (
       CONSTRAINT my_pk PRIMARY KEY (state, city));
 ```
 
-![img](./images/Phoenix-create-table.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/06-Phoenix/images/Phoenix-create-table.png)
 新建的表会按照特定的规则转换为 HBase 上的表，关于表的信息，可以通过 Hbase Web UI 进行查看：
 
-![img](./images/hbase-web-ui-phoenix.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/06-Phoenix/images/hbase-web-ui-phoenix.png)
 
 #### > 插入数据
 
@@ -133,7 +133,7 @@ UPSERT INTO us_population VALUES('CA','San Jose',912332);
 UPSERT INTO us_population VALUES('NY','New York',999999);
 ```
 
-![img](./images/Phoenix-update.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/06-Phoenix/images/Phoenix-update.png)
 
 #### > 删除数据
 
@@ -141,7 +141,7 @@ UPSERT INTO us_population VALUES('NY','New York',999999);
 DELETE FROM us_population WHERE city='Dallas';
 ```
 
-![img](./images/Phoenix-delete.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/06-Phoenix/images/Phoenix-delete.png)
 
 #### > 查询数据
 
@@ -152,7 +152,7 @@ GROUP BY state
 ORDER BY sum(population) DESC;
 ```
 
-![img](./images/Phoenix-select.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/06-Phoenix/images/Phoenix-select.png)
 
 #### > 退出命令
 
@@ -219,11 +219,11 @@ upsert into user_1 values ('3', 'ww', 'sz');
 
 默认情况下, 只要 rowkey 支持索引(就是上面的 id)
 
-![img](./images/index1.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/06-Phoenix/images/index1.PNG)
 
 其他字段是不支持索引的:
 
-![img](./images/index2.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/06-Phoenix/images/index2.PNG)
 
 给 name 字段添加索引:
 
@@ -277,7 +277,7 @@ Global index 是一种分布式索引，可以直接利用索引定位服务器�
 
 
 
-
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>
 
 
 

@@ -16,7 +16,7 @@
 
 &emsp;&emsp;这里以词频统计为例进行说明，MapReduce 处理的流程如下：
 
-![img](./images/mapreduceProcess.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/03-Hadoop-MapReduce/images/mapreduceProcess.png)
 
 1. **input** : 读取文本文件；
 2. **splitting** : 将文件按照行进行拆分，此时得到的 `K1` 行数，`V1` 表示对应行的文本内容；
@@ -60,7 +60,8 @@
 
 &emsp;&emsp;Mapreduce 确保每个 Reducer 的输入都是按 key 排序的。系统执行排序的过程（即将Mapper 输出作为输入传给 Reducer）称为 Shuffle。
 
-![img](./images/shuffle.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/03-Hadoop-MapReduce/images/shuffle.png)
 
 
 
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

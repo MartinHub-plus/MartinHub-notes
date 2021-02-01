@@ -1,26 +1,26 @@
 ## 一、大数据处理简化流程
 
-![img](./images/大数据处理简化流程.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/00-架构/images/大数据处理简化流程.png)
 
 ## 二、Hadoop生态架构
 
-![img](./images/hadoop生态架构.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/00-架构/images/hadoop生态架构.PNG)
 
 ## 三、Hadoop生态系统
 
-![img](./images/Hadoop生态系统.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/00-架构/images/Hadoop生态系统.PNG)
 
 ## 四、Hadoop项目结构
 
-![img](./images/Hadoop项目结构.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/00-架构/images/Hadoop项目结构.PNG)
 
 ## 五、Spark架构
 
-![images](./images/Spark架构.PNG)
+![images](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/00-架构/images/Spark架构.PNG)
 
 ## 六、Flink系统架构
 
-![img](./images/Flink.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/00-架构/images/Flink.png)
 
 ## 七、框架分类
 
@@ -50,3 +50,6 @@
 
 **集群部署和监控** ：Ambari、Cloudera Manager
 
+
+
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

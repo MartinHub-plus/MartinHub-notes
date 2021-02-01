@@ -11,7 +11,7 @@ Docker 使用 Go 语言进行开发，基于 Linux 内核的 cgroup，namespace�
 
 下图体现了 Docker 和传统虚拟化方式的差异：传统虚拟机技术是虚拟出一套硬件后，再在其上运行一个完整操作系统，之后可以在该系统上运行所需的应用进程；而 Docker 容器内的应用进程则是直接运行于宿主的内核，容器没有自己的内核，也没有进行硬件虚拟，因此要比传统虚拟机更为轻便。
 
-![img](./images/docker与虚拟机.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/04-Linux相关/02-Docker/images/docker与虚拟机.png)
 
 
 
@@ -19,7 +19,7 @@ Docker 使用 Go 语言进行开发，基于 Linux 内核的 cgroup，namespace�
 
 Docker 使用 client-server 架构， Docker 客户端将命令发送给 Docker 守护进程，后者负责构建，运行和分发 Docker 容器。 Docker 客户端和守护程序使用 REST API，通过 UNIX 套接字或网络接口进行通信。核心概念如下：
 
-![img](./images/docker架构.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/04-Linux相关/02-Docker/images/docker架构.png)
 
 #### > 镜像
 
@@ -55,7 +55,7 @@ Docker 客户端（docker）是用户与 Docker 交互的主要方式。当你�
 
 Docker 提供了大量命令用于管理镜像、容器和服务，命令的统一使用格式为：`docker [OPTIONS] COMMAND` ，其中 OPTIONS 代表可选参数。需要注意的是 Docker 命令的执行一般都需要获取 root 权限，这是因为 Docker 的命令行工具 docker 与 docker daemon 是同一个二进制文件，docker daemon 负责接收并执行来自 docker 的命令，它的运行需要 root 权限。所有常用命令及其使用场景如下：
 
-![img](./images/docker常用命令.jpg)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/04-Linux相关/02-Docker/images/docker常用命令.jpg)
 
 #### > 基础命令
 
@@ -271,7 +271,7 @@ docker run -it  -p 8080:8080 spring-boot-base-java
 
 这里为了观察到启动效果，所以使用交互的方式启动，实际部署时可以使用`-d`参数来后台启动，输出如下：
 
-![img](./images/dockerfile01.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/04-Linux相关/02-Docker/images/dockerfile01.png)
 
 #### > 基于 JDK 镜像部署 Spring Boot 项目
 
@@ -297,3 +297,5 @@ ENTRYPOINT ["java", "-jar", "/usr/app/spring-boot-base.jar"]
 2. Docker CLI 和 Dockerfile 官方文档： https://docs.docker.com/reference/
 3. 浙江大学SEL实验室 . Docker 容器与容器云（第2版）. 人民邮电出版社 . 2016-10
 4. Docker 从入门到实践：https://yeasy.gitbooks.io/docker_practice/
+
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

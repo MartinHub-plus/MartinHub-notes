@@ -2,13 +2,13 @@
 
 &emsp;&emsp;**Apache YARN** (Yet Another Resource Negotiator)  是 hadoop 2.0 引入的集群资源管理系统。用户可以将各种服务框架部署在 YARN 上，由 YARN 进行统一地管理和资源分配。
 
-![img](./images/yarn-base.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/03-Hadoop-YARN/images/yarn-base.png)
 
 
 
 ## 二、YARN架构
 
-![img](./images/Figure3Architecture-of-YARN.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/03-Hadoop-YARN/images/Figure3Architecture-of-YARN.png)
 
 ### （1）ResourceManager
 
@@ -41,7 +41,7 @@
 
 ## 三、YARN工作原理简述
 
-![img](./images/yarn工作原理简图.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/03-Hadoop-YARN/images/yarn工作原理简图.png)
 
 1. `Client` 提交作业到 YARN 上；
 2. `Resource Manager` 选择一个 `Node Manager`，启动一个 `Container` 并运行 `Application Master` 实例；
@@ -50,7 +50,7 @@
 
 ## 四、YARN工作原理详述
 
-![img](./images/yarn工作原理.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/03-Hadoop-YARN/images/yarn工作原理.png)
 
 
 
@@ -101,3 +101,7 @@ hadoop jar hadoop-mapreduce-examples-2.6.0-cdh5.15.2.jar pi 3 3
 
 1. [初步掌握 Yarn 的架构及原理](https://www.cnblogs.com/codeOfLife/p/5492740.html)
 2. [Apache Hadoop 2.9.2 > Apache Hadoop YARN](http://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/YARN.html)
+
+
+
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

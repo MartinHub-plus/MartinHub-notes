@@ -1,4 +1,4 @@
-![img](./images/flume.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/11-Flume/images/flume.png)
 
 ## 一、Linux下Flume的安装
 
@@ -104,5 +104,6 @@ export JAVA_HOME=/usr/java/jdk1.8.0_201
 
 出现对应的版本信息则代表配置成功。
 
-![img](./images/flume-version.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/11-Flume/images/flume-version.png)
 
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

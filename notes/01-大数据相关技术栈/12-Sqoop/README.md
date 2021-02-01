@@ -1,4 +1,4 @@
-![img](./images/sqoop.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/12-Sqoop/images/sqoop.png)
 
 ##  一、Sqoop  安装
 
@@ -108,7 +108,7 @@ performance_schema
 
 
 
-
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>
 
 
 

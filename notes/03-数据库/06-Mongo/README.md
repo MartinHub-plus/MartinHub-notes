@@ -4,7 +4,7 @@
 
 下载地址为： https://www.mongodb.com/download-center/community ，选择所需版本的 MongoDB 后进行下载：
 
-![img](./images/mongodb-version-select.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/06-Mongo/images/mongodb-version-select.png)
 这里我下载的版本为 `4.0.10`  , 安装环境为 `RHEL 7.0`，下载后进行解压：
 
 ```shell
@@ -79,3 +79,7 @@ mongo
 ```
 
 成功进入交互式命令行则代表启动成功。
+
+
+
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

@@ -83,7 +83,7 @@ chown -R heibaiying:heibaiying /usr/app/elasticsearch-7.2.0/
 
 想要验证是否启动成功，可以使用 `jps` 命令查看 `Elasticsearch` 进程是否启动，也可以访问`9200`端口，出现如下页面则代表启动成功：
 
-![img](./images/elk-web-ui.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/03-Elasticsearch/images/elk-web-ui.png)
 
 ### （2）Kibana 安装
 
@@ -123,7 +123,7 @@ nohup ./kibana  &
 
 kibana Web UI 的访问端口号为`5601`，出现以下页面则代表启动成功：
 
-![img](./images/kibana-web-ui.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/03-数据库/03-Elasticsearch/images/kibana-web-ui.png)
 
 #### > 界面汉化
 
@@ -472,3 +472,7 @@ POST _bulk
 ```
 
 之所以这样设计是因为如果允许多行模式，其解析就会比较繁琐且耗费性能，假设我们一次批量执行上万个更新，则用于描述操作的 Json 文件就会非常大，此时程序需要将其拷贝到内存中先进行解析，这个操作既浪费内存又浪费计算资源。而采用单行模式就能避免这个问题，程序只需要逐行读取记录，每读取两行则必然就是一个完整的操作，此时只需要将其发送到对应分片节点上执行即可。
+
+
+
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

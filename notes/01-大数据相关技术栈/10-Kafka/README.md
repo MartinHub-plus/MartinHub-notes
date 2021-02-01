@@ -1,4 +1,4 @@
-![img](./images/kafka.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka.png)
 
 
 
@@ -26,7 +26,7 @@
 
 &emsp;由于一个 Topic 包含多个分区，因此无法在整个 Topic 范围内保证消息的顺序性，但可以保证消息在单个分区内的顺序性。
 
-![img](./images/kafka-topic.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka-topic.png) 
 
 #### > Producers And Consumers
 
@@ -38,11 +38,11 @@
 
 &emsp;消费者是消费者群组的一部分，消费者负责消费消息。消费者可以订阅一个或者多个主题，并按照消息生成的顺序来读取它们。消费者通过检查消息的偏移量 (offset) 来区分读取过的消息。偏移量是一个不断递增的数值，在创建消息时，Kafka 会把它添加到其中，在给定的分区里，每个消息的偏移量都是唯一的。消费者把每个分区最后读取的偏移量保存在 Zookeeper 或 Kafka 上，如果消费者关闭或者重启，它还可以重新获取该偏移量，以保证读取状态不会丢失。
 
-![img](./images/kafka-producer-consumer.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka-producer-consumer.png) 
 
 &emsp;一个分区只能被同一个消费者群组里面的一个消费者读取，但可以被不同消费者群组中所组成的多个消费者共同读取。多个消费者群组中消费者共同读取同一个主题时，彼此之间互不影响。
 
-![img](./images/kafka消费者.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka消费者.png) 
 
 #### > Brokers And Clusters
 
@@ -52,7 +52,7 @@
 
 &emsp;在集群中，一个分区 (Partition) 从属一个 Broker，该 Broker 被称为分区的首领 (Leader)。一个分区可以分配给多个 Brokers，这个时候会发生分区复制。这种复制机制为分区提供了消息冗余，如果有一个 Broker 失效，其他 Broker 可以接管领导权。
 
-![img](./images/kafka-cluster.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka-cluster.png) 
 
 ## 二、Kafka生产者详解
 
@@ -64,7 +64,7 @@
 - 接下来，数据被传给分区器。如果之前已经在 ProducerRecord 对象里指定了分区，那么分区器就不会再做任何事情。如果没有指定分区 ，那么分区器会根据 ProducerRecord 对象的键来选择一个分区，紧接着，这条记录被添加到一个记录批次里，这个批次里的所有消息会被发送到相同的主题和分区上。有一个独立的线程负责把这些记录批次发送到相应的 broker 上。
 - 服务器在收到这些消息时会返回一个响应。如果消息成功写入 Kafka，就返回一个 RecordMetaData 对象，它包含了主题和分区信息，以及记录在分区里的偏移量。如果写入失败，则会返回一个错误。生产者在收到错误之后会尝试重新发送消息，如果达到指定的重试次数后还没有成功，则直接抛出异常，不再重试。
 
-![img](./images/kafka-send-messgaes.png)  
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka-send-messgaes.png)  
 
 ### （2）创建生产者
 
@@ -161,7 +161,7 @@ bin/kafka-topics.sh --create \
 
 &emsp;此时可以看到消费者控制台，输出如下，这里 `kafka-console-consumer` 只会打印出值信息，不会打印出键信息。
 
-![img](./images/kafka-simple-producer.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka-simple-producer.png) 
 
 
 
@@ -406,11 +406,11 @@ score:5, partition=0,
 
 &emsp;在 Kafka 中，消费者通常是消费者群组的一部分，多个消费者群组共同读取同一个主题时，彼此之间互不影响。Kafka 之所以要引入消费者群组这个概念是因为 Kafka 消费者经常会做一些高延迟的操作，比如把数据写到数据库或 HDFS ，或者进行耗时的计算，在这些情况下，单个消费者无法跟上数据生成的速度。此时可以增加更多的消费者，让它们分担负载，分别处理部分分区的消息，这就是 Kafka 实现横向伸缩的主要手段。 
 
-![img](./images/kafka-consumer01.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka-consumer01.png) 
 
 &emsp;需要注意的是：同一个分区只能被同一个消费者群组里面的一个消费者读取，不可能存在同一个分区被同一个消费者群里多个消费者共同读取的情况，如图：
 
-![img](./images/kafka-consumer02.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka-consumer02.png) 
 
 &emsp;可以看到即便消费者 Consumer5 空闲了，但是也不会去读取任何一个分区的数据，这同时也提醒我们在使用时应该合理设置消费者的数量，以免造成闲置和额外开销。
 
@@ -785,7 +785,7 @@ while (true) {
 
 &emsp;Kafka 的主题被分为多个分区 ，分区是 Kafka 最基本的存储单位。每个分区可以有多个副本 (可以在创建主题时使用 ` replication-factor` 参数进行指定)。其中一个副本是首领副本 (Leader replica)，所有的事件都直接发送给首领副本；其他副本是跟随者副本 (Follower replica)，需要通过复制来保持与首领副本数据一致，当首领副本不可用时，其中一个跟随者副本将成为新首领。 
 
-![img](./images/kafka-cluster.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka-cluster.png)
 
 #### > ISR机制
 
@@ -798,7 +798,7 @@ while (true) {
 
 &emsp;这里给出一个主题创建的示例：使用 `--replication-factor` 指定副本系数为 3，创建成功后使用 `--describe ` 命令可以看到分区 0 的有 0,1,2 三个副本，且三个副本都在 ISR 列表中，其中 1 为首领副本。
 
-![img](./images/kafka-分区副本.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka-分区副本.png) 
 
 #### > 不完全的首领选举
 
@@ -826,13 +826,13 @@ while (true) {
 
 &emsp;如果在定时请求的时间间隔内发生的分区副本的选举，则意味着原来缓存的信息可能已经过时了，此时还有可能会收到 `Not a Leader for Partition` 的错误响应，这种情况下客户端会再次求发出元数据请求，然后刷新本地缓存，之后再去正确的 broker 上执行对应的操作，过程如下图：
 
-![img](./images/kafka-元数据请求.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka-元数据请求.png) 
 
 #### > 数据可见性
 
 &emsp;需要注意的是，并不是所有保存在分区首领上的数据都可以被客户端读取到，为了保证数据一致性，只有被所有同步副本 (ISR 中所有副本) 都保存了的数据才能被客户端读取到。
 
-![img](./images/kafka-数据可见性.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka-数据可见性.png) 
 
 #### > 零拷贝
 
@@ -849,7 +849,7 @@ Socket.send(buffer)
 
 &emsp;这一过程实际上发生了四次数据拷贝。首先通过系统调用将文件数据读入到内核态 Buffer（DMA 拷贝），然后应用程序将内存态 Buffer 数据读入到用户态 Buffer（CPU 拷贝），接着用户程序通过 Socket 发送数据时将用户态 Buffer 数据拷贝到内核态 Buffer（CPU 拷贝），最后通过 DMA 拷贝将数据拷贝到 NIC Buffer。同时，还伴随着四次上下文切换，如下图所示：
 
-![img](./images/kafka-BIO.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka-BIO.png) 
 
 - sendfile和transferTo实现零拷贝
 
@@ -900,7 +900,7 @@ Exception: Replication factor: 3 larger than available brokers: 1.
 
 &emsp;通常保存在磁盘上的数据格式与生产者发送过来消息格式是一样的。 如果生产者发送的是压缩过的消息，那么同一个批次的消息会被压缩在一起，被当作“包装消息”进行发送 (格式如下所示) ，然后保存到磁盘上。之后消费者读取后再自己解压这个包装消息，获取每条消息的具体信息。
 
-![img](./images/kafka-compress-message.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka-compress-message.png) 
 
 
 
@@ -1034,7 +1034,7 @@ echo "3" > /usr/local/zookeeper-cluster/data/03/myid
 
 &emsp;使用 jps 查看进程，并且使用 `zkServer.sh status` 查看集群各个节点状态。如图三个节点进程均启动成功，并且两个节点为 follower 节点，一个节点为 leader 节点。
 
-![img](./images/zookeeper-cluster.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/zookeeper-cluster.png) 
 
 
 
@@ -1126,7 +1126,7 @@ bin/kafka-topics.sh --create --bootstrap-server hadoop001:9092 \
 bin/kafka-topics.sh --describe --bootstrap-server hadoop001:9092 --topic my-replicated-topic
 ```
 
-![img](./images/kafka-cluster-shell.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/10-Kafka/images/kafka-cluster-shell.png) 
 
 
 
@@ -1253,3 +1253,7 @@ bin/kafka-topics.sh --describe --bootstrap-server hadoop001:9092 --topic my-repl
 
   20.Kafka 的哪些设计让它有如此高的性能？
 
+  ​
+
+
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

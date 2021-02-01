@@ -1,4 +1,4 @@
-![img](./images/storm.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/15-Storm/images/storm.png)
 
 ## 一、Storm单机版本环境搭建
 
@@ -196,7 +196,7 @@ nohup sh storm logviewer &
 
 &emsp;验证方式二： 访问 8080 端口，查看 Web-UI 界面：
 
-![img](./images/storm-web-ui.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/15-Storm/images/storm-web-ui.png)
 
 
 
@@ -208,7 +208,7 @@ nohup sh storm logviewer &
 
 &emsp;这里搭建一个 3 节点的 Storm 集群：三台主机上均部署 `Supervisor` 和 `LogViewer` 服务。同时为了保证高可用，除了在 hadoop001 上部署主 `Nimbus` 服务外，还在 hadoop002 上部署备用的 `Nimbus` 服务。`Nimbus` 服务由 Zookeeper 集群进行协调管理，如果主 `Nimbus` 不可用，则备用 `Nimbus` 会成为新的主 `Nimbus`。
 
-![img](./images/storm-集群规划.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/15-Storm/images/storm-集群规划.png)
 
 
 
@@ -335,11 +335,11 @@ nohup sh storm logviewer &
 
 &emsp;使用 `jps` 查看进程，三台服务器的进程应该分别如下：
 
-![img](./images/storm-集群-shell.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/15-Storm/images/storm-集群-shell.png)
 
 &emsp;访问 hadoop001 或 hadoop002 的 `8080` 端口，界面如下。可以看到有一主一备 2 个 `Nimbus` 和 3 个 `Supervisor`，并且每个 `Supervisor` 有四个 `slots`，即四个可用的 `worker` 进程，此时代表集群已经搭建成功。
 
-![img](./images/storm-集群搭建1.png)  
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/15-Storm/images/storm-集群搭建1.png)  
 
 
 
@@ -347,5 +347,6 @@ nohup sh storm logviewer &
 
 &emsp;这里手动模拟主 `Nimbus` 异常的情况，在 hadoop001 上使用 `kill` 命令杀死 `Nimbus` 的线程，此时可以看到 hadoop001 上的 `Nimbus` 已经处于 `offline` 状态，而 hadoop002 上的 `Nimbus` 则成为新的 `Leader`。
 
-![img](./images/storm集群搭建2.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/15-Storm/images/storm集群搭建2.png)
 
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

@@ -1,4 +1,4 @@
-![img](./images/azkaban.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/14-Azkaban/images/azkaban.png)
 
 ## 一、Azkaban 3.x 编译及部署
 
@@ -76,7 +76,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.201-b09, mixed mode)
 
 需要注意的是不同版本的 Azkaban 依赖 Gradle 版本不同，可以在解压后的 `/gradle/wrapper/gradle-wrapper.properties` 文件查看
 
-![img](./images/azkaban-gradle-wrapper.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/14-Azkaban/images/azkaban-gradle-wrapper.png)
 
 &emsp;在编译时程序会自动去图中所示的地址进行下载，但是下载速度很慢。为避免影响编译过程，建议先手动下载至 `/gradle/wrapper/` 目录下：
 
@@ -86,7 +86,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.201-b09, mixed mode)
 
 &emsp;然后修改配置文件 `gradle-wrapper.properties` 中的 `distributionUrl` 属性，指明使用本地的 gradle。
 
-![img](./images/azkaban-gradle-wrapper-2.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/14-Azkaban/images/azkaban-gradle-wrapper-2.png)
 
 - **Git** 
 
@@ -145,7 +145,7 @@ tar -zxvf  azkaban-solo-server-3.70.0.tar.gz
 
 &emsp;这一步不是必须的。但是因为 Azkaban 默认采用的时区是 `America/Los_Angeles`，如果你的调度任务中有定时任务的话，就需要进行相应的更改，这里我更改为常用的 `Asia/Shanghai`
 
-![img](./images/azkaban-setting.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/14-Azkaban/images/azkaban-setting.png)
 
 
 
@@ -163,9 +163,10 @@ tar -zxvf  azkaban-solo-server-3.70.0.tar.gz
 
 &emsp;验证方式一：使用 `jps` 命令查看是否有 `AzkabanSingleServer` 进程：
 
-![img](./images/akaban-jps.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/14-Azkaban/images/akaban-jps.png)
 
 &emsp;验证方式二：访问 8081 端口，查看 Web UI 界面，默认的登录名密码都是 `azkaban`，如果需要修改或新增用户，可以在 `conf/azkaban-users.xml ` 文件中进行配置：
 
-![img](./images/azkaban-web-ui.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/14-Azkaban/images/azkaban-web-ui.png)
 
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

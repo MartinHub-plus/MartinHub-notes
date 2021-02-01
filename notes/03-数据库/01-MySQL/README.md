@@ -870,3 +870,7 @@ SET PASSWROD FOR myuser = Password('new_password');
 ## 参考资料
 
 - BenForta. SQL 必知必会 [M]. 人民邮电出版社, 2013.
+
+
+
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

@@ -8,3 +8,4 @@
 - [《Hive 编程指南》](https://book.douban.com/subject/25791255/)
 
 
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

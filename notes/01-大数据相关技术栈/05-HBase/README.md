@@ -1,4 +1,4 @@
-![img](./images/hbase.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/05-HBase/images/hbase.png)
 
 ## 一、HBase简介
 
@@ -59,7 +59,7 @@
 
 ### （6）HBase 逻辑结构
 
-![img](./images/逻辑结构.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/05-HBase/images/逻辑结构.PNG)
 
 ### （7）HBase  数据模型
 
@@ -98,7 +98,7 @@ NoSuchColumnFamilyException。
 
 &emsp;&emsp;一个列中可以存储多个版本的数据。而每个版本就称为一个单元格（Cell）。Cell 由{rowkey, column Family：column Qualifier, time Stamp}确定。Cell 中的数据是没有类型的，全部是字节码形式存贮。
 
-![img](./images/row.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/05-HBase/images/row.PNG)
 
 9）**Region**
 
@@ -112,7 +112,7 @@ NoSuchColumnFamilyException。
 
 ### （8）HBase  基本架构
 
-![img](./images/架构.PNG)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/05-HBase/images/架构.PNG)
 
 **架构角色**：
 
@@ -393,7 +393,7 @@ export JAVA_HOME=/usr/java/jdk1.8.0_201
 
 验证方式二 ：访问 HBaseWeb UI 页面，默认端口为 `16010` 。
 
-![img](./images/hbase-web-ui.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/05-HBase/images/hbase-web-ui.png)
 
 
 
@@ -508,7 +508,7 @@ hadoop001
 
 验证方式二 ：访问 HBase Web UI 界面，需要注意的是 1.2 版本的 HBase 的访问端口为 `60010`
 
-![img](./images/hbase-60010.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/05-HBase/images/hbase-60010.png)
 
 
 
@@ -518,7 +518,7 @@ hadoop001
 
 这里搭建一个 3 节点的 HBase 集群，其中三台主机上均为 `Regin Server`。同时为了保证高可用，除了在 hadoop001 上部署主 `Master` 服务外，还在 hadoop002 上部署备用的 `Master` 服务。Master 服务由 Zookeeper 集群进行协调管理，如果主 `Master` 不可用，则备用 `Master` 会成为新的主 `Master`。
 
-![img](./images/hbase集群规划.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/05-HBase/images/hbase集群规划.png)
 
 ### （2）前置条件
 
@@ -680,11 +680,11 @@ start-hbase.sh
 
 访问 HBase 的 Web-UI 界面，这里我安装的 HBase 版本为 1.2，访问端口为 `60010`，如果你安装的是 2.0 以上的版本，则访问端口号为 `16010`。可以看到 `Master` 在 hadoop001 上，三个 `Regin Servers` 分别在 hadoop001，hadoop002，和 hadoop003 上，并且还有一个 `Backup Matser` 服务在 hadoop002 上。
 
-![img](./images/hbase-集群搭建1.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/05-HBase/images/hbase-集群搭建1.png)
 
 hadoop002 上的 HBase 出于备用状态：
 
-![img](./images/hbase-集群搭建2.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/05-HBase/images/hbase-集群搭建2.png)
 
 
 
@@ -784,3 +784,9 @@ TBLPROPERTIES ("hbase.table.name" = "test_table", "hbase.mapred.output.outputtab
 ```
 
 关联后就可以使用 Hive 函数进行一些分析操作了
+
+
+
+
+
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>
