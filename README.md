@@ -16,7 +16,19 @@
 
 ​	:black_nib:    本仓库有来源自己总结、网上收集、视频笔记，如果有侵权之处，可以联系我进行删除。
 
-​	因个人能力有限，笔记中可能还有很多错误的地方，还请大家能够多多指出交流，也欢迎各位小伙伴能够提交pull request请求进行完善。
+​	:scroll:  **笔记仓库** ：
+
+​	&emsp;**GitHub**: https://github.com/MartinHub-plus/MartinHub-notes
+
+​	&emsp;**Gitee**: https://gitee.com/MartinHub/MartinHub-notes
+
+​	:scroll:  **笔记地址** ：
+
+​	&emsp;**GitHub**: https://martinhub-plus.github.io/MartinHub-notes/#/
+
+​	&emsp;**Gitee**: http://martinhub.gitee.io/martinhub-notes/#/
+
+&emsp; 因个人能力有限，笔记中可能还有很多错误的地方，还请大家能够多多指出交流，也欢迎各位小伙伴能够提交pull request请求进行完善。
 
 ---
 
