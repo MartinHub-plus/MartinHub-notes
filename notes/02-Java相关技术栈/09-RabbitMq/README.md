@@ -138,6 +138,7 @@ rabbitmq-plugins enable rabbitmq_management
 访问端口为 `15672`。默认的用户名和密码都是 `guest` 。如果你所用浏览器和 RabbitMQ 服务不在同一台主机上，此时应该无法登录，并出现下面的提示 ：
 
 ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/09-RabbitMq/images/RabbitMQ-访问限制.png)
+
 之所以会出现这个提示，是因为出于安全考虑，RabbitMQ 只允许在本机使用默认的`guest`用户名登录。想要在其他主机上登录，需要使用自定义的账户。
 
 #### > 新增账户
