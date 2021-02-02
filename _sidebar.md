@@ -22,6 +22,7 @@
   - [Storm](./notes/01-大数据相关技术栈/15-Storm/README.md)
   - [DataX](./notes/01-大数据相关技术栈/16-DataX/README.md)
   - [DataHub](./notes/01-大数据相关技术栈/17-DataHub/README.md)
+  - [Presto](./notes/01-大数据相关技术栈/18-Presto/README.md)
   - [运维笔记](./notes/01-大数据相关技术栈/运维笔记/README.md)
 - **Java相关** 
   - [Java基础](./notes/02-Java相关技术栈/01-Java基础/README.md)
@@ -61,5 +62,5 @@
   - [大数据面试](./notes/09-面经/大数据面试/README.md)
   - [Java面试](./notes/09-面经/Java面试/README.md)
 - **杂  记**
-  - [loading..........](./notes/10-杂记/README.md)
+  - [正则表达式](./notes/10-杂记/01-正则表达式/README.md)
 
