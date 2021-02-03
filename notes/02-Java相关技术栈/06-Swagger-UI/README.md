@@ -136,6 +136,7 @@ public class SwaggerConfig {
 > tags="说明该类的作用"
 >
 > value="该参数没什么意义，所以不需要配置"
+>
 > description = "用户基本信息操作"
 
 举例：
@@ -158,8 +159,11 @@ public class UserController {
 > value="说明方法的作用"
 >
 > notes="方法的备注说明"
+>
 > tags="说明该方法的作用，参数是个数组，可以填多个"
+>
 > 格式：tags={"作用1","作用2"}
+>
 > httpMethod="设置显示的请求方式GET、POST、PUT、DELETE"
 
 举例：
@@ -177,18 +181,30 @@ public User findUser(@RequestParam String userId){
 > 方法参数的说明
 >
 > @ApiImplicitParams：用在请求的方法上，包含一组参数说明
-> ​    @ApiImplicitParam：对单个参数的说明      
-> ​        name：参数名
-> ​        value：参数的汉字说明、解释
-> ​        required：参数是否必须传
-> ​        paramType：参数放在哪个地方
-> ​            · header --> 请求参数的获取：@RequestHeader
-> ​            · query --> 请求参数的获取：@RequestParam
-> ​            · path（用于restful接口）--> 请求参数的获取：@PathVariable
-> ​            · body（请求体）-->  @RequestBody User user
-> ​            · form（普通表单提交）     
-> ​        dataType：参数类型，默认String，其它值dataType="int"       
-> ​        defaultValue：参数的默认值
+>
+> &emsp; @ApiImplicitParam：对单个参数的说明      
+>
+> &emsp;&emsp;&emsp;name：参数名
+>
+> &emsp;&emsp;&emsp;value：参数的汉字说明、解释
+>
+> &emsp;&emsp;&emsp;required：参数是否必须传
+>
+> &emsp;&emsp;&emsp;paramType：参数放在哪个地方
+>
+> &emsp;&emsp;&emsp;&emsp;· header --> 请求参数的获取：@RequestHeader
+>
+> &emsp;&emsp;&emsp;&emsp;· query --> 请求参数的获取：@RequestParam
+>
+> &emsp;&emsp;&emsp;&emsp;· path（用于restful接口）--> 请求参数的获取：@PathVariable
+>
+> &emsp;&emsp;&emsp;&emsp;· body（请求体）-->  @RequestBody User user
+>
+> &emsp;&emsp;&emsp;&emsp;· form（普通表单提交）     
+>
+> &emsp;&emsp;&emsp;dataType：参数类型，默认String，其它值dataType="int"       
+>
+> &emsp;&emsp;&emsp;defaultValue：参数的默认值
 
 举例：多个参数
 
@@ -220,10 +236,14 @@ public User findUser(@RequestParam String userId){
 > 方法返回值的说明
 >
 > @ApiResponses：方法返回对象的说明
-> ​    @ApiResponse：每个参数的说明
-> ​        code：数字，例如400
-> ​        message：信息，例如"请求参数没填好"
-> ​        response：抛出异常的类
+>
+> &emsp;@ApiResponse：每个参数的说明
+>
+> &emsp;&emsp;code：数字，例如400
+>
+> &emsp;&emsp;message：信息，例如"请求参数没填好"
+>
+> &emsp;&emsp;response：抛出异常的类
 
 举例：
 
@@ -261,12 +281,18 @@ public class User {
 > 用在JavaBean的属性上面，说明属性含义
 >
 > @ApiModelProperty：用在属性上，描述实体类的属性
-> value="用户名" 描述参数的意义
-> name="name" 参数的变量名
-> example="举例说明 "
-> hidden="true" 隐藏
-> dataType="重写属性类型"
-> required=true 参数是否必填
+>
+> &emsp;value="用户名" 描述参数的意义
+>
+> &emsp;name="name" 参数的变量名
+>
+> &emsp;example="举例说明 "
+>
+> &emsp;hidden="true" 隐藏
+>
+> &emsp;dataType="重写属性类型"
+>
+> &emsp;required=true 参数是否必填
 
 举例：
 
@@ -287,10 +313,14 @@ public class User {
 > 用于方法，参数，字段说明 表示对参数的要求和说明
 >
 > @ApiParam：用在属性上，描述实体类的属性
-> name="参数名称"
-> value="参数的简要说明"
-> defaultValue="参数默认值"
-> required="true" 表示属性是否必填，默认为false
+>
+> &emsp;name="参数名称"
+>
+> &emsp;value="参数的简要说明"
+>
+> &emsp;defaultValue="参数默认值"
+>
+> &emsp;required="true" 表示属性是否必填，默认为false
 
 举例：
 
