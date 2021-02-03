@@ -3133,6 +3133,15 @@ val conf = new SparkConf().set("spark.shuffle.sort.bypassMergeThreshold", "400")
 
 &emsp;调节连接等待时长后，通常可以避免部分的 XX 文件拉取失败、XX 文件 lost 等报错。
 
+#### > 其他调优
+
+&emsp;Spark-submit提交任务时常出现 Heartbeat  time out 错误。
+
+```properties
+--conf spark.executor.heartbeatInterval=200000
+--conf spark.network.timeout=300000
+```
+
 <br/>
 
 ### （2）Spark 数据倾斜
