@@ -1,6 +1,4 @@
-## 一、 大数据面试题
-
-### （1）Hadoop 面试题
+## 一、Hadoop 面试题
 
 - **1. 讲述HDFS上传⽂件和读⽂件的流程？** 
 
@@ -105,23 +103,23 @@
   4. Gfs上的垃圾⽂件回收。
   5. 处理schema更新请求。
 
-### （2）Hive 面试题
+## 二、Hive 面试题
 
 &emsp;loading...............
 
-### （3）HBase 面试题 
+## 三、HBase 面试题 
 
 &emsp;loading...............
 
-### （4）Scala 面试题
+## 四、Scala 面试题
 
 &emsp;loading...............
 
-### （5）Spark 面试题
+## 五、Spark 面试题
 
 &emsp;loading...............
 
-### （6）Kafka 面试题
+## 六、Kafka 面试题
 
 &emsp;loading...............
 
