@@ -81,19 +81,19 @@
 下载对应版本 Zookeeper，这里我下载的版本 `3.4.14`。官方下载地址：https://archive.apache.org/dist/zookeeper/
 
 ```shell
-# wget https://archive.apache.org/dist/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz
+wget https://archive.apache.org/dist/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz
 ```
 
 ### （2）解压
 
 ```shell
-# tar -zxvf zookeeper-3.4.14.tar.gz
+tar -zxvf zookeeper-3.4.14.tar.gz
 ```
 
 ### （3）配置环境变量
 
 ```shell
-# vim /etc/profile
+vim /etc/profile
 ```
 
 添加环境变量：
@@ -106,7 +106,7 @@ export PATH=$ZOOKEEPER_HOME/bin:$PATH
 使得配置的环境变量生效：
 
 ```shell
-# source /etc/profile
+source /etc/profile
 ```
 
 ### （4）修改配置
@@ -114,7 +114,7 @@ export PATH=$ZOOKEEPER_HOME/bin:$PATH
 进入安装目录的 `conf/` 目录下，拷贝配置样本并进行修改：
 
 ```
-# cp zoo_sample.cfg  zoo.cfg
+cp zoo_sample.cfg  zoo.cfg
 ```
 
 指定数据存储目录和日志文件目录（目录不用预先创建，程序会自动创建），修改后完整配置如下：

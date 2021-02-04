@@ -743,8 +743,11 @@ HDFS 高可用架构主要由以下组件所构成：
 ### （3）前置条件
 
 - 所有服务器都安装有 JDK
+  - [JDK环境安装](http://martinhub.gitee.io/martinhub-notes/#/./notes/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%E6%A0%88/02-Hadoop/README?id=%ef%bc%882%ef%bc%89%e5%ae%89%e8%a3%85jdk)
 - 搭建好 ZooKeeper 集群
+  - [Zookeeper 集群安装](http://martinhub.gitee.io/martinhub-notes/#/./notes/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%E6%A0%88/01-Zookeeper/README?id=%e4%b8%83%e3%80%81zookeeper%e9%9b%86%e7%be%a4%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba)
 - 所有服务器之间都配置好 SSH 免密登录
+  - [SSH 免密登录](http://martinhub.gitee.io/martinhub-notes/#/./notes/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%E6%A0%88/02-Hadoop/README?id=%ef%bc%882%ef%bc%89%e9%85%8d%e7%bd%ae%e5%85%8d%e5%af%86%e7%99%bb%e5%bd%95)
 
 ### （4）集群配置
 

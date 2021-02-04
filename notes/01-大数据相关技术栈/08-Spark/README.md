@@ -3407,6 +3407,10 @@ val conf = new SparkConf()
 
 &emsp;搭建 Spark 集群前，需要保证 JDK 环境、Zookeeper 集群和 Hadoop 集群已经搭建。
 
+- [JDK环境安装](http://martinhub.gitee.io/martinhub-notes/#/./notes/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%E6%A0%88/02-Hadoop/README?id=%ef%bc%882%ef%bc%89%e5%ae%89%e8%a3%85jdk)
+- [Zookeeper 集群安装](http://martinhub.gitee.io/martinhub-notes/#/./notes/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%E6%A0%88/01-Zookeeper/README?id=%e4%b8%83%e3%80%81zookeeper%e9%9b%86%e7%be%a4%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba)
+- [Hadoop 集群安装](http://martinhub.gitee.io/martinhub-notes/#/./notes/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%E6%A0%88/02-Hadoop/README?id=%e4%ba%94%e3%80%81%e5%9f%ba%e4%ba%8ezookeeper%e6%90%ad%e5%bb%bahadoop%e9%ab%98%e5%8f%af%e7%94%a8%e9%9b%86%e7%be%a4)
+
 ### （3）Spark集群搭建
 
 #### > 下载解压
