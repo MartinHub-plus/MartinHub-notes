@@ -2,7 +2,7 @@
 
 ​	&emsp;&emsp;Zookeeper 是一个开源的分布式的，为分布式应用提供协调服务的 Apache 项目。
 
-## 二、Zookerrper的工作机制
+## 二、Zookeeper的工作机制
 
 &emsp;&emsp;Zookeeper从设计模式角度来理解：是一个基于观察者模式设计的分布式服务管理框架，它负责存储和管理大家都关心的数据，然后接受观察者的注册，一旦这些数据的状态发生变化，Zookeeper就将负责通知已经在Zookeeper上注册的那些观察者做出相应的反应。
 
@@ -120,35 +120,12 @@ cp zoo_sample.cfg  zoo.cfg
 指定数据存储目录和日志文件目录（目录不用预先创建，程序会自动创建），修改后完整配置如下：
 
 ```properties
-# The number of milliseconds of each tick
-tickTime=2000
-# The number of ticks that the initial
-# synchronization phase can take
+tickTime=10000
 initLimit=10
-# The number of ticks that can pass between
-# sending a request and getting an acknowledgement
 syncLimit=5
-# the directory where the snapshot is stored.
-# do not use /tmp for storage, /tmp here is just
-# example sakes.
 dataDir=/usr/local/zookeeper/data
 dataLogDir=/usr/local/zookeeper/log
-# the port at which the clients will connect
 clientPort=2181
-# the maximum number of client connections.
-# increase this if you need to handle more clients
-#maxClientCnxns=60
-#
-# Be sure to read the maintenance section of the
-# administrator guide before turning on autopurge.
-#
-# http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance
-#
-# The number of snapshots to retain in dataDir
-#autopurge.snapRetainCount=3
-# Purge task interval in hours
-# Set to "0" to disable auto purge feature
-#autopurge.purgeInterval=1
 ```
 
 > 配置参数说明：
@@ -189,29 +166,36 @@ zkServer.sh start
 
 &emsp;&emsp;Zookeeper中的配置文件 zoo.cfg 中参数含义解读如下：
 
-```text
-1．tickTime =2000：通信心跳数，Zookeeper 服务器与客户端心跳时间，单位毫秒
-	Zookeeper使用的基本时间，服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每个tickTime时间就会发送一个心跳，时间单位为毫秒。
-	它用于心跳机制，并且设置最小的session超时时间为两倍心跳时间。(session的最小超时时间是2*tickTime)
-	
-2．initLimit =10：LF 初始通信时限
-	集群中的Follower跟随者服务器与Leader领导者服务器之间初始连接时能容忍的最多心跳数（tickTime的数量），用它来限定集群中的Zookeeper服务器连接到Leader的时限。
-	
-3．syncLimit =5：LF 同步通信时限
-	集群中Leader与Follower之间的最大响应时间单位，假如响应超过syncLimit * tickTime，Leader认为Follwer死掉，从服务器列表中删除Follwer。
-
-4．dataDir：数据文件目录+数据持久化路径
-	主要用于保存 Zookeeper 中的数据。
-5．clientPort =2181：客户端连接端口
-	监听客户端连接的端口。
-```
+> 1．tickTime =10000：通信心跳数，Zookeeper 服务器与客户端心跳时间，单位毫秒
+>
+> &emsp;Zookeeper使用的基本时间，服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每个tickTime时间就会发送一个心跳，时间单位为毫秒。
+>
+> &emsp;它用于心跳机制，并且设置最小的session超时时间为两倍心跳时间。(session的最小超时时间是2*tickTime)
+>
+> 2．initLimit =10：LF 初始通信时限
+>
+> &emsp;集群中的Follower跟随者服务器与Leader领导者服务器之间初始连接时能容忍的最多心跳数（tickTime的数量），用它来限定集群中的Zookeeper服务器连接到Leader的时限。
+>
+>
+> 3．syncLimit =5：LF 同步通信时限
+>
+> &emsp;集群中Leader与Follower之间的最大响应时间单位，假如响应超过syncLimit * tickTime，Leader认为Follwer死掉，从服务器列表中删除Follwer。
+>
+>
+> 4．dataDir：数据文件目录+数据持久化路径
+>
+> &emsp;主要用于保存 Zookeeper 中的数据。
+>
+> 5．clientPort =2181：客户端连接端口
+>
+> &emsp;监听客户端连接的端口。
 
 ### （2）修改配置
 
-&emsp;&emsp;解压一份 zookeeper 安装包，修改其配置文件 `zoo.cfg`，内容如下。之后使用 scp 命令将安装包分发到三台服务器上：
+&emsp;&emsp;解压一份 zookeeper 安装包，修改其配置文件 `zoo.cfg`，内容如下。之后使用 scp 命令（`scp local_file root@hadoop101:remote_file`）将安装包分发到三台服务器上：
 
 ```shell
-tickTime=2000
+tickTime=10000
 initLimit=10
 syncLimit=5
 dataDir=/usr/local/zookeeper-cluster/data/
@@ -227,7 +211,9 @@ server.3=hadoop103:2287:3387
 
 ### （3）标识节点
 
-&emsp;&emsp;分别在三台主机的 `dataDir` 目录下新建 `myid` 文件,并写入对应的节点标识。Zookeeper 集群通过 `myid` 文件识别集群节点，并通过上文配置的节点通信端口和选举端口来进行节点通信，选举出 Leader 节点。
+&emsp;&emsp;分别在三台主机的 `dataDir` 目录下新建 `myid` 文件,并写入对应的节点标识。
+
+&emsp;&emsp;Zookeeper 集群通过 `myid` 文件识别集群节点，并通过上文配置的节点通信端口和选举端口来进行节点通信，选举出 Leader 节点。
 
 &emsp;&emsp;创建存储目录：
 
@@ -261,13 +247,19 @@ echo "3" > /usr/local/zookeeper-cluster/data/myid
 
 ```shell
 [MartinHub@hadoop101 zookeeper-3.4.10]# bin/zkServer.sh status
-	JMX enabled by default Using  config:  /opt/module/zookeeper-3.4.10/bin/../conf/zoo.cfg Mode: fsollower
+JMX enabled by default 
+Using  config:  /opt/module/zookeeper-3.4.10/bin/../conf/zoo.cfg 
+Mode: fsollower
 	
 [MartinHub@hadoop102 zookeeper-3.4.10]# bin/zkServer.sh status
-	JMX enabled by default Using  config:  /opt/module/zookeeper- 3.4.10/bin/../conf/zoo.cfg Mode: leader
+JMX enabled by default 
+Using  config:  /opt/module/zookeeper- 3.4.10/bin/../conf/zoo.cfg 
+Mode: leader
 
 [MartinHub@hadoop103 zookeeper-3.4.5]# bin/zkServer.sh status
-	JMX enabled by default Using  config:  /opt/module/zookeeper- 3.4.10/bin/../conf/zoo.cfg Mode: follower
+JMX enabled by default 
+Using  config:  /opt/module/zookeeper- 3.4.10/bin/../conf/zoo.cfg 
+Mode: follower
 ```
 
 ## 八、Zookeeper常用shell命令
@@ -525,6 +517,18 @@ Node count: 167
 - 请简述 ZooKeeper  的选举机制
 
 - ZooKeeper  的监听原理是什么？
+
+  > 1）首先要有一个main（）线程。
+  >
+  > 2）在main线程中创建Zookeeper客户端，这时就会创建两个线程，一个负责网络通信（connet），一个负责监听（listener）。
+  >
+  > 3）通过connect线程将注册的监听事件发送给Zookeeper。
+  >
+  > 4）在Zookeeper的**注册监听器列表**中将注册的监听事件添加到列表中。
+  >
+  > 5）Zookeeper监听到有数据或路径变化，就会将这个消息发送给listener线程。
+  >
+  > 6）在内部调用了process（）方法
 
 - ZooKeeper  的部署方式有哪几种？集群中的角色有哪些？集群最少需要几台机器？
 

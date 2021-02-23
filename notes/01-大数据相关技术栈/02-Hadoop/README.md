@@ -121,10 +121,12 @@ ssh-keygen -t rsa
 ```
 
 ```shell
-# 写入公匙到授权文件
+# 写入公匙到授权文件   —— .ssh目录权限为700, authorized_keys权限为600
 [root@hadoop001 .ssh]# cat id_rsa.pub >> authorized_keys
 [root@hadoop001 .ssh]# chmod 600 authorized_keys
 ```
+
+这样就可以实现主机hadoop001自身的免密登录，如果要实现集群间的免密登录，看Hadoop集群环境搭建章节。
 
 
 
@@ -144,7 +146,7 @@ tar -zvxf hadoop-2.6.0-cdh5.15.2.tar.gz
 #### > 配置环境变量
 
 ```shell
-# vi /etc/profile
+vim /etc/profile
 ```
 
 配置环境变量：
@@ -157,7 +159,7 @@ export  PATH=${HADOOP_HOME}/bin:$PATH
 执行 `source` 命令，使得配置的环境变量立即生效：
 
 ```shell
-# source /etc/profile
+source /etc/profile
 ```
 
 
@@ -170,7 +172,78 @@ export  PATH=${HADOOP_HOME}/bin:$PATH
 
 ```shell
 # JDK安装路径
-export  JAVA_HOME=/usr/java/jdk1.8.0_201/
+export JAVA_HOME=/usr/java/jdk1.8.0_201/
+
+export HADOOP_HOME=/usr/app/hadoop-2.6.0-cdh5.15.2
+export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+export HADOOP_JAAS_DEBUG=true
+
+export HADOOP_OPTS="-Djava.net.preferIPv4Stack=true"
+
+export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
+
+case ${HADOOP_OS_TYPE} in
+ Darwin*)
+  export HADOOP_OPTS="${HADOOP_OPTS} -Djava.security.krb5.realm= "
+  export HADOOP_OPTS="${HADOOP_OPTS} -Djava.security.krb5.kdc= "
+  export HADOOP_OPTS="${HADOOP_OPTS} -Djava.security.krb5.conf= "
+ ;;
+esca
+ 
+export HADOOP_CLIENT_OPTS=""
+
+export HADOOP_CLASSPATH=.:$CLASSPATH:$HADOOP_CLASSPATH:$HADOOP_HOME/bin
+export HADOOP_USER_CLASSPATH_FIRST="yes"
+export HADOOP_CLIENT_CLASSLOADER_SYSTEM_CLASSES="-org.apache.hadoop.UserClass,java.,org.apache.hadoop."
+export HADOOP_OPTIONAL_TOOLS="hadoop-azure-datalake,hadoop-azure,hadoop-openstack,hadoop-kafka,hadoop-aws,hadoop-aliyun"
+export HADOOP_SSH_OPTS="-o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=10s"
+export HADOOP_SSH_PARALLEL=10
+export HADOOP_LOG_DIR=${HADOOP_HOME}/logs
+export HADOOP_IDENT_STRING=$USER
+export HADOOP_STOP_TIMEOUT=5
+export HADOOP_PID_DIR=/hadoop/tmp
+export HADOOP_ROOT_LOGGER=INFO,console
+export HADOOP_DAEMON_ROOT_LOGGER=INFO,REA
+export HADOOP_SECURITY_LOGGER=INFO,NullAppender
+export HADOOP_NICENESS=0
+export HADOOP_POLICYFILE="hadoop-policy.xml"
+export HADOOP_GC_SETTINGS="-verbose:gc -XX:+PrintGCDetails -XX:=PrintGCTimeStamps -XX:PrintGCDateStamps"
+export JSVC_HOME=/usr/bin
+export HADOOP_SECURE_PID_DIR=${HADOOP_PID_DIR}
+export HADOOP_SECURE_LOG=${HADOOP_LOG_DIR}
+export HADOOP_SECURE_IDENT_PRESERVE="true"
+export HDFS_AUDIT_LOGGER=INFO,NullAppender
+
+export HDFS_NMAENODE_OPTS="-Dhadoop.security.logger=INFO,RFAS"
+export HDFS_SECONDARYNAMENODE_OPTS="-Dhadoop.security.logger=INFO,RFAS"
+export HDFS_DATANODE_OPTS="-Dhadoop.security.logger=ERROR,RFAS"
+
+export HDFS_DATANODE_SECURE_USER=root
+export HDFS_DATANODE_SECURE_EXTRA_OPTS="-jvm server"
+
+export HDFS_NFS3_OPTS=""
+export HDFS_PORTMAP_OPTS="-Xmx512m"
+
+export HDFS_NFS3_SECURE_EXTRA_OPTS="-jvm server"
+export HDFS_NFS3_SECURE_USER=root
+
+export HDFS_ZKFC_OPTS=""
+export HDFS_JOURNALNODE_OPTS=""
+
+export HDFS_BALANCER_OPTS=""
+
+export HDFS_MOVER_OPTS=""
+
+export HDFS_DFSROUTER_OPTS=""
+
+export HADOOP_ENABLE_BUILD_PATHS="true"
+
+export HDFS_NAMENODE_USER=root
+export HDFS_DATANODE_USER=root
+export HDFS_ZKFC_USER=root
+export HDFS_JOURNALNODE_USER=root
+export HDFS_SHELL_EXECNAME=root
+export HDFS_SECONDARYNAMENODE=root
 ```
 
 - **core-site.xml** 
@@ -195,6 +268,9 @@ export  JAVA_HOME=/usr/java/jdk1.8.0_201/
 指定副本系数和临时文件存储位置：
 
 ```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
 <configuration>
     <property>
         <!--由于我们这里搭建是单机版本，所以指定 dfs 的副本系数为 1-->
@@ -264,6 +340,8 @@ sudo systemctl stop firewalld.service
 
 ![img](./images/hadoop安装验证.png)
 
+
+
 ### （4）Hadoop(YARN)环境搭建
 
 #### > 修改配置
@@ -278,6 +356,9 @@ cp mapred-site.xml.template mapred-site.xml
 ```
 
 ```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
 <configuration>
     <property>
         <name>mapreduce.framework.name</name>
@@ -389,12 +470,27 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.201-b09, mixed mode)
 &emsp;&emsp;在每台主机上使用 `ssh-keygen` 命令生成公钥私钥对：
 
 ```shell
-ssh-keygen
+ssh-keygen -t rsa
 ```
 
 #### > 免密登录
 
-&emsp;&emsp;将 `hadoop001` 的公钥写到本机和远程机器的 ` ~/ .ssh/authorized_key` 文件中：
+&emsp;&emsp;将 `hadoop001` 的公钥写到本机和远程机器的 ` ~/ .ssh/authorized_key` 文件中。
+
+&emsp;&emsp;进入 `~/.ssh` 目录下，查看生成的公匙和私匙，并将公匙写入到授权文件：
+
+```shell
+[root@@hadoop001 sbin]#  cd ~/.ssh
+[root@@hadoop001 .ssh]# ll
+-rw-------. 1 root root 1675 3 月  15 09:48 id_rsa
+-rw-r--r--. 1 root root  388 3 月  15 09:48 id_rsa.pub
+```
+
+```shell
+# 写入公匙到授权文件   —— .ssh目录权限为700, authorized_keys权限为600
+[root@hadoop001 .ssh]# cat id_rsa.pub >> authorized_keys
+[root@hadoop001 .ssh]# chmod 600 authorized_keys
+```
 
 ```shell
 ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop001
@@ -449,6 +545,77 @@ source /etc/profile
 ```shell
 # 指定JDK的安装位置
 export JAVA_HOME=/usr/java/jdk1.8.0_201/
+
+export HADOOP_HOME=/usr/app/hadoop-2.6.0-cdh5.15.2
+export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+export HADOOP_JAAS_DEBUG=true
+
+export HADOOP_OPTS="-Djava.net.preferIPv4Stack=true"
+
+export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
+
+case ${HADOOP_OS_TYPE} in
+ Darwin*)
+  export HADOOP_OPTS="${HADOOP_OPTS} -Djava.security.krb5.realm= "
+  export HADOOP_OPTS="${HADOOP_OPTS} -Djava.security.krb5.kdc= "
+  export HADOOP_OPTS="${HADOOP_OPTS} -Djava.security.krb5.conf= "
+ ;;
+esca
+ 
+export HADOOP_CLIENT_OPTS=""
+
+export HADOOP_CLASSPATH=.:$CLASSPATH:$HADOOP_CLASSPATH:$HADOOP_HOME/bin
+export HADOOP_USER_CLASSPATH_FIRST="yes"
+export HADOOP_CLIENT_CLASSLOADER_SYSTEM_CLASSES="-org.apache.hadoop.UserClass,java.,org.apache.hadoop."
+export HADOOP_OPTIONAL_TOOLS="hadoop-azure-datalake,hadoop-azure,hadoop-openstack,hadoop-kafka,hadoop-aws,hadoop-aliyun"
+export HADOOP_SSH_OPTS="-o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=10s"
+export HADOOP_SSH_PARALLEL=10
+export HADOOP_LOG_DIR=${HADOOP_HOME}/logs
+export HADOOP_IDENT_STRING=$USER
+export HADOOP_STOP_TIMEOUT=5
+export HADOOP_PID_DIR=/hadoop/tmp
+export HADOOP_ROOT_LOGGER=INFO,console
+export HADOOP_DAEMON_ROOT_LOGGER=INFO,REA
+export HADOOP_SECURITY_LOGGER=INFO,NullAppender
+export HADOOP_NICENESS=0
+export HADOOP_POLICYFILE="hadoop-policy.xml"
+export HADOOP_GC_SETTINGS="-verbose:gc -XX:+PrintGCDetails -XX:=PrintGCTimeStamps -XX:PrintGCDateStamps"
+export JSVC_HOME=/usr/bin
+export HADOOP_SECURE_PID_DIR=${HADOOP_PID_DIR}
+export HADOOP_SECURE_LOG=${HADOOP_LOG_DIR}
+export HADOOP_SECURE_IDENT_PRESERVE="true"
+export HDFS_AUDIT_LOGGER=INFO,NullAppender
+
+export HDFS_NMAENODE_OPTS="-Dhadoop.security.logger=INFO,RFAS"
+export HDFS_SECONDARYNAMENODE_OPTS="-Dhadoop.security.logger=INFO,RFAS"
+export HDFS_DATANODE_OPTS="-Dhadoop.security.logger=ERROR,RFAS"
+
+export HDFS_DATANODE_SECURE_USER=root
+export HDFS_DATANODE_SECURE_EXTRA_OPTS="-jvm server"
+
+export HDFS_NFS3_OPTS=""
+export HDFS_PORTMAP_OPTS="-Xmx512m"
+
+export HDFS_NFS3_SECURE_EXTRA_OPTS="-jvm server"
+export HDFS_NFS3_SECURE_USER=root
+
+export HDFS_ZKFC_OPTS=""
+export HDFS_JOURNALNODE_OPTS=""
+
+export HDFS_BALANCER_OPTS=""
+
+export HDFS_MOVER_OPTS=""
+
+export HDFS_DFSROUTER_OPTS=""
+
+export HADOOP_ENABLE_BUILD_PATHS="true"
+
+export HDFS_NAMENODE_USER=root
+export HDFS_DATANODE_USER=root
+export HDFS_ZKFC_USER=root
+export HDFS_JOURNALNODE_USER=root
+export HDFS_SHELL_EXECNAME=root
+export HDFS_SECONDARYNAMENODE=root
 ```
 
 2.  core-site.xml
@@ -544,7 +711,7 @@ hdfs namenode -format
 
 &emsp;&emsp;<font color='red'>为什么不能一直格式化 NameNode ?</font>
 
-&emsp;&emsp;&emsp;答：格式化 NameNode，会产生新的集群 id，导致 NameNode 和 DataNode 的集群 id 不一致，集群找不到已往数据。所以，格式 NameNode 时，一定要先删除data 数据和 log 日志，然后再格式化 NameNode。（第一次启动时格式化，以后就不要总格式化）
+&emsp;&emsp;&emsp;答：格式化 NameNode，会产生新的集群 id，导致 NameNode 和 DataNode 的集群 id 不一致，集群找不到以往数据。所以，格式 NameNode 时，一定要先删除data 数据和 log 日志，然后再格式化 NameNode。（第一次启动时格式化，以后就不要总格式化）
 
 #### > 集群时间同步
 
@@ -704,7 +871,7 @@ HDFS 高可用架构主要由以下组件所构成：
 - **Active NameNode 和 Standby NameNode**：两台 NameNode 形成互备，一台处于 Active 状态，为主 NameNode，另外一台处于 Standby 状态，为备 NameNode，只有主 NameNode 才能对外提供读写服务。
 - **主备切换控制器 ZKFailoverController**：ZKFailoverController 作为独立的进程运行，对 NameNode 的主备切换进行总体控制。ZKFailoverController 能及时检测到 NameNode 的健康状况，在主 NameNode 故障时借助 Zookeeper 实现自动的主备选举和切换，当然 NameNode 目前也支持不依赖于 Zookeeper 的手动主备切换。
 - **Zookeeper 集群**：为主备切换控制器提供主备选举支持。
-- **共享存储系统**：共享存储系统是实现 NameNode 的高可用最为关键的部分，共享存储系统保存了 NameNode 在运行过程中所产生的 HDFS 的元数据。主 NameNode 和 NameNode 通过共享存储系统实现元数据同步。在进行主备切换的时候，新的主 NameNode 在确认元数据完全同步之后才能继续对外提供服务。
+- **共享存储系统**：共享存储系统是实现 NameNode 的高可用最为关键的部分，共享存储系统保存了 NameNode 在运行过程中所产生的 HDFS 的元数据。主 NameNode 和 备NameNode 通过共享存储系统实现元数据同步。在进行主备切换的时候，新的主 NameNode 在确认元数据完全同步之后才能继续对外提供服务。
 - **DataNode 节点**：除了通过共享存储系统共享 HDFS 的元数据信息之外，主 NameNode 和备 NameNode 还需要共享 HDFS 的数据块和 DataNode 之间的映射关系。DataNode 会同时向主 NameNode 和备 NameNode 上报数据块的位置信息。
 
 #### > 基于 QJM 的共享存储系统的数据同步机制分析
@@ -747,7 +914,7 @@ HDFS 高可用架构主要由以下组件所构成：
 - 搭建好 ZooKeeper 集群
   - [Zookeeper 集群安装](http://martinhub.gitee.io/martinhub-notes/#/./notes/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%E6%A0%88/01-Zookeeper/README?id=%e4%b8%83%e3%80%81zookeeper%e9%9b%86%e7%be%a4%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba)
 - 所有服务器之间都配置好 SSH 免密登录
-  - [SSH 免密登录](http://martinhub.gitee.io/martinhub-notes/#/./notes/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%E6%A0%88/02-Hadoop/README?id=%ef%bc%882%ef%bc%89%e9%85%8d%e7%bd%ae%e5%85%8d%e5%af%86%e7%99%bb%e5%bd%95)
+  - [SSH 免密登录](http://martinhub.gitee.io/martinhub-notes/#/./notes/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%E6%A0%88/02-Hadoop/README?id=%ef%bc%883%ef%bc%89%e9%85%8d%e7%bd%ae%e5%85%8d%e5%af%86%e7%99%bb%e5%bd%95)
 
 ### （4）集群配置
 
@@ -789,6 +956,77 @@ source /etc/profile
 ```shell
 # 指定JDK的安装位置
 export JAVA_HOME=/usr/java/jdk1.8.0_201/
+
+export HADOOP_HOME=/usr/app/hadoop-2.6.0-cdh5.15.2
+export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+export HADOOP_JAAS_DEBUG=true
+
+export HADOOP_OPTS="-Djava.net.preferIPv4Stack=true"
+
+export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
+
+case ${HADOOP_OS_TYPE} in
+ Darwin*)
+  export HADOOP_OPTS="${HADOOP_OPTS} -Djava.security.krb5.realm= "
+  export HADOOP_OPTS="${HADOOP_OPTS} -Djava.security.krb5.kdc= "
+  export HADOOP_OPTS="${HADOOP_OPTS} -Djava.security.krb5.conf= "
+ ;;
+esca
+ 
+export HADOOP_CLIENT_OPTS=""
+
+export HADOOP_CLASSPATH=.:$CLASSPATH:$HADOOP_CLASSPATH:$HADOOP_HOME/bin
+export HADOOP_USER_CLASSPATH_FIRST="yes"
+export HADOOP_CLIENT_CLASSLOADER_SYSTEM_CLASSES="-org.apache.hadoop.UserClass,java.,org.apache.hadoop."
+export HADOOP_OPTIONAL_TOOLS="hadoop-azure-datalake,hadoop-azure,hadoop-openstack,hadoop-kafka,hadoop-aws,hadoop-aliyun"
+export HADOOP_SSH_OPTS="-o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=10s"
+export HADOOP_SSH_PARALLEL=10
+export HADOOP_LOG_DIR=${HADOOP_HOME}/logs
+export HADOOP_IDENT_STRING=$USER
+export HADOOP_STOP_TIMEOUT=5
+export HADOOP_PID_DIR=/hadoop/tmp
+export HADOOP_ROOT_LOGGER=INFO,console
+export HADOOP_DAEMON_ROOT_LOGGER=INFO,REA
+export HADOOP_SECURITY_LOGGER=INFO,NullAppender
+export HADOOP_NICENESS=0
+export HADOOP_POLICYFILE="hadoop-policy.xml"
+export HADOOP_GC_SETTINGS="-verbose:gc -XX:+PrintGCDetails -XX:=PrintGCTimeStamps -XX:PrintGCDateStamps"
+export JSVC_HOME=/usr/bin
+export HADOOP_SECURE_PID_DIR=${HADOOP_PID_DIR}
+export HADOOP_SECURE_LOG=${HADOOP_LOG_DIR}
+export HADOOP_SECURE_IDENT_PRESERVE="true"
+export HDFS_AUDIT_LOGGER=INFO,NullAppender
+
+export HDFS_NMAENODE_OPTS="-Dhadoop.security.logger=INFO,RFAS"
+export HDFS_SECONDARYNAMENODE_OPTS="-Dhadoop.security.logger=INFO,RFAS"
+export HDFS_DATANODE_OPTS="-Dhadoop.security.logger=ERROR,RFAS"
+
+export HDFS_DATANODE_SECURE_USER=root
+export HDFS_DATANODE_SECURE_EXTRA_OPTS="-jvm server"
+
+export HDFS_NFS3_OPTS=""
+export HDFS_PORTMAP_OPTS="-Xmx512m"
+
+export HDFS_NFS3_SECURE_EXTRA_OPTS="-jvm server"
+export HDFS_NFS3_SECURE_USER=root
+
+export HDFS_ZKFC_OPTS=""
+export HDFS_JOURNALNODE_OPTS=""
+
+export HDFS_BALANCER_OPTS=""
+
+export HDFS_MOVER_OPTS=""
+
+export HDFS_DFSROUTER_OPTS=""
+
+export HADOOP_ENABLE_BUILD_PATHS="true"
+
+export HDFS_NAMENODE_USER=root
+export HDFS_DATANODE_USER=root
+export HDFS_ZKFC_USER=root
+export HDFS_JOURNALNODE_USER=root
+export HDFS_SHELL_EXECNAME=root
+export HDFS_SECONDARYNAMENODE=root
 ```
 
 2.  core-site.xml
@@ -805,10 +1043,42 @@ export JAVA_HOME=/usr/java/jdk1.8.0_201/
         <name>hadoop.tmp.dir</name>
         <value>/home/hadoop/tmp</value>
     </property>
+  	<property>
+      <name>hadoop.proxyuser.hdfs.groups</name>
+      <value>*</value>
+    </property>
+    <property>
+      <name>hadoop.proxyuser.hdfs.hosts</name>
+      <value>*</value>
+    </property>
+    <property>
+      <name>hadoop.proxyuser.root.groups</name>
+      <value>*</value>
+    </property>
+    <property>
+      <name>hadoop.proxyuser.root.hosts</name>
+      <value>*</value>
+    </property>
+    <property>
+      <name>hadoop.proxyuser.hive.groups</name>
+      <value>*</value>
+    </property>
+    <property>
+      <name>hadoop.proxyuser.hive.hosts</name>
+      <value>*</value>
+    </property>
+    <property>
+      <name>hadoop.proxyuser.yarn.hosts</name>
+      <value>*</value>
+    </property>
+    <property>
+      <name>hadoop.proxyuser.yarn.groups</name>
+      <value>*</value>
+    </property>
     <property>
         <!-- ZooKeeper 集群的地址 -->
         <name>ha.zookeeper.quorum</name>
-        <value>hadoop001:2181,hadoop002:2181,hadoop002:2181</value>
+        <value>hadoop001:2181,hadoop002:2181,hadoop003:2181</value>
     </property>
     <property>
         <!-- ZKFC 连接到 ZooKeeper 超时时长 -->
@@ -823,59 +1093,14 @@ export JAVA_HOME=/usr/java/jdk1.8.0_201/
 ```xml
 <configuration>
     <property>
-        <!-- 指定 HDFS 副本的数量 -->
-        <name>dfs.replication</name>
-        <value>3</value>
-    </property>
-    <property>
-        <!-- namenode 节点数据（即元数据）的存放位置，可以指定多个目录实现容错，多个目录用逗号分隔 -->
-        <name>dfs.namenode.name.dir</name>
-        <value>/home/hadoop/namenode/data</value>
-    </property>
-    <property>
-        <!-- datanode 节点数据（即数据块）的存放位置 -->
-        <name>dfs.datanode.data.dir</name>
-        <value>/home/hadoop/datanode/data</value>
-    </property>
-    <property>
-        <!-- 集群服务的逻辑名称 -->
-        <name>dfs.nameservices</name>
-        <value>mycluster</value>
-    </property>
-    <property>
-        <!-- NameNode ID 列表-->
-        <name>dfs.ha.namenodes.mycluster</name>
-        <value>nn1,nn2</value>
-    </property>
-    <property>
-        <!-- nn1 的 RPC 通信地址 -->
-        <name>dfs.namenode.rpc-address.mycluster.nn1</name>
-        <value>hadoop001:8020</value>
-    </property>
-    <property>
-        <!-- nn2 的 RPC 通信地址 -->
-        <name>dfs.namenode.rpc-address.mycluster.nn2</name>
-        <value>hadoop002:8020</value>
-    </property>
-    <property>
-        <!-- nn1 的 http 通信地址 -->
-        <name>dfs.namenode.http-address.mycluster.nn1</name>
-        <value>hadoop001:50070</value>
-    </property>
-    <property>
-        <!-- nn2 的 http 通信地址 -->
-        <name>dfs.namenode.http-address.mycluster.nn2</name>
-        <value>hadoop002:50070</value>
-    </property>
-    <property>
         <!-- NameNode 元数据在 JournalNode 上的共享存储目录 -->
         <name>dfs.namenode.shared.edits.dir</name>
         <value>qjournal://hadoop001:8485;hadoop002:8485;hadoop003:8485/mycluster</value>
     </property>
     <property>
-        <!-- Journal Edit Files 的存储目录 -->
-        <name>dfs.journalnode.edits.dir</name>
-        <value>/home/hadoop/journalnode/data</value>
+        <!-- 指定 HDFS 副本的数量 -->
+        <name>dfs.replication</name>
+        <value>3</value>
     </property>
     <property>
         <!-- 配置隔离机制，确保在任何给定时间只有一个 NameNode 处于活动状态 -->
@@ -893,9 +1118,57 @@ export JAVA_HOME=/usr/java/jdk1.8.0_201/
         <value>30000</value>
     </property>
     <property>
+        <!-- 集群服务的逻辑名称 -->
+        <name>dfs.nameservices</name>
+        <value>mycluster</value>
+    </property>
+    <property>
+        <!-- NameNode ID 列表-->
+        <name>dfs.ha.namenodes.mycluster</name>
+        <value>nn1,nn2</value>
+    </property>
+    <property>
+        <!-- nn1 的 http 通信地址 -->
+        <name>dfs.namenode.http-address.mycluster.nn1</name>
+        <value>hadoop001:50070</value>
+    </property>
+    <property>
+        <!-- nn2 的 http 通信地址 -->
+        <name>dfs.namenode.http-address.mycluster.nn2</name>
+        <value>hadoop002:50070</value>
+    </property>
+    <property>
+        <!-- nn1 的 RPC 通信地址 -->
+        <name>dfs.namenode.rpc-address.mycluster.nn1</name>
+        <value>hadoop001:8020</value>
+    </property>
+    <property>
+        <!-- nn2 的 RPC 通信地址 -->
+        <name>dfs.namenode.rpc-address.mycluster.nn2</name>
+        <value>hadoop002:8020</value>
+    </property>
+  	<property>
+         <name>ipc.maximum.data.length</name>
+         <value>134217728</value>
+  	</property>
+    <property>
+        <!-- namenode 节点数据（即元数据）的存放位置，可以指定多个目录实现容错，多个目录用逗号分隔 -->
+        <name>dfs.namenode.name.dir</name>
+        <value>/home/hadoop/namenode/data</value>
+    </property>
+    <property>
+        <!-- datanode 节点数据（即数据块）的存放位置 -->
+        <name>dfs.datanode.data.dir</name>
+        <value>/home/hadoop/datanode/data</value>
+    </property>
+    <property>
+        <!-- Journal Edit Files 的存储目录 -->
+        <name>dfs.journalnode.edits.dir</name>
+        <value>/home/hadoop/journalnode/data</value>
+    </property>
+    <property>
         <!-- 访问代理类，用于确定当前处于 Active 状态的 NameNode -->
-        <name>dfs.client.failover.proxy.provider.mycluster</name>
-        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+        <name>dfs.client.failover.proxy.provider.mycluster</name>    <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
     </property>
     <property>
         <!-- 开启故障自动转移 -->
@@ -1003,6 +1276,46 @@ hadoop003
 
 &emsp;&emsp;将 Hadoop 安装包分发到其他两台服务器，分发后建议在这两台服务器上也配置一下 Hadoop 的环境变量。
 
+**方法1**： 
+
+&emsp;&emsp;编写分发文件的脚本`xsync.sh`：
+
+```shell
+#!/bin/bash
+#1 获取输入参数个数，如果没有参数，直接退出
+pcount=$#
+if((pcount==0)); then
+echo no args;
+exit
+
+#2. 遍历所有目录，挨个发送
+for file in $@
+do
+    #3. 获取父目录
+    pdir=$(cd -P $(dirname $file); pwd)
+    
+    #4. 获取当前文件的名称
+    fname=$(basename $file)
+    
+    #5. 遍历集群所有机器，拷贝
+    for host in hadoop002 hadoop002 hadoop003
+    do
+        echo ====================    $host    ====================
+        rsync -rvl $pdir/$fname $USER@$host:$pdir
+    done
+done
+```
+
+&emsp;&emsp;赋予脚本权限：`chmod 777 xsync.sh`.
+
+&emsp;&emsp;执行分发：
+
+```shell
+./xsync /usr/app/hadoop-2.6.0-cdh5.15.2/ 
+```
+
+**方法2**：  
+
 ```shell
 # 将安装包分发到hadoop002
 scp -r /usr/app/hadoop-2.6.0-cdh5.15.2/  hadoop002:/usr/app/
@@ -1022,7 +1335,7 @@ scp -r /usr/app/hadoop-2.6.0-cdh5.15.2/  hadoop003:/usr/app/
  zkServer.sh start
 ```
 
-#### > 启动Journalnode
+#### > 启动 Journalnode
 
 &emsp;&emsp;分别到三台服务器的的 `${HADOOP_HOME}/sbin` 目录下，启动 `journalnode` 进程：
 
@@ -1030,7 +1343,7 @@ scp -r /usr/app/hadoop-2.6.0-cdh5.15.2/  hadoop003:/usr/app/
 hadoop-daemon.sh start journalnode
 ```
 
-#### > 初始化NameNode
+#### > 初始化 NameNode
 
 &emsp;&emsp;在 `hadop001` 上执行 `NameNode` 初始化命令：
 
@@ -1044,7 +1357,7 @@ hdfs namenode -format
  scp -r /home/hadoop/namenode/data hadoop002:/home/hadoop/namenode/
 ```
 
-#### > 初始化HA状态
+#### > 初始化 HA 状态
 
 &emsp;&emsp;在任意一台 `NameNode` 上使用以下命令来初始化 ZooKeeper 中的 HA 状态：
 
@@ -1078,10 +1391,25 @@ yarn-daemon.sh start resourcemanager
 
 #### > 查看进程
 
+&emsp;&emsp; 编写集群间统一使用的jpsall.sh脚本，不用来回切换服务器即可统一下达命令：
+
+```shell
+#!/bin/bash
+for i in hadoop001 hadoop002 hadoop003
+do
+	echo =====================  $i  =====================
+	ssh $i "source /etc/profile && jps $@ | grep -v Jps"
+done
+```
+
+&emsp;&emsp;为脚本赋权限：`chmod 777 jpsall.sh`
+
+&emsp;&emsp;执行命令： `./jpsall.sh`
+
 &emsp;&emsp;成功启动后，每台服务器上的进程应该如下：
 
 ```shell
-[root@hadoop001 sbin]# jps
+=====================  hadoop001  =====================
 4512 DFSZKFailoverController
 3714 JournalNode
 4114 NameNode
@@ -1089,8 +1417,7 @@ yarn-daemon.sh start resourcemanager
 5012 DataNode
 4639 NodeManager
 
-
-[root@hadoop002 sbin]# jps
+=====================  hadoop002  =====================
 4499 ResourceManager
 4595 NodeManager
 3465 QuorumPeerMain
@@ -1099,8 +1426,7 @@ yarn-daemon.sh start resourcemanager
 5211 DataNode
 3533 JournalNode
 
-
-[root@hadoop003 sbin]# jps
+=====================  hadoop003  =====================
 3491 JournalNode
 3942 NodeManager
 4102 ResourceManager
