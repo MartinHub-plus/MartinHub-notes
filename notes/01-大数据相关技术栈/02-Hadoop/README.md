@@ -338,7 +338,7 @@ sudo systemctl stop firewalld.service
 
 方式二：查看 Web UI 界面，端口为 `50070`：
 
-![img](./images/hadoop安装验证.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/02-Hadoop//images/hadoop安装验证.png)
 
 
 
