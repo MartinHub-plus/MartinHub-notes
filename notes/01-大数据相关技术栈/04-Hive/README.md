@@ -42,22 +42,22 @@
 
 ### （2）Hive架构原理
 
-1．用户接口：Client
+**1．用户接口：Client** 
 
 &emsp;&emsp;CLI（hive shell）、JDBC/ODBC(java 访问 hive)、WEBUI（浏览器访问 hive）
 
-2．元数据：Metastore
+**2．元数据：Metastore**
 
 &emsp;&emsp;元数据包括：表名、表所属的数据库（默认是 default）、表的拥有者、列/分区字段、表
 的类型（是否是外部表）、表的数据所在目录等；
 
 <font color='red'>默认存储在自带的 derby 数据库中，推荐使用 MySQL 存储 Metastore。</font>
 
-3．Hadoop
+**3．Hadoop**
 
 &emsp;&emsp;使用 HDFS 进行存储，使用 MapReduce 进行计算。
 
-4．驱动器：Driver
+**4．驱动器：Driver**
 
 （1）解析器（SQL Parser）：将 SQL 字符串转换成抽象语法树 AST，这一步一般都用第三方工具库完成，比如 antlr；对 AST 进行语法分析，比如表是否存在、字段是否存在、SQL 语义是否有误。
 
@@ -126,9 +126,9 @@ export HIVE_CONF_DIR=/opt/module/hive/conf
 
 **2. hive-site.xml**
 
-&emsp;&emsp;新建 hive-site.xml 文件，内容如下，主要是配置存放元数据的 MySQL 的地址、驱动、用户名和密码等信息：
+&emsp;&emsp;新建 `hive-site.xml` 文件，内容如下，主要是配置存放元数据的 `MySQL` 的地址、驱动、用户名和密码等信息：
 
-&emsp;&emsp;前提是已经安装好Mysql。
+&emsp;&emsp;**前提是已经安装好Mysql** 
 
 ```xml
 <?xml version="1.0"?>
@@ -193,8 +193,7 @@ hive
 
 ```text
 1）Default 数据仓库的最原始位置是在 hdfs 上的：/user/hive/warehouse 路径下。
-2）在仓库目录下，没有对默认的数据库 default 创建文件夹。如果某张表属于 default
-数据库，直接在数据仓库目录下创建一个文件夹
+2）在仓库目录下，没有对默认的数据库 default 创建文件夹。如果某张表属于 default 数据库，直接在数据仓库目录下创建一个文件夹
 ```
 
 ## 三、HiveServer2/beeline
@@ -231,7 +230,7 @@ hive
 &emsp;&emsp;由于上面已经配置过环境变量，这里直接启动即可：
 
 ```shell
-nohup hiveserver2 &
+nohup hiveserver2 2>&1 &
 ```
 
 
@@ -489,7 +488,7 @@ No rows affected (0.025 seconds)
 
 #### > 配置优先级
 
-&emsp;&emsp;配置的优先顺序如下 (由低到高)：  
+&emsp;&emsp;配置的优先顺序如下 (由低到高)： 
 `hive-site.xml` - >` hivemetastore-site.xml `- > `hiveserver2-site.xml` - >` -- hiveconf`- > `set`
 
 #### > 配置参数

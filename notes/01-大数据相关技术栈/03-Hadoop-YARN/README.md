@@ -20,7 +20,7 @@
 
 - 启动时向 `ResourceManager` 注册并定时发送心跳消息，等待 `ResourceManager` 的指令；
 - 维护 `Container` 的生命周期，监控 `Container` 的资源使用情况；
-- 管理任务运行时的相关依赖，根据 `ApplicationMaster` 的需要，在启动 `Container` 之前将需要的程序及其依赖拷贝到本地。
+- 管理任务运行时的相关依赖，根据 `ApplicationMaster` 的需要，在启动 `Container` 之前将需要的程序及其依赖拷贝到本地；
 
 ### （3）ApplicationMaster
 
@@ -29,17 +29,15 @@
 - 根据应用的运行状态来决定动态计算资源需求；
 - 向 `ResourceManager` 申请资源，监控申请的资源的使用情况；
 - 跟踪任务状态和进度，报告资源的使用情况和应用的进度信息；
-- 负责任务的容错。
+- 负责任务的容错；
 
-### （4）Contain
+### （4）Container
 
 &emsp;&emsp;`Container` 是 YARN 中的资源抽象，它封装了某个节点上的多维度资源，如内存、CPU、磁盘、网络等。当 AM 向 RM 申请资源时，RM 为 AM 返回的资源是用 `Container` 表示的。YARN 会为每个任务分配一个 `Container`，该任务只能使用该 `Container` 中描述的资源。`ApplicationMaster` 可在 `Container` 内运行任何类型的任务。例如，`MapReduce ApplicationMaster` 请求一个容器来启动 map 或 reduce 任务，而 `Giraph ApplicationMaster` 请求一个容器来运行 Giraph 任务。
 
 
 
-
-
-## 三、YARN工作原理简述
+## 三、YARN 工作原理简述
 
 ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/03-Hadoop-YARN/images/yarn工作原理简图.png)
 
@@ -48,7 +46,9 @@
 3. `Application Master` 根据实际需要向 `Resource Manager` 请求更多的 `Container` 资源（如果作业很小, 应用管理器会选择在其自己的 JVM 中运行任务）；
 4. `Application Master` 通过获取到的 `Container` 资源执行分布式计算。
 
-## 四、YARN工作原理详述
+
+
+## 四、YARN 工作原理详述
 
 ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/03-Hadoop-YARN/images/yarn工作原理.png)
 

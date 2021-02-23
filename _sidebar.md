@@ -15,11 +15,11 @@
   - [Spark](./notes/01-大数据相关技术栈/08-Spark/README.md)
   - [Flink](./notes/01-大数据相关技术栈/09-Flink/README.md)
   - [Kafka](./notes/01-大数据相关技术栈/10-Kafka/README.md)
-  - [Flume](./notes/01-大数据相关技术栈/11-Flume/README.md)
-  - [Sqoop](./notes/01-大数据相关技术栈/12-Sqoop/README.md)
-  - [Oozie](./notes/01-大数据相关技术栈/13-Oozie/README.md)
-  - [Azkaban](./notes/01-大数据相关技术栈/14-Azkaban/README.md)
-  - [Storm](./notes/01-大数据相关技术栈/15-Storm/README.md)
+  - <!--[Flume](./notes/01-大数据相关技术栈/11-Flume/README.md)-->
+  - <!--[Sqoop](./notes/01-大数据相关技术栈/12-Sqoop/README.md)-->
+  - <!--[Oozie](./notes/01-大数据相关技术栈/13-Oozie/README.md)-->
+  - <!--[Azkaban](./notes/01-大数据相关技术栈/14-Azkaban/README.md)-->
+  - <!--[Storm](./notes/01-大数据相关技术栈/15-Storm/README.md)-->
   - [DataX](./notes/01-大数据相关技术栈/16-DataX/README.md)
   - [DataHub](./notes/01-大数据相关技术栈/17-DataHub/README.md)
   - [Presto](./notes/01-大数据相关技术栈/18-Presto/README.md)
