@@ -6,11 +6,11 @@
 
 <font color='red'>本质是：将 HQL 转化成 MapReduce 程序。</font>
 
-&emsp;1）Hive 处理的数据存储在 HDFS
+&emsp;1）Hive 处理的数据存储在 HDFS；
 
-&emsp;2）Hive 分析数据底层的实现是 MapReduce
+&emsp;2）Hive 分析数据底层的实现是 MapReduce；
 
-&emsp;3）执行程序运行在 Yarn 上
+&emsp;3）执行程序运行在 Yarn 上；
 
 ### （1）Hive的优缺点
 
