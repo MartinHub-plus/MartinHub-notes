@@ -15,10 +15,10 @@
   - [Spark](./notes/01-大数据相关技术栈/08-Spark/README.md)
   - [Flink](./notes/01-大数据相关技术栈/09-Flink/README.md)
   - [Kafka](./notes/01-大数据相关技术栈/10-Kafka/README.md)
-  - <!--[Flume](./notes/01-大数据相关技术栈/11-Flume/README.md)-->
-  - <!--[Sqoop](./notes/01-大数据相关技术栈/12-Sqoop/README.md)-->
+  - [Flume](./notes/01-大数据相关技术栈/11-Flume/README.md)
+  - [Sqoop](./notes/01-大数据相关技术栈/12-Sqoop/README.md)
   - <!--[Oozie](./notes/01-大数据相关技术栈/13-Oozie/README.md)-->
-  - <!--[Azkaban](./notes/01-大数据相关技术栈/14-Azkaban/README.md)-->
+  - [Azkaban](./notes/01-大数据相关技术栈/14-Azkaban/README.md)
   - <!--[Storm](./notes/01-大数据相关技术栈/15-Storm/README.md)-->
   - [DataX](./notes/01-大数据相关技术栈/16-DataX/README.md)
   - [DataHub](./notes/01-大数据相关技术栈/17-DataHub/README.md)
@@ -51,17 +51,7 @@
   - [Docker](./notes/04-Linux相关/02-Docker/README.md)
   - [Nginx](./notes/04-Linux相关/03-Nginx/README.md)
   - [常用脚本](./notes/04-Linux相关/常用脚本/README.md)
-- **算法相关** 
-  - [Leetcode](./notes/05-算法/01-LeetCode/README.md)
-  - <!--[牛 客](./notes/05-算法/02-牛客/README.md)-->
-- **前端技术**
-  - [Vue](./notes/07-前端相关技术栈/01-Vue/README.md)
-- **IT 书籍** 
-  - [大数据书籍](./notes/08-IT书籍/README.md)
-- **面   经**
-  - [大数据面试](./notes/09-面经/大数据面试/README.md)
-  - [Java面试](./notes/09-面经/Java面试/README.md)
 - **杂  记**
-  - [正则表达式](./notes/10-杂记/01-正则表达式/README.md)
-  - [工具分享](./notes/10-杂记/02-工具分享/README.md)
+  - [正则表达式](./notes/05-杂记/01-正则表达式/README.md)
+  - [工具分享](./notes/05-杂记/02-工具分享/README.md)
 
