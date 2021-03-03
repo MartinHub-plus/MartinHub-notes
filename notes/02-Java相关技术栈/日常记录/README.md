@@ -382,6 +382,274 @@ public class Person {
 >
 > @URL(protocol=,host=, port=,regexp=, flags=)
 
+## Spring Dao层@Repository 与 @Mapper
+
+使用注解的方式开发Dao层的时候，常常会混淆这两个注解，不知道怎么添加，这里做个记录。
+
+总结：
+
+1. @Mapper 一定要有，否则 Mybatis 找不到 mapper。
+2. @Repository 可有可无，可以消去依赖注入的报错信息。
+3. @MapperScan 可以替代 @Mapper。
+
+### (1) @Mapper 
+
+**@Mapper 是 Mybatis 的注解，和 Spring 没有关系，@Repository 是 Spring 的注解，用于声明一个 Bean。**（重要）
+
+使用 Mybatis 有 XML 文件或者注解的两种使用方式，如果是使用 XML 文件的方式，我们需要在配置文件中指定 XML 的位置，这里只研究注解开发的方式。
+
+在 Spring 程序中，Mybatis 需要找到对应的 mapper，在编译的时候动态生成代理类，实现数据库查询功能，所以我们需要在接口上添加 @Mapper 注解。
+
+```java
+@Mapper
+public interface UserDao {
+	...
+}
+```
+
+但是，仅仅使用@Mapper注解，我们会发现，在其他变量中依赖注入，IDEA 会提示错误，但是不影响运行（亲测～）。因为我们没有显式标注这是一个 Bean，IDEA 认为运行的时候会找不到实例注入，所以提示我们错误。
+
+尽管这个错误提示并不影响运行，但是看起来很不舒服，所以我们可以在对应的接口上添加 bean 的声明，如下：
+
+```java
+@Repository // 也可以使用@Component，效果都是一样的，只是为了声明为bean
+@Mapper
+public interface UserDao {
+	
+	@Insert("insert into user(account, password, user_name) " +
+            "values(#{user.account}, #{user.password}, #{user.name})")
+    int insertUser(@Param("user") User user) throws RuntimeException;
+}
+```
+
+### (2) @Repository
+
+正如上面说的，@Repository 用于声明 dao 层的 bean，如果我们要真正地使用 @Repository 来进行开发，那是基于代码的开发，简单来说就是手写 JDBC。
+
+和 @Service、@Controller 一样，我们将 @Repository 添加到对应的实现类上，如下：
+
+```java
+@Repository
+public class UserDaoImpl implements UserDao{
+	
+	@Override
+	public int insertUser(){
+		JdbcTemplate template = new JdbcTemplate();
+		...
+	}
+}
+```
+
+### (3) 其他扫描手段
+
+基于注解的开发也有其他手段帮助 Mybatis 找到 mapper，那就是 @MapperScan 注解，可以在启动类上添加该注解，自动扫描包路径下的所有接口。
+
+```java
+@SpringBootApplication
+@MapperScan("com.martinhub.dao")
+public class UserEurekaClientApplication {
+ 
+    public static void main(String[] args) {
+        SpringApplication.run(UserEurekaClientApplication.class, args);
+    }
+}
+```
+
+使用这种方法，接口上不用添加任何注解。
+
+### (4) 总结
+
+1. @Mapper 一定要有，否则 Mybatis 找不到 mapper。
+2. @Repository 可有可无，可以消去依赖注入的报错信息。
+3. @MapperScan 可以替代 @Mapper。 
+4. Mapper报假红打上@component
+
+## IDEA打开的文件不隐藏全部展示（而不是只显示一行）
+
+- `File > settings > Editor > general > Editor Tabs > appearance > show tabs in one row`这个勾选去掉就可以了
+
+## IDEA开启热部署
+
+<font color='red'>注意：此功能在开发阶段开启，生产环境一定要关闭。</font>
+
+1. Pom.xml文件添加插件：
+
+   ```xml
+   <!--热部署：更改代码后，自动重启-->
+   <dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-devtools</artifactId>
+     <scope>runtime</scope>
+     <optional>true</optional>
+   </dependency>
+
+    <build>
+      <finalName>cloud2021</finalName>
+      <plugins>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>2.3.1.RELEASE</version>
+          <configuration>
+            <fork>true</fork>
+            <addResources>true</addResources>
+          </configuration>
+        </plugin>
+      </plugins>
+    </build>
+   ```
+
+
+   2. IDEA设置：
+
+      ![img](./images/开启热部署.PNG)
+
+   3. 在工程内按住快捷键
+
+      `Ctrl + Shift + Alt + /`
+
+      出现的选择框：选择Registry。
+
+      选择：
+
+      ![img](./images/开启热部署2.PNG)
+
+   4. 重启IDEA
+
+      ​
+
+## 一般Maven项目新建后，必做的几个设置
+
+1. 设置编码: UTF-8
+
+   ![img](./images/必备设置1.PNG)
+
+2. 设置jdk编译版本
+
+   ![img](./images/必备设置2.PNG)
+
+3. 开启注解自动生效
+
+   ![img](./images/必备设置3.PNG)
+
+
+## RestTemplate
+
+> RestTemplate提供了多种便捷访问远程HTTP服务的方法，是一种简单便捷的访问restful服务模板类，是Spring提供的用于访问Rest服务的客户端模板工具集。
+
+**使用：** 
+
+使用restTemplate访问restful接口十分简单。
+
+（url, requestMap, ResponseBean.class)这三个参数分别代表REST请求地址、请求参数、HTTP响应转换被转换成的对象类型。
+
+（1） 编写Config，将RestTemplate导入容器
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
+/**
+ * @Project：cloud2021
+ * @File: ApplicationContextConfig
+ * @IDE ：IntelliJ IDEA
+ * @Author ：MartinHub
+ * @Date ：2021/3/3 11:10
+ */
+@Configuration
+public class ApplicationContextConfig {
+
+    /**
+     * RestTemplate配置(HttpClient的封装类)
+     * @return
+     */
+    @Bean
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
+    }
+
+}
+```
+
+（2）编写Controller
+
+```java
+import com.martinhub.entities.CommonResult;
+import com.martinhub.entities.Payment;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import javax.annotation.Resource;
+
+/**
+ * @Project：cloud2021
+ * @File: OrderController
+ * @IDE ：IntelliJ IDEA
+ * @Author ：MartinHub
+ * @Date ：2021/3/3 10:47
+ */
+@RestController
+@Slf4j
+public class OrderController {
+    public static final String PAYMENT_URL = "http://localhost:8001";
+
+    @Resource
+    private RestTemplate restTemplate;
+
+    @GetMapping("/consumer/payment/create")
+    public CommonResult<Payment> create(Payment payment){
+        log.info("******客户端调用远程微服务-创建*********成功！！！！！！！！");
+        return restTemplate.postForObject(PAYMENT_URL + "/payment/create", payment, CommonResult.class);
+    }
+
+    @GetMapping("/consumer/payment/get/{id}")
+    public CommonResult<Payment> getPayment(@PathVariable("id") Long id) {
+        log.info("******客户端调用远程微服务-查询*********成功！！！！！！！！");
+        return restTemplate.getForObject(PAYMENT_URL + "/payment/get/" + id, CommonResult.class);
+    }
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>

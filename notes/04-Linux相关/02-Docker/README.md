@@ -289,6 +289,40 @@ COPY spring-boot-base.jar  /usr/app/
 ENTRYPOINT ["java", "-jar", "/usr/app/spring-boot-base.jar"]
 ```
 
+## 二、Docker安装
+
+```shell
+# 首次安装：更新系统
+[root@iz/]# yum update
+
+# 查看系统版本：
+[root@iz/]# lsb_release -a 
+	LSB Version:	:core-4.1-amd64:core-4.1-noarch
+    Distributor ID:	CentOS
+    Description:	CentOS Linux release 7.3.1611 (Core) 
+    Release:	7.3.1611
+    Codename:	Core
+
+# 查看内核版本： 必须是3.10及以上
+[root@iz/]# uname -r
+	3.10.0-514.26.2.el7.x86_64
+
+# 查看是否安装docker
+[root@iz/]# yum list installed | grep docker
+
+# 安装docker
+[root@iz/]# yum -y install docker
+
+# 启动docker
+[root@iz/]# systemctl start docker
+
+# 关闭docker
+[root@iz/]# systemctl stop docker
+
+# 设置开机自启
+[root@iz/]# systemctl enable docker.service
+```
+
 
 
 ### 参考资料
