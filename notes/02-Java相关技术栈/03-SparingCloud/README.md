@@ -47,9 +47,9 @@ https://spring.io/projects/spring-cloud#overflow
 ### 更加详细的cloud与boot版本对应
 
 https://start.spring.io/actuator/info
-<img src="images/版本.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/版本.png">
 
-<img src="images/Cloud升级.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/Cloud升级.png">
 
 ## 五、项目实践
 
@@ -205,7 +205,7 @@ dependencyManagement只是声明依赖，并不实现引入，一次子项目需
 Eureka Server 作为服务注册功能的服务器，它是服务注册中心，而系统中其他微服务，使用 Eureka 的客户端连接到 Eureka Server 并维持心跳连接，这样系统维护人员就可以通过 Eureka Server来监控各个微服务是否正常运行。
 
 在服务注册与发现中有一个注册中心，服务器启动时，会把当前自己的服务器信息比如服务地址，通信地址等注册到注册中心上，另一方（消费者）以别名的方式在注册中心上获取实际的服务器通讯地址，然后再实现本地RPC调用远程RPC。
-<img src="images/服务注册.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/服务注册.png">
 
 #### > Eureka的两个组件
 
@@ -348,7 +348,7 @@ Instances currently registered with Eureka 下的服务端口
 高可用，如果注册中心只有一个，出了故障就会导致整个服务环境不可用
 解决方法：搭建Eureka注册中心集群，实现负载均衡+故障排错
 
-<img src="images/eureka集群.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/eureka集群.png">
 多个 eureka serve 相互注册，保障信息共享。
 
 #### > 搭建集群
@@ -797,7 +797,7 @@ spring:
 
 ### (5) 三个注册中心 eureka zookeeper consul的异同点
 
-<img src="images/注册中心区别.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/注册中心区别.png">
 
 ### (6) CAP
 
@@ -806,7 +806,7 @@ A: Availability（可用性）
 P: Partition tolerance（分区容错性）
 CAP理论关注粒度是数据，而不是整体系统设计的
 
-<img src="images/CAP.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/CAP.png">
 
 
 
@@ -834,7 +834,7 @@ https://github.com/Netflix/ribbon
 2. 实现
    负载均衡+RestTemplate 调用
 
-<img src="images/Ribbon.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/Ribbon.png">
 
 - Ribbon工作时有两步
   1. 第一步先选择 EurekaServer，优先选择统一区域负载较少的 server
@@ -930,7 +930,7 @@ Feign是声明性Web服务客户端。它使编写Web服务客户端更加容易
 - Feign集成了Ribbon
   利用Ribbon维护了Payment的服务列表信息，并且实现了轮询实现客户端的负载均衡。而与Ribbon不同的是，==feign只需要定义服务绑定接口且以声明式的方法==，优雅而简单的实现服务调用。
 - Feign与OpenFeign区别
-  <img src="images/feign与OpenFeign区别.png">
+  <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/feign与OpenFeign区别.png">
 
 ### (3) 官网
 
@@ -1387,7 +1387,7 @@ https://martinfowler.com/bliki/CircuitBreaker.html
 
 **使用**
 
-<img src="images/dashboard.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/dashboard.png">
 
 1. 进行8001 的访问查看对应页面变化
 2. 页面状态
@@ -1408,7 +1408,7 @@ https://cloud.spring.io/spring-cloud-static/spring-cloud-gateway/2.2.2.RELEASE/r
 
 #### > 结构
 
-<img src="images/springcloud结构.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/springcloud结构.png">
 
 <img src="images/网关作用.png">
 
@@ -1423,7 +1423,7 @@ https://cloud.spring.io/spring-cloud-static/spring-cloud-gateway/2.2.2.RELEASE/r
 
 #### > 工作流程
 
-<img src="imgs/gateway工作流程.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/gateway工作流程.png">
 
 客户端向Spring Cloud Gateway发出请求。如果网关处理程序映射确定请求与路由匹配，则将其发送到网关Web处理程序。该处理程序通过特定于请求的过滤器链来运行请求。筛选器由虚线分隔的原因是，筛选器可以在发送代理请求之前和之后运行逻辑。所有“前置”过滤器逻辑均被执行。然后发出代理请求。发出代理请求后，将运行“后”过滤器逻辑。
 
@@ -2544,8 +2544,8 @@ public class ConfigClientController {
      ```
 
    - 配置 yaml 文件
-     <img src="images/nacos-config1.png">
-      <img src="images/nacos-config1.png">
+     <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/nacos-config1.png">
+      <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/nacos-config1.png">
 
    - 测试访问http://localhost:3377/config/info看是否得到配置信息
 
@@ -2553,8 +2553,8 @@ public class ConfigClientController {
 
 #### > 分组
 
-<img src="images/nacos命名空间.png">
-<img src="images/nacos分组.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/nacos命名空间.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/nacos分组.png">
 
 1. Nacos默认的命名空间是 public ，Namespace主要实现隔离。
    比如说现在有三个环境：开发，测试，生产环境，就可以创建三个Namespace，不同的Namespace之间是隔离的。
@@ -2650,7 +2650,7 @@ spring:
 
 #### > 集群
 
-<img src="images/nacos集群.jpeg"> 
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/nacos集群.jpeg"> 
 
 **前提配置**
 
@@ -2852,7 +2852,7 @@ management:
 
 #### > 流控模式
 
-<img src="images/sentinel1.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/sentinel1.png">
 
 **直接**
 
@@ -2865,8 +2865,8 @@ management:
 1. 关联 testA 与 testB
 2. B达到阈值，限流A
 3. 使用 postman 模拟并发请求
-   <img src="images/postman1.png">
-   <img src="images/postman2.png">
+   <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/postman1.png">
+   <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/postman2.png">
    1. 先访问testB
    2. save到新建collection里
    3. 选择runner，选择testB，选择迭代次数和等待时长
@@ -2882,7 +2882,7 @@ management:
 
 **预热** 
 
-<img src="images/sentinel2.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/sentinel2.png">
 
 1. 初始QPS = QPS/3
 2. 阈值从初始QPS主键增加到 QPS
@@ -2890,8 +2890,8 @@ management:
 
 **排队等待** 
 
-<img src="images/排队等待1.png">
-<img src="images/排队等待2.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/排队等待1.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/排队等待2.png">
 
 为 testB 设置打印当前时间
 可以观察到一秒一个挨个执行
@@ -2914,7 +2914,7 @@ management:
 
 **平均响应时间** 
 
-<img src="images/服务降级.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/服务降级.png">
 
 1. jmeter压力测试每秒10次，永远循环
 2. 如何 1s 内持续进了 N 个请求且 平均响应时间均超过阈值，那么下一个窗口期服务熔断
@@ -2963,7 +2963,7 @@ management:
       }
 ```
 
-1. <img src="images/hotkey1.png">
+1. <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/hotkey1.png">
 2. 多次访问 http://localhost:8401/testHotKey?p1=a 查看效果,可以生效
 3. 多次访问 http://localhost:8401/testHotKey?p1=a&p2=b 查看效果,可以生效
 4. 多次访问 http://localhost:8401/testHotKey?p2=a 查看效果,不能生效
@@ -2972,7 +2972,7 @@ management:
 
 #### > 参数特殊项
 
-<img src="images/特殊参数项.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/特殊参数项.png">
 
 1. 当参数为特定值的时候拥有不同的阈值
 2. 即使其他参数项熔断，特定参数项也不会熔断
@@ -3008,7 +3008,7 @@ management:
 
 **怎么做** 
 
-<img src="images/系统规则.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/系统规则.png">
 
 **简而言之就是对整个系统添加限流，不推荐使用** 
 
@@ -3240,7 +3240,7 @@ public class CircleBreakerController {
 2. 结果 
    ==没有在sentinel中配置服务降级只会报出异常界面，而fallback不需要配置sentinel==
 3. 再测试
-   <img src="images/block降级.png">
+   <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/block降级.png">
    配置异常数为 2 ，单独点 1 次 爆异常界面，连续两次爆blockhandler的方法
 
 **配置fallback+blockHanlder** 
@@ -3343,7 +3343,7 @@ spring:
 ```
 
 1. nocos 8848 中新增配置
-   <img src="images/sentinel持久化.png">
+   <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/sentinel持久化.png">
 
 ```json
 [
@@ -3383,7 +3383,7 @@ http://seata.io/zh-cn/
 
 ### (2) 处理过程
 
-<img src="images/seata.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/seata.png">
 
 **一ID+三组件**
 
