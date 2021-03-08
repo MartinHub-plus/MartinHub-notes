@@ -1189,7 +1189,7 @@ logging:
 
 
 
-##  十一、服务降级-Hystrix
+##  十一、服务降级/熔断/限流-Hystrix
 
 ### （1）简介
 
@@ -1229,7 +1229,7 @@ https://github.com/Netflix/Hystrix
 
 1. 秒杀高并发等操作，严禁一窝蜂过来拥挤，一秒N个有序进行。
 
-### （3）案例
+### （3）实践
 
 #### > 准备
 
@@ -1237,11 +1237,11 @@ https://github.com/Netflix/Hystrix
 
 #### > 构建
 
-1. 新建moudle
+1. **新建moudle**
 
    `cloud-provider-hystrix-payment8001`
 
-2. pom
+2. **pom**
 
 ```xml
 <dependency>
@@ -1250,7 +1250,7 @@ https://github.com/Netflix/Hystrix
 </dependency>
 ```
 
-3. yml
+3. **yml**
 
 ```yml
 server:
@@ -1267,29 +1267,125 @@ eureka:
       defauleZone:  http://eureka7001.com:7001/eureka
 ```
 
-4. 主启动
+4. **主启动**
 
-   ​
+   ```java
+   import org.springframework.boot.SpringApplication;
+   import org.springframework.boot.autoconfigure.SpringBootApplication;
+   import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
-5. 业务类
+   /**
+    * @Project：cloud2021
+    * @File: PaymentHystrixMain8001
+    * @IDE ：IntelliJ IDEA
+    * @Author ：MartinHub
+    * @Date ：2021/3/5 16:22
+    */
+   @SpringBootApplication
+   @EnableEurekaClient
+   public class PaymentHystrixMain8001 {
+       public static void main(String[] args) {
+           SpringApplication.run(PaymentHystrixMain8001.class, args);
+       }
+   }
 
-   ​
+   ```
 
-6. 测试
+5. **业务类**
+
+​    service:
+
+```java
+@Service
+public class PaymentHystrixServiceImpl implements PaymentHystrixService {
+
+    //成功
+    @Override
+    public String paymentInfo_OK(Integer id) {
+        return "线程池：" + Thread.currentThread().getName() + "   paymentInfo_OK,id：  " + id + "\t" + "哈哈哈";
+    }
+  
+    @Override
+    public String paymentInfo_TimeOut(Integer id) {
+        int timeNumber = 3;
+        try {
+            TimeUnit.SECONDS.sleep(timeNumber);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //int age = 10/0;
+        return "线程池：" + Thread.currentThread().getName() + "   paymentInfo_TimeOut,id：  " + id + "\t" + "O(∩_∩)O哈哈~" + " 耗时(秒):" + timeNumber;
+    }
+}
+```
+
+​    controller:
+
+```java
+import lombok.extern.slf4j.Slf4j;
+import org.martinhub.service.impl.PaymentHystrixServiceImpl;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+
+/**
+ * @Project：cloud2021
+ * @File: PaymentHystrixController
+ * @IDE ：IntelliJ IDEA
+ * @Author ：MartinHub
+ * @Date ：2021/3/6 12:01
+ */
+@RestController
+@Slf4j
+public class PaymentHystrixController {
+    @Resource
+    private PaymentHystrixServiceImpl paymentHystrixService;
+
+    @Value("${server.port}")
+    private String serverPort;
+
+    @GetMapping("/payment/hystrix/ok/{id}")
+    public String paymentInfo_OK(@PathVariable("id") Integer id){
+        String result = paymentHystrixService.paymentInfo_OK(id);
+        log.info("*******result:"+result);
+        return result;
+    }
+
+    @GetMapping("/payment/hystrix/timeout/{id}")
+    public String paymentInfo_TimeOut(@PathVariable("id") Integer id){
+        String result = paymentHystrixService.paymentInfo_TimeOut(id);
+        log.info("*******result:"+result);
+        return result;
+    }
+}
+```
+
+4. **测试**
    先启动7001，在启动8001测试两个方法，全部正常
 
 #### > 使用Jmeter模拟高并发
 
-高并发打到http://localhost:8001/timeout/1上
+Jmeter配置高并发：
+
+![img](./images/高并发1.PNG)
+
+![img](./images/高并发.PNG)
+
+高并发打到http://localhost:8001/payment/hystrix/timeout/1上
 
 **使用后** 
 
 http://localhost:8001/ok/1 也有延迟
 上述还是8001单独测试，如果外部消费者80也来访问，那么消费者只能干等，最终导致消费端80不满意，服务端8001直接被拖死。
 
-**加入80**
+**加入消费者80**
 
-1. 建moudle cloud-consumer-feign-hystrix-order80
+(促使高并发环境下情况更加恶化。)
+
+1. 建moudle: `cloud-consumer-feign-hystrix-order80`
 2. pom
 3. yml
 4. 主启动类
@@ -1297,49 +1393,57 @@ http://localhost:8001/ok/1 也有延迟
 6. controller
 7. 测试
    1. 正常情况下
-      1. http://localhost:8001/ok/1
-      2. http://localhost:8001/timeout/1
-      3. http://localhost/ok/1
-      4. 通过80 访问的非常快
-   2. 高并发打到8001端口时,80端口也会非常慢
+      1. http://localhost:8001/payment/hystrix/ok/31
+      2. http://localhost:8001/payment/hystrix/timeout/31
+      3. http://localhost/comsumer/payment/hystrix/ok/31 通过80 访问的非常快
+   2. 高并发打到8001端口时, 80端口也会非常慢
 
 **如何解决** 
 
-1. 超时导致服务器变慢（转圈）->超时不再等待
-2. 出错（宕机或程序运行时出错）->出错要有兜底
+1. 超时导致服务器变慢（转圈）-> 超时不再等待
+2. 出错（宕机或程序运行时出错）-> 出错要有兜底
 3. 解决
-   1. 8001 超时，调用者 80 不能一直等待，必须有服务降级
+   1. 服务 8001 超时，调用者 80 不能一直等待，必须有服务降级
    2. 服务 8001 宕机，调用者 80 不能一直等待，必须有服务降级
    3. 服务 8001 OK ，调用者自己出故障或有自我要求（自己的等待时间小于服务提供的时间。），自己降级处理
 
-### （4）服务降级
+### （4）服务降级fallback
 
-#### > 超时：8001
+#### > 微服务运行超时情况：8001
 
 service
 
 ```java
 @Service
-public class PaymentService {
-    public String paymentInfo_OK(Integer id){
-        return "线程池："+Thread.currentThread().getName()+"ok"+id;
+public class PaymentHystrixServiceImpl implements PaymentHystrixService {
+
+    //成功
+    @Override
+    public String paymentInfo_OK(Integer id) {
+        return "线程池：" + Thread.currentThread().getName() + "   paymentInfo_OK,id：  " + id + "\t" + "哈哈哈";
     }
 
-    // 设置超过 3 秒采用服务降级
-    @HystrixCommand(fallbackMethod = "paymentInfo_TimeoutHandler",commandProperties = {
-            @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value = "3000")
+    @Override
+  	//降级配置：@HystrixCommand
+  		// fallbackMethod: 备选方法
+    @HystrixCommand(fallbackMethod = "paymentInfo_TimeOutHandler",commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = "4000")  //峰值为4，4秒钟以内就执行正常的业务逻辑,反之执行降级方法
     })
-    public String paymentInfo_Timeout(Integer id){
+    public String paymentInfo_TimeOut(Integer id) {
+        int timeNumber = 3;
         try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
+            TimeUnit.SECONDS.sleep(timeNumber);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return "线程池："+Thread.currentThread().getName()+"Timeout"+id;
+        //int age = 10/0;
+        return "线程池：" + Thread.currentThread().getName() + "   paymentInfo_TimeOut,id：  " + id + "\t" + "O(∩_∩)O哈哈~" + " 耗时(秒):" + timeNumber;
     }
-    // 异常后调用的方法
-    public String paymentInfo_TimeoutHandler(Integer id){
-        return "服务超时，调用服务降级成功";
+
+    //服务降级方法
+    // 方法签名(参数+返回值)需要跟原方法一致,方法名不同即可
+    public String paymentInfo_TimeOutHandler(Integer id){
+        return "线程池："+Thread.currentThread().getName()+"   系统繁忙, 请稍候再试  ,id：  "+id+"\t"+"哭了哇呜";
     }
 }
 ```
@@ -1347,10 +1451,11 @@ public class PaymentService {
 main
 
 ```java
+//要在SpringCloud中使用断路器,需要此配置
 @EnableCircuitBreaker
 ```
 
-#### >  运行异常：8001
+#### >  微服务运行异常情况：8001
 
 service
 
@@ -1371,79 +1476,121 @@ service
 
 无论是运行异常还是超时都有兜底策略
 
-#### > 订单侧：80，先去掉8001的超时和异常
+#### > 消费者服务异常情况：80
 
-**既可以配在客户端也可以配在服务端，一般建议放在客户端**
+先去掉8001的超时和异常，保证8001正常。
+
+**服务降级处理，既可以配在客户端也可以配在服务端，一般建议放在客户端**
 
 1. yml
 
 ```yml
 feign:
   hystrix:
-    enabled: true
+    enabled: true  #如果处理自身的容错就开启。开启方式与生产端不一样
 ```
 
-1. controller 
-   改为同 8001 的 service 一样
 2. 主类
-   添加 @EnableHystrix 注解
-3. 注意：降级处理方法参数列表必须跟异常方法一样
+
+   添加 `@EnableHystrix` 注解
+
+3. 业务类
+
+4. 注意：降级处理方法参数列表必须跟异常方法一样
+
+   ​
 
 #### > 全面服务降级
 
 **存在问题**
 
-1. 每一个方法都需要配置一个降级方法
-2. 和业务代码在一起
+1. 每一个方法都需要配置一个降级方法 —— 导致： 代码膨胀
+2. 和业务代码在一起 -  麻烦，凌乱
 
 **解决** 
 
-1. 第一个问题
+1. 第一个问题： 定义全局降级方法
    controller
 
    ```java
    @RestController
    @Slf4j
-   // 1. 添加注解，标注全局服务降级方法
-   @DefaultProperties(defaultFallback = "paymentGlobalFallBack")
-   public class OrderController {
+   @DefaultProperties(defaultFallback = "globTimeOutFallbackMethod")  //定义全局降级方法
+   public class OrderHystrixController {
+
        @Resource
-       private PaymentHystrixService service;
+       private PaymentHystrixService paymentHystrixService;
 
-       // 3. 写 @HystrixCommand单不指定具体方法 
-       @GetMapping("/ok/{id}")
-       @HystrixCommand
-       public String paymentInfo_OK(@PathVariable Integer id) {
-           int a = 10/0;
-           return service.paymentInfo_OK(id);
+       @GetMapping("/consumer/payment/hystrix/ok/{id}")
+       @HystrixCommand  //没有特别指明降级处理方法，就使用这个注解就好，会自动使用全局降级方法
+       public String paymentInfo_OK(@PathVariable("id") Integer id) {
+           System.out.println("id = " + id);
+           String result = paymentHystrixService.paymentInfo_OK(id);
+           log.info("*******result:" + result);
+           return result;
        }
 
-       public String paymentInfo_TimeoutHandler(Integer id){
-           return "80异常，降级处理";
+       @GetMapping("/consumer/payment/hystrix/timeout/{id}")
+       @HystrixCommand(fallbackMethod = "paymentTimeOutFallbackMethod", commandProperties = {
+               @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "4000")  //4秒钟以内就是正常的业务逻辑
+       })
+       public String paymentInfo_TimeOut(@PathVariable("id") Integer id) {
+           System.out.println("id = " + id);
+           String result = paymentHystrixService.paymentInfo_TimeOut(id);
+           log.info("*******result:" + result);
+           return result;
        }
 
-       // 2. 定义全局服务降级方法
-       // 下面是全局 fallback
-       public String paymentGlobalFallBack(){
-           return "80：获取异常，调用方法为全局fallback";
+       //兜底方法
+       public String paymentTimeOutFallbackMethod(@PathVariable("id") Integer id) {
+           return "我是消费者80，对付支付系统繁忙请10秒钟后再试或者自己运行出错请检查自己,(┬＿┬)";
        }
+
+       public String globTimeOutFallbackMethod() {
+           return "服务器繁忙，请稍后重试";
+       }
+
    }
 
    ```
 
-2. 第二个问题
+2. 第二个问题： 业务代码与降级代码分离
 
-   1. 找到注解 @FeignClient 对应的接口
+   1. 找到注解 @FeignClient 对应的服务接口
+
+      ```java
+      @Component
+      @FeignClient(value = "CLOUD-PROVIDER-HYSTRIX-PAYMENT",
+              fallback = PaymentHystrixFallbackService.class)   //服务调用、 服务降低配置
+      public interface PaymentHystrixService {
+          @GetMapping("/payment/hystrix/ok/{id}")
+          String paymentInfo_OK(@PathVariable("id") Integer id);
+
+          @GetMapping("/payment/hystrix/timeout/{id}")
+          String paymentInfo_TimeOut(@PathVariable("id") Integer id);
+
+      }
+      ```
 
    2. 再写一个类实现该接口，对降级方法进行处理
 
       ```java
       @Component
-      @FeignClient(value = "CLOUD-PROVIDER-HYSTRIX-PAYMENT",fallback = PaymentFallBackService.class)
-      public interface PaymentHystrixService {}
+      public class PaymentHystrixFallbackService implements PaymentHystrixService {
+          @Override
+          public String paymentInfo_OK(Integer id) {
+              // 服务降级处理
+              return "-----PaymentFallbackService fall back-paymentInfo_OK , (┬＿┬)";
+          }
 
-      @Component
-      public class PaymentFallBackService implements PaymentHystrixService {}
+          @Override
+          public String paymentInfo_TimeOut(Integer id) {
+              //服务降级处理
+              return "-----PaymentFallbackService fall back-paymentInfo_TimeOut , (┬＿┬)";
+          }
+
+      }
+
       ```
 
    3. 测试在 8001 内加异常，或使 8001 宕机 ，返回异常处理
@@ -1453,7 +1600,7 @@ feign:
 #### > 简介
 
 类比保险丝，达到最大访问后直接拒绝访问，拉闸限电，然后调用服务降级。当检测**到该节点微服务调用正常后，恢复调用链路。**
-当失败的调用达到一定阈值，缺省是5s内20次调用失败，就会启动熔断机制。熔断机制的注解是，@HystrixCommand
+当失败的调用达到一定阈值，缺省是5s内20次调用失败，就会启动熔断机制。熔断机制的注解是，`@HystrixCommand`
 
 #### > 是什么
 
@@ -1461,55 +1608,56 @@ https://martinfowler.com/bliki/CircuitBreaker.html
 
 #### > 实践：8001
 
-1. service
+1. **service**
 
 ```java
-    // 服务熔断
-    @HystrixCommand(fallbackMethod = "paymentInfo_Circuit",commandProperties = {
-            @HystrixProperty(name="circuitBreaker.enabled",value = "true"),//是否开启断路器
-            @HystrixProperty(name="circuitBreaker.requestVolumeThreshold",value = "10"),// 请求次数
-            @HystrixProperty(name="circuitBreaker.sleepWindowInMilliseconds",value = "10000"),// 时间窗口期
-            @HystrixProperty(name="circuitBreaker.errorThresholdPercentage",value = "60")// 失败率
-            // 加起来就是在10s内的10次请求中如果失败超过6次进入服务熔断
+    @HystrixCommand(fallbackMethod = "paymentCircuitBreaker_fallback",commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.enabled",value = "true"),  //是否开启断路器
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold",value = "10"),   //请求次数
+            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds",value = "10000"),  //时间范围
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage",value = "60"), //失败率达到多少后跳闸，此处为60%
+                //（上面配置意思是：10秒钟内，10次请求，失败率60%就不让用了）
+            // 这些参数的配置，在 HystrixCommandProperties.java 类中
     })
-    public String paymentCircuitBreaker(@PathVariable("id") Integer id){
-        if (id<0){
-            throw new RuntimeException("id 不能为负数");
+    public String paymentCircuitBreaker(Integer id){
+        if (id < 0){
+            throw new RuntimeException("*****id 不能负数");
         }
         String serialNumber = IdUtil.simpleUUID();
 
-        return "调用成功："+serialNumber;
+        return Thread.currentThread().getName()+"\t"+"调用成功,流水号："+serialNumber;
     }
 
-    public String paymentInfo_Circuit(Integer id){
-        return "id不能为负数："+id;
+    public String paymentCircuitBreaker_fallback(Integer id){
+        return "id 不能负数，请稍候再试,(┬＿┬)/~~     id: " +id;
     }
 ```
 
-1. controller
+2. **controller**
 
 ```java
     // 服务熔断
-    @GetMapping("/circuit/{id}")
+    @GetMapping("/payment/circuit/{id}")
     public String paymentCircuitBreaker(@PathVariable("id") Integer id){
-        String result = paymentService.paymentCircuitBreaker(id);
-        log.info("************"+result);
+        String result = paymentHystrixService.paymentCircuitBreaker(id);
+        log.info("*******result:"+result);
         return result;
     }
 ```
 
-1. 结果
-   一直输入id为负数，达到失败率后即使输入id为正数也进入错误页面。
+3. **结果**
+
+一直输入id为负数，达到失败率后即使输入id为正数也进入错误页面。
 
 ### （6）总结
 
 #### > 熔断类型
 
-1. 熔断打开
+1. **熔断打开**
    请求不再进行调用当前服务，内部设有时钟一般为 MTTR，当打开时长达时钟则进入半熔断状态
-2. 熔断关闭
+2. **熔断关闭**
    熔断关闭不会对服务进行熔断
-3. 熔断半开
+3. **熔断半开**
    根据规则调用当前服务，符合规则恢复正常，关闭熔断
 
 #### > 什么时候打开
@@ -1520,13 +1668,23 @@ https://martinfowler.com/bliki/CircuitBreaker.html
 2. 请求总数阈值：必须满足请求总阈值才有资格熔断。默认为20。意味着在10s内，如果命令调用次数不足20次，即使所有请求都超时或其他原因失败断路器都不会打开
 3. 错误百分比阈值：在快照时间窗内请求总数超过阈值，且错误次数占总请求次数的比值大于阈值，断路器将会打开
 
+#### > 断路器配置ALL
+
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/断路器配置1.png)
+
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/断路器配置2.png)
+
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/断路器配置3.png)
+
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/断路器配置4.png)
+
 ### （7）web界面图形化展示Dashboard
 
 #### > 搭建
 
-1. 建 moudle
-   cloud-consumer-hystrix-dashboard9001
-2. pom
+1. **建 moudle**
+   `cloud-consumer-hystrix-dashboard9001`
+2. **pom**
 
 ```xml
 <dependency>
@@ -1535,12 +1693,17 @@ https://martinfowler.com/bliki/CircuitBreaker.html
 </dependency>
 ```
 
-1. yml
-   只需要配置端口号就行
-2. 启动类
-   加注解@EnableHystrixDashboard
-3. 测试
-   http://localhost:9001/hystrix有页面即为成功
+3. **yml**
+
+只需要配置端口号就行
+
+4. **启动类**
+
+加注解@EnableHystrixDashboard
+
+5. **测试**
+
+http://localhost:9001/hystrix有页面即为成功
 
 #### > 使用
 
