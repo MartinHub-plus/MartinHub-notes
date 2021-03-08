@@ -1670,13 +1670,17 @@ https://martinfowler.com/bliki/CircuitBreaker.html
 
 #### > 断路器配置ALL
 
-![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/断路器配置1.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/断路器配置1.png) 
 
-![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/断路器配置2.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/断路器配置2.png) 
 
-![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/断路器配置3.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/断路器配置3.png) 
 
-![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/断路器配置4.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/断路器配置4.png) 
+
+#### > hystrix工作流程
+
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/hystrix工作流程.png) 
 
 ### （7）web界面图形化展示Dashboard
 
@@ -1699,7 +1703,7 @@ https://martinfowler.com/bliki/CircuitBreaker.html
 
 4. **启动类**
 
-加注解@EnableHystrixDashboard
+加注解`@EnableHystrixDashboard`
 
 5. **测试**
 
