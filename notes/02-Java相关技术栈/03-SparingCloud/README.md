@@ -8,17 +8,20 @@
 
    > 查看官方推荐的版本配置：https://start.spring.io/actuator/info
 
-   ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/技术选型.PNG)
+   ![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/技术选型.PNG) 
+
+
 
 ##  二、SpringCloud升级 
 
-1. **服务注册中心：Eureka, Zookeeper, Consul, Alibaba Nacos**
-2. **服务调用：Ribbon, Load Balancer**
-3. **服务调用2：OpenFeign** 
-4. **服务降级（熔断/限流）：Hystrix, Alibaba Sentinel**
-5. **服务网关：gateway**
-6. **服务配置：config, Alibaba Nacos**
-7. **服务总线：Bus, Alibaba Nacos**
+1. **服务注册中心：Alibaba Nacos**
+2. **服务调用：OpenFeign** 
+3. **服务降级（熔断/限流）：Alibaba Sentinel**
+4. **服务网关：gateway**
+5. **服务配置：Alibaba Nacos**
+6. **服务总线：Alibaba Nacos**
+
+
 
 
 ## 三、微服务模块创建的一般步骤
@@ -34,6 +37,8 @@
    - `service`:  *service.java   &&   *serviceImpl.java
    - `controller`: *Controlller.java
 
+
+
 ## 四、版本
 
 ### （1）上篇 SpringBoot2.X版+SpringCloud H 版
@@ -42,14 +47,16 @@
 
 ### （3）官网查看 cloud与boot 版本对应关系
 
-https://spring.io/projects/spring-cloud#overflow
+&emsp;https://spring.io/projects/spring-cloud#overflow
 
 ### （4）更加详细的cloud与boot版本对应
 
-https://start.spring.io/actuator/info
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/版本.png">
+&emsp;https://start.spring.io/actuator/info
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/版本.png"> 
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/Cloud升级.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/Cloud升级.png"> 
+
+
 
 ## 五、项目实践
 
@@ -201,16 +208,18 @@ dependencyManagement只是声明依赖，并不实现引入，一次子项目需
    - 进入 maven 找到新建模块，进入 Lifecycle 先clean再  install重新安装
    - 注意观察公共模块 pom 文件中必须含有独立的 groupid 和 artifactid
 
+
+
 ## 六、服务注册中心-Eureka
 
 ### （1）Eureka基础知识
 
 #### > 什么是服务注册
 
-Eureka Server 作为服务注册功能的服务器，它是服务注册中心，而系统中其他微服务，使用 Eureka 的客户端连接到 Eureka Server 并维持心跳连接，这样系统维护人员就可以通过 Eureka Server来监控各个微服务是否正常运行。
+&emsp;Eureka Server 作为服务注册功能的服务器，它是服务注册中心，而系统中其他微服务，使用 Eureka 的客户端连接到 Eureka Server 并维持心跳连接，这样系统维护人员就可以通过 Eureka Server来监控各个微服务是否正常运行。
 
-在服务注册与发现中有一个注册中心，服务器启动时，会把当前自己的服务器信息比如服务地址，通信地址等注册到注册中心上，另一方（消费者）以别名的方式在注册中心上获取实际的服务器通讯地址，然后再实现本地RPC调用远程RPC。
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/服务注册.png">
+&emsp;在服务注册与发现中有一个注册中心，服务器启动时，会把当前自己的服务器信息比如服务地址，通信地址等注册到注册中心上，另一方（消费者）以别名的方式在注册中心上获取实际的服务器通讯地址，然后再实现本地RPC调用远程RPC。
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/服务注册.png"> 
 
 #### > Eureka的两个组件
 
@@ -284,7 +293,7 @@ Eureka Server 作为服务注册功能的服务器，它是服务注册中心，
 
 3. 写YML
 
-```yml
+```yaml
 # 服务端口
 server:
   port: 7001
@@ -322,11 +331,11 @@ public class EurekaMain7001 {
 
 5. 测试
 
-浏览器进入 http://localhost:7001/ 看能不能看到 eureka 的服务页面
+&emsp;浏览器进入 http://localhost:7001/ 看能不能看到 eureka 的服务页面
 
 #### > EurekaClient端cloud-provider-payment8001 
 
-将注册进 EurekaServer 成为服务提供者 provider ，类似尚硅谷对外提供授课服务
+&emsp;将注册进 EurekaServer 成为服务提供者 provider ，类似尚硅谷对外提供授课服务
 
 1. 引入坐标依赖
 
@@ -353,16 +362,16 @@ eureka:
 
 3. 添加注解
 
-8001启动类添加`@EnableEurekaClient`注解
+&emsp;8001启动类添加`@EnableEurekaClient`注解
 
 4. 测试
 
-进入http://localhost:7001/可以看到DS Replicas
-Instances currently registered with Eureka 下的服务端口
+&emsp;进入http://localhost:7001/可以看到DS Replicas
+&emsp;Instances currently registered with Eureka 下的服务端口
 
 #### > EurekaClient端 cloud-consumer-order80注册进EurekaServer成为服务注册者consumer
 
-步骤同上
+&emsp;步骤同上
 
 
 
@@ -375,7 +384,7 @@ Instances currently registered with Eureka 下的服务端口
 高可用，如果注册中心只有一个，出了故障就会导致整个服务环境不可用
 **解决方法：** 搭建Eureka注册中心集群，实现负载均衡 + 故障排错。
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/eureka集群.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/eureka集群.png"> 
 多个 eureka serve 相互注册，保障信息共享。
 
 #### > 搭建集群
@@ -541,7 +550,7 @@ eureka
 1. 将 7001 与 8001 改为单机版：修改对应 eureka 地址
 2. yml文件
 
-```yml
+```yaml
 # 7001
 eureka:
   server:
@@ -562,6 +571,7 @@ eureka:
 1. 测试
 2. 访问 http://eureka7001.com:7001/ 可以看到红字THE SELF PRESERVATION MODE IS TURNED OFF. THIS MAY NOT PROTECT INSTANCE EXPIRY IN CASE OF NETWORK/OTHER PROBLEMS.代表自我保护关闭
 3. 关闭8001服务可以看到在 eureka 页面两秒后 8001 服务消失
+
 
 
 
@@ -726,7 +736,7 @@ public class PaymentMain8004 {
 
 1. 启动端口，进入客户端
 
-```
+```shell
 [root@localhost bin]# ./zkCli.sh
 Connecting to localhost:2181
 ```
@@ -744,7 +754,7 @@ Connecting to localhost:2181
    可以看到信息
 2. linux 
 
-```
+```shell
 # 获取服务名
 [zk: localhost:2181(CONNECTED) 0] ls /services
 [cloud-provider-payment]
@@ -760,7 +770,7 @@ Connecting to localhost:2181
 
 关闭8004后在linux终端中,一段时间后失去连接
 
-```
+```shell
 [zk: localhost:2181(CONNECTED) 18] ls /services/cloud-provider-payment
 [efc76371-522d-4d5d-8f56-f8fe4deb7a47]
 [zk: localhost:2181(CONNECTED) 19] ls /services/cloud-provider-payment
@@ -839,15 +849,15 @@ https://www.springcloud.cc/spring-cloud-consul.html
 ### （2）安装启动
 
 1. 将下载的exe文件双击即可安装
-2. 在 exe ==文件的目录==下打开黑窗口
+2. 在 exe**文件的目录**下打开黑窗口
 3. 输入 consul --version 检测是否安装成功
 4. 启动服务：consul agent -dev
 5. 通过 http://localhost:8500/ 访问web界面
 
 ### （3）服务提供者
 
-1. 建moudle: `cloud-providerconsul-payment8006`
-2. 改pom
+1. **建moudle**: `cloud-providerconsul-payment8006`
+2. **改pom**
 
 ```xml
     <dependency>
@@ -856,7 +866,7 @@ https://www.springcloud.cc/spring-cloud-consul.html
     </dependency>
 ```
 
-3. 建yml
+3. **建yml**
 
 ```yml
 server:
@@ -872,16 +882,16 @@ spring:
         service-name: ${spring.application.name}
 ```
 
-4. 建启动类
-5. 建controller类
-6. 测试
+4. **建启动类**
+5. **建controller类**
+6. **测试**
    http://localhost:8006/payment/consul
    http://localhost:8500/ui/dc1/services
 
 ### （4）服务消费者
 
-1. 建module: cloud-consumerconsul-order80
-2. 改pom
+1. **建module: cloud-consumerconsul-order80**
+2. **改pom**
 
 ```xml
     <dependency>
@@ -890,9 +900,9 @@ spring:
     </dependency>
 ```
 
-3. 建yml
+3. **建yml**
 
-```yml
+```yaml
 server:
   port: 80
 spring:
@@ -906,24 +916,24 @@ spring:
         service-name: ${spring.application.name}
 ```
 
-4. 建启动类
-5. 建controller、config
-6. 测试
+4. **建启动类**
+5. **建controller、config**
+6. **测试**
    http://localhost/consumer/payment/cs
    http://localhost:8006/payment/consul
 
 ### （5）三个注册中心 eureka zookeeper consul的异同点
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/注册中心区别.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/注册中心区别.png"> 
 
 ### （6）CAP
 
-C: Cosistency（强一致性）
-A: Availability（可用性）
-P: Partition tolerance（分区容错性）
+C:  Cosistency（强一致性）
+A:  Availability（可用性）
+P:  Partition tolerance（分区容错性）
 CAP理论关注粒度是数据，而不是整体系统设计的
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/CAP.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/CAP.png"> 
 
 
 
@@ -933,12 +943,12 @@ CAP理论关注粒度是数据，而不是整体系统设计的
 
 #### > 是什么？
 
-Spring Cloud Ribbon 是基于 Netflix Ribbon 实现的一套**客户端负载均衡的工具**。
-简单的说，Ribbonn是Netflix的开源项目，主要功能是提供**客户端的软件负载均衡算法和服务调用。**Ribbon客户端组件提供一系列完善的配置项，如连接超时，重试等。就是在配置文件中列出 LoadBalancer后面所有机器，Ribbon会自动帮助你基于某种规则 (如简单轮询，随机连接等)去连接这些机器。我们很容易使用Ribbon实现自定义的负载均衡算法。
+&emsp;Spring Cloud Ribbon 是基于 Netflix Ribbon 实现的一套**客户端负载均衡的工具**。
+&emsp;简单的说，Ribbonn是Netflix的开源项目，主要功能是提供**客户端的软件负载均衡算法和服务调用。**Ribbon客户端组件提供一系列完善的配置项，如连接超时，重试等。就是在配置文件中列出 LoadBalancer后面所有机器，Ribbon会自动帮助你基于某种规则 (如简单轮询，随机连接等)去连接这些机器。我们很容易使用Ribbon实现自定义的负载均衡算法。
 
 #### > 官网资料，停更
 
-https://github.com/Netflix/ribbon
+&emsp;https://github.com/Netflix/ribbon
 
 #### > 能干什么？
 
@@ -951,7 +961,7 @@ https://github.com/Netflix/ribbon
 2. **实现** 
    负载均衡 + RestTemplate 调用
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/Ribbon.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/Ribbon.png"> 
 
 - Ribbon工作时有两步
   1. 第一步先选择 EurekaServer，优先选择统一区域负载较少的 server
@@ -1014,11 +1024,11 @@ https://github.com/Netflix/ribbon
 
 **负载均衡算法** 
 
-rest 接口 第几次请求数 % 服务器集群=实际调用服务器位置下标，每次服务重启后rest接口计数从1开始
+&emsp;rest 接口 第几次请求数 % 服务器集群=实际调用服务器位置下标，每次服务重启后rest接口计数从1开始
 
-总台数：2台
+&emsp;总台数：2台
 
-请求数  调用下标
+&emsp;请求数  调用下标
 1       1%2=1       
 2       2%2=0
 3       3%2=1
@@ -1036,7 +1046,7 @@ rest 接口 第几次请求数 % 服务器集群=实际调用服务器位置下�
 
 ### （1）是什么
 
-Feign是声明性Web服务客户端。它使编写Web服务客户端更加容易。要使用Feign，请创建一个接口并对其进行注释。它具有可插入的注释支持，包括Feign注释和JAX-RS注释。Feign还支持可插拔编码器和解码器。Spring Cloud添加了对Spring MVC注释的支持，并支持使用HttpMessageConvertersSpring Web中默认使用的注释。Spring Cloud集成了Ribbon和Eureka以及Spring Cloud LoadBalancer，以在使用Feign时提供负载平衡的http客户端。
+&emsp;Feign是声明性Web服务客户端。它使编写Web服务客户端更加容易。要使用Feign，请创建一个接口并对其进行注释。它具有可插入的注释支持，包括Feign注释和JAX-RS注释。Feign还支持可插拔编码器和解码器。Spring Cloud添加了对Spring MVC注释的支持，并支持使用HttpMessageConvertersSpring Web中默认使用的注释。Spring Cloud集成了Ribbon和Eureka以及Spring Cloud LoadBalancer，以在使用Feign时提供负载平衡的http客户端。
 
 ### （2）能干什么
 
@@ -1045,7 +1055,7 @@ Feign是声明性Web服务客户端。它使编写Web服务客户端更加容易
 - Feign集成了Ribbon
   利用Ribbon维护了Payment的服务列表信息，并且实现了轮询实现客户端的负载均衡。而与Ribbon不同的是，**feign只需要定义服务绑定接口且以声明式的方法**，优雅而简单的实现服务调用。
 - Feign与OpenFeign区别
-  <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/feign与OpenFeign区别.png">
+  <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/feign与OpenFeign区别.png"> 
 
 ### （3）官网
 
@@ -1195,14 +1205,14 @@ logging:
 
 #### > 分布式系统面临的问题
 
-复杂分布式系统中的应用程序有数十个依赖关系，每个依赖关系在某些时候不可避免的失败。
+&emsp;复杂分布式系统中的应用程序有数十个依赖关系，每个依赖关系在某些时候不可避免的失败。
 
-多个微服务之间调用时，假设 A 调B和C，B和C又调其他微服务，就是所谓的扇出。当扇出的链路上某个微服务响应时间过长或不可用对A的调用就会占用越来越多的资源，进而引起系统崩溃 ，所谓的**雪崩效应**。
+&emsp;多个微服务之间调用时，假设 A 调B和C，B和C又调其他微服务，就是所谓的扇出。当扇出的链路上某个微服务响应时间过长或不可用对A的调用就会占用越来越多的资源，进而引起系统崩溃 ，所谓的**雪崩效应**。
 
 #### > 是什么
 
-Hystrix 是处理分布式系统的延迟和容错的开源库，保证一个依赖出现问题时不会导致整体服务失败，避免级联故障，以提高分布式系统弹性。
-断路器本身是一种开关装置，当某个服务单元发生故障后，通过断路器的故障监控，向调用方返回一个符合预期的可处理的备选响应，而不是长时间的等待或抛出调用方法无法处理的异常 。
+&emsp;Hystrix 是处理分布式系统的延迟和容错的开源库，保证一个依赖出现问题时不会导致整体服务失败，避免级联故障，以提高分布式系统弹性。
+&emsp;断路器本身是一种开关装置，当某个服务单元发生故障后，通过断路器的故障监控，向调用方返回一个符合预期的可处理的备选响应，而不是长时间的等待或抛出调用方法无法处理的异常 。
 
 #### > 官网资料
 
@@ -1368,22 +1378,22 @@ public class PaymentHystrixController {
 
 #### > 使用Jmeter模拟高并发
 
-Jmeter配置高并发：
+&emsp;Jmeter配置高并发：
 
 ![img](./images/高并发1.PNG)
 
 ![img](./images/高并发.PNG)
 
-高并发打到http://localhost:8001/payment/hystrix/timeout/1上
+&emsp;高并发打到http://localhost:8001/payment/hystrix/timeout/1上
 
 **使用后** 
 
-http://localhost:8001/ok/1 也有延迟
-上述还是8001单独测试，如果外部消费者80也来访问，那么消费者只能干等，最终导致消费端80不满意，服务端8001直接被拖死。
+&emsp;http://localhost:8001/ok/1 也有延迟
+&emsp;上述还是8001单独测试，如果外部消费者80也来访问，那么消费者只能干等，最终导致消费端80不满意，服务端8001直接被拖死。
 
 **加入消费者80**
 
-(促使高并发环境下情况更加恶化。)
+&emsp;(促使高并发环境下情况更加恶化。)
 
 1. 建moudle: `cloud-consumer-feign-hystrix-order80`
 2. pom
@@ -1474,13 +1484,13 @@ service
     }
 ```
 
-无论是运行异常还是超时都有兜底策略
+&emsp;无论是运行异常还是超时都有兜底策略
 
 #### > 消费者服务异常情况：80
 
-先去掉8001的超时和异常，保证8001正常。
+&emsp;先去掉8001的超时和异常，保证8001正常。
 
-**服务降级处理，既可以配在客户端也可以配在服务端，一般建议放在客户端**
+&emsp;**服务降级处理，既可以配在客户端也可以配在服务端，一般建议放在客户端**
 
 1. yml
 
@@ -1599,12 +1609,12 @@ feign:
 
 #### > 简介
 
-类比保险丝，达到最大访问后直接拒绝访问，拉闸限电，然后调用服务降级。当检测**到该节点微服务调用正常后，恢复调用链路。**
-当失败的调用达到一定阈值，缺省是5s内20次调用失败，就会启动熔断机制。熔断机制的注解是，`@HystrixCommand`
+&emsp;类比保险丝，达到最大访问后直接拒绝访问，拉闸限电，然后调用服务降级。当检测**到该节点微服务调用正常后，恢复调用链路。**
+&emsp;当失败的调用达到一定阈值，缺省是5s内20次调用失败，就会启动熔断机制。熔断机制的注解是，`@HystrixCommand`
 
 #### > 是什么
 
-https://martinfowler.com/bliki/CircuitBreaker.html
+&emsp;https://martinfowler.com/bliki/CircuitBreaker.html
 
 #### > 实践：8001
 
@@ -1647,7 +1657,7 @@ https://martinfowler.com/bliki/CircuitBreaker.html
 
 3. **结果**
 
-一直输入id为负数，达到失败率后即使输入id为正数也进入错误页面。
+&emsp;一直输入id为负数，达到失败率后即使输入id为正数也进入错误页面。
 
 ### （6）总结
 
@@ -1662,7 +1672,7 @@ https://martinfowler.com/bliki/CircuitBreaker.html
 
 #### > 什么时候打开
 
-设计三个参数：时间窗，请求总阈值，错误百分比阈值
+&emsp;设计三个参数：时间窗，请求总阈值，错误百分比阈值
 
 1. 快照时间窗：默认为最近的10s
 2. 请求总数阈值：必须满足请求总阈值才有资格熔断。默认为20。意味着在10s内，如果命令调用次数不足20次，即使所有请求都超时或其他原因失败断路器都不会打开
@@ -1680,11 +1690,15 @@ https://martinfowler.com/bliki/CircuitBreaker.html
 
 #### > hystrix工作流程
 
-![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/hystrix工作流程.png) 
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/hystrix工作流程.png)  
 
-### （7）web界面图形化展示Dashboard
+
+
+### （7）服务监控 Dashboard - Web
 
 #### > 搭建
+
+&emsp;9001监控各个微服务接口。
 
 1. **建 moudle**
    `cloud-consumer-hystrix-dashboard9001`
@@ -1699,22 +1713,27 @@ https://martinfowler.com/bliki/CircuitBreaker.html
 
 3. **yml**
 
-只需要配置端口号就行
+```yaml
+server:
+  port: 9001
+```
 
 4. **启动类**
 
-加注解`@EnableHystrixDashboard`
+&emsp;加注解 `@EnableHystrixDashboard`
 
 5. **测试**
 
-http://localhost:9001/hystrix有页面即为成功
+&emsp;http://localhost:9001/hystrix
+
+&emsp;有页面即为成功
 
 #### > 使用
 
 **注意**
 
 1. 注意：依赖于actuator，要监控哪个接口，哪个接口必须有这个依赖
-2. 业务模块需要添加bean
+2. 要监控某一个微服务(已经开启断路器hystrix的），它的主启动类main需要添加bean
 
 ```java
     @Bean
@@ -1732,89 +1751,108 @@ http://localhost:9001/hystrix有页面即为成功
 
 <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/dashboard.png">
 
-1. 进行8001 的访问查看对应页面变化
-2. 页面状态
-   1. 七色
-      对应不同状态
-   2. 一圈
-      对应访问量
-   3. 一线
-      访问趋势
+1. **进行8001 的访问查看对应页面变化**
 
-## 十二、服务网关-Gateway
+2. **页面状态**
+   - **七色**
+
+   &emsp;对应不同状态
+
+   ![img](./images/监控5.PNG)
+
+   - **一圈**
+
+   &emsp;对应访问量
+
+   - **一线**
+
+   &emsp;访问趋势
+
+   ![img](./images/监控1.png)
+
+   ![img](./images/监控2.png)
+
+   ![img](./images/监控3.png)   
+
+
+
+## 十二、服务网关-Gateway 
 
 ### （1）概述
 
 #### > 官网
 
-https://cloud.spring.io/spring-cloud-static/spring-cloud-gateway/2.2.2.RELEASE/reference/html/
+&emsp;https://cloud.spring.io/spring-cloud-static/spring-cloud-gateway/2.2.2.RELEASE/reference/html/
 
 #### > 结构
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/springcloud结构.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/springcloud结构.png"> 
 
-<img src="images/网关作用.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/网关作用.png"> 
 
 #### > 三大核心概念
 
-1. Route（路由）
-   网关的基本构建块。它由ID，目标URI，谓词集合和过滤器集合定义。如果断言为true，则匹配路由。
-2. Predicate（断言）
-   这是Java 8 Function谓词。输入类型是Spring FrameworkServerWebExchange。这使您可以匹配HTTP请求中的所有内容，例如标头或参数。
-3. Filter（过滤器）
-   这些是使用特定工厂构造的Spring FrameworkGatewayFilter实例。在这里，您可以在发送下游请求之前或之后修改请求和响应。
+1. **Route（路由）**
+   网关的基本构建块。它由 ID，目标URI，谓词集合和过滤器集合定义。如果断言为true，则匹配路由。
+2. **Predicate（断言）**
+   这是 `Java 8 Function` 谓词。输入类型是 `Spring FrameworkServerWebExchange`。这使您可以匹配HTTP请求中的所有内容，例如标头或参数。
+3. **Filter（过滤器）**
+   这些是使用特定工厂构造的 `Spring FrameworkGatewayFilter` 实例。在这里，您可以在发送下游请求之前或之后修改请求和响应。
 
 #### > 工作流程
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/gateway工作流程.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/gateway工作流程.png"> 
 
-客户端向Spring Cloud Gateway发出请求。如果网关处理程序映射确定请求与路由匹配，则将其发送到网关Web处理程序。该处理程序通过特定于请求的过滤器链来运行请求。筛选器由虚线分隔的原因是，筛选器可以在发送代理请求之前和之后运行逻辑。所有“前置”过滤器逻辑均被执行。然后发出代理请求。发出代理请求后，将运行“后”过滤器逻辑。
+&emsp;客户端向Spring Cloud Gateway发出请求。如果网关处理程序映射确定请求与路由匹配，则将其发送到网关Web处理程序。该处理程序通过特定于请求的过滤器链来运行请求。筛选器由虚线分隔的原因是，筛选器可以在发送代理请求之前和之后运行逻辑。所有“前置”过滤器逻辑均被执行。然后发出代理请求。发出代理请求后，将运行“后”过滤器逻辑。
 
 ### （2）实践
 
-#### > 建模块:cloud-gateway-gateway9527
+#### > 建模块
 
-1. pom
+`cloud-gateway-gateway9527`
+
+1. **pom**
 
 ```xml
 <dependency>
     <groupId>org.springframework.cloud</groupId>
     <artifactId>spring-cloud-starter-gateway</artifactId>
 </dependency>
-<!-- 注意不要添加 web的依赖，与gateway里的web flux冲突 -->
+<!-- 注意不要添加 web的依赖，与gateway里的web flux冲突, 不需要引入 starter-web 和 starter-actuator 依赖 -->
 ```
 
-1. yml
+2. **yml**
 
-```yml
+```yaml
 server:
   port: 9527
+
 spring:
   application:
     name: cloud-gateway
+
 eureka:
   instance:
     hostname: cloud-gateway-service
   client:
     service-url:
-       register-with-eureka:  true
-       fetch-registry:  true
-       defaultZone: http://eureka7001.com:7001/eureka
+      register-with-eureka: true
+      fetch-registry: true
+      defaultZone: http://eureka7001.com:7001/eureka
 ```
 
-1. 启动类
+3. **启动类**
 
 ```java
 @SpringBootApplication
 @EnableEurekaClient
-@EnableDiscoveryClient
 ```
 
 #### > 测试
 
 1. 9527中配置路由
 
-```yml
+```yaml
 spring:
   application:
     name: cloud-gateway
@@ -1826,16 +1864,25 @@ spring:
           predicates:
             - Path=/payment/get/** # 路径相匹配的进行路由
 
-        - id: payment_routh2 # 路由id，没有
+        - id: payment_routh2 # 路由id，没有固定规则但要求唯一
           uri:  http://localhost:8001 # 匹配后提供服务的路由地址
           predicates:
             - Path=/payment/payment # 路径相匹配的进行路由
 ```
 
-1. 配置后可以通过以下路径访问8001中的信息
-   http://localhost:9527/payment/get/31
-   不再暴露8001的端口
-2. 配置路由的另一种方法，9527注入 RouteLocator的Bean
+2. 按顺序启动：注册中心7001，微服务payment8001, 9527网关
+3. 配置后可以通过以下路径访问8001中的信息
+
+&emsp;http://localhost:9527/payment/get/31
+&emsp;**不再暴露8001的端口**
+
+
+
+#### > 配置路由的另一种方法 
+
+&emsp;配置路由的另一种方法，9527注入 RouteLocator的Bean
+
+&emsp; 新建`config.GateWayConfig:`
 
 ```java
 @Configuration
@@ -1858,9 +1905,11 @@ public class GateWayConfig {
 
 ### （3）动态路由
 
+<font color='red'>适合集群方式。</font>
+
 1. 9527yml
 
-```yml
+```yaml
 server:
   port: 9527
 spring:
@@ -1885,16 +1934,39 @@ spring:
             - Path=/payment/create 
 ```
 
+2. 按顺序启动：注册中心7001，微服务payment8001, 9527网关
+3. 配置后可以通过以下路径访问8001中的信息
+
+&emsp;http://localhost:9527/payment/get/31
+&emsp;**不再暴露8001的端口**
+
 ### （4）Predicate的使用
 
 https://cloud.spring.io/spring-cloud-static/spring-cloud-gateway/2.2.2.RELEASE/reference/html/#the-between-route-predicate-factory
+
 全部在 yml的Predicate之下
 
-1. After
+```
+Loaded RoutePredicateFactory [After]
+Loaded RoutePredicateFactory [Before]
+Loaded RoutePredicateFactory [Between]
+Loaded RoutePredicateFactory [Cookie]
+Loaded RoutePredicateFactory [Header]
+Loaded RoutePredicateFactory [Host]
+Loaded RoutePredicateFactory [Method]
+Loaded RoutePredicateFactory [Path]
+Loaded RoutePredicateFactory [Query]
+Loaded RoutePredicateFactory [ReadBodyPredicateFactory]
+Loaded RoutePredicateFactory [RemoteAddr]
+Loaded RoutePredicateFactory [Weight]
+Loaded RoutePredicateFactory [CloudFoundryRouteService]
+```
+
+1. **After**
 
 ```yml
 # 在该时间之后可以使用
-- After=2020-05-26T17:07:03.043+08:00[Asia/Shanghai]
+- After=2021-02-26T17:07:03.043+08:00[Asia/Shanghai]
 ```
 
 获取当前时区的时间
@@ -1903,79 +1975,67 @@ https://cloud.spring.io/spring-cloud-static/spring-cloud-gateway/2.2.2.RELEASE/r
 ZonedDateTime z = ZonedDateTime.now();// 默认时区
 ```
 
-1. Before
+2. **Before**
 
 ```yml
-# 之前
-- Before=2017-01-20T17:42:47.789-07:00[America/Denver]
+# 在该时间之前可以使用
+- Before=2020-01-20T17:42:47.789-07:00[America/Denver]
 ```
 
-1. Between
+3. **Between**
 
 ```yml
-# 之间
+# 在两个时间之间可以使用
 - Between=2017-01-20T17:42:47.789-07:00[America/Denver], 2017-01-21T17:42:47.789-07:00[America/Denver]
 ```
 
-1. Cookie
+4. **Cookie**
 
 ```yml
-# 查看有没有指定kv的cookie
-- Cookie=username,wxh
+# 查看有没有指定k v的cookie
+- Cookie=username,ztt00001
 ```
 
-1. Header
+5. **Header**
 
 ```yml
-# 请求头，跟cookie一样指定kv键值对
+# 如果请求具有名为X-Request-Id, 其值与\d+正则表达式匹配的标头（即，其值为一个或多个数字），则此路由匹配。
+- Header=X-Request-Id, \d+
 ```
 
-1. Host
+6. **Host**
 
 ```yml
-# 
+# 如果请求的Host标头值为www.somehost.org或beta.somehost.org,则请求成功
+ - Host=**.somehost.org,**.anotherhost.org
 ```
 
-1. Method
+7. **Method**
 
 ```yml
-# 
+# 如果请求方法是GET或者POST，匹配。
+- Method=GET,POST
 ```
 
-1. Path
+8. **Path**
 
 ```yml
-# 
+# 如果请求路径符合，则匹配
+- Path=/red/{segment},/blue/{segment}
 ```
 
-1. Query
+9. **Query**
 
 ```yml
-# 
+# 要有参数名gree,并且值是整数的，匹配成功
+ - Query=green,\d+
 ```
 
-1. ReadBodyPredicateFactory
+11. **RemoteAddr**
 
 ```yml
-# 
-```
-
-1. RemoteAddr
-
-```yml
-# 
-```
-
-1. Weight
-
-```yml
-# 
-```
-
-1. CloudFoundryRouteService
-
-```yml
-# 
+# 如果请求的远程地址为192.168.1.1/24，则此路由匹配。
+- RemoteAddr=192.168.1.1/24
 ```
 
 ### （5）过滤器 Filter 
@@ -1999,7 +2059,7 @@ https://cloud.spring.io/spring-cloud-static/spring-cloud-gateway/2.2.2.RELEASE/r
 ```java
 @Component
 @Slf4j
-public class MyLogFilter implements GlobalFilter, Ordered {
+public class MyLogGatewayFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // 判断有没有 uname 这个参数
@@ -2034,11 +2094,11 @@ public class MyLogFilter implements GlobalFilter, Ordered {
 1. 分布式系统面临的配置问题
    每建一个微服务都需要一次配置，例如10个微服务访问相同的数据库，如果数据库名更改了，要改十次。
 2. 是什么
-   SpringCloud Config 为微服务架构中的微服务提供几种化的外部配置支持，将不同微服务应用提供一个中心化外部配置。
+   SpringCloud Config 为微服务架构中的微服务提供几种化的外部配置支持，将不同微服务应用提供一个**中心化外部配置**。
 3. 怎么用
-   服务端也称为分布式配置中心，它是一个独立的微服务应用，用来连接配置服务器 并为客户端提供配置信息。加密解密信息接口。
-   客户端则是通过指定的配置中心来管理应用资源。并在启动的时候从配置中心获取和加载配置信息配置服务器默认采用git来存储配置信息。这样有助于对环境配置进行版本管理，并且可以通过git客户端方便管理和配置服务内容。
-   将配置信息以REST接口的形式暴露。通过 post curl 刷新
+   &emsp;服务端也称为分布式配置中心，它是一个独立的微服务应用，用来连接配置服务器并为客户端提供配置信息。加密解密信息接口。
+   &emsp;客户端则是通过指定的配置中心来管理应用资源。并在启动的时候从配置中心获取和加载配置信息配置服务器默认采用git来存储配置信息。这样有助于对环境配置进行版本管理，并且可以通过git客户端方便管理和配置服务内容。
+   &emsp;将配置信息以REST接口的形式暴露。通过 post curl 刷新
 4. 与 github整合
 
 ### （2）服务端配置与整合
@@ -2046,12 +2106,13 @@ public class MyLogFilter implements GlobalFilter, Ordered {
 #### > github
 
 1. 新建仓库springcloud-config
-2. 获取新建的地址git@github.com:OT-mt/springcloud-config.git
+2. 获取新建的地址git@github.com:MartinHub/springcloud-config.git
 3. 本地硬盘目录新建 git仓库并clone
 
 #### > 建模块
 
-1. pom
+1. 新建模块：`cloud-config-center-3344`
+2. pom
 
 ```xml
 <dependency>
@@ -2060,9 +2121,9 @@ public class MyLogFilter implements GlobalFilter, Ordered {
 </dependency>
 ```
 
-1. yml
+3. yml
 
-```yml
+```yaml
 server:
   port: 3344
 
@@ -2073,9 +2134,8 @@ spring:
     config:
       server:
         git:
-          #uri: git@github.com:EiletXie/config-repo.git #Github上的git仓库名字
-          uri: https://github.com/OT-mt/springcloud-config.git
-          ##搜索目录.这个目录指的是github上的目录
+          uri: https://gitee.com/MartinHub/springcloud-config.git
+          #搜索目录.这个目录指的是github上的目录
           search-paths:
             - springcloud-config
       ##读取分支
@@ -2085,24 +2145,24 @@ eureka:
   client:
     service-url:
       defaultZone: http://eureka7001.com:7001/eureka/
-
 ```
 
-1. 主启动
+4. 主启动
 
 ```java
 @SpringBootApplication
-@RestController
+@EnableEurekaClient
 @EnableConfigServer
 ```
 
-1. 测试
-   http://localhost:3344/springcloud-config/blob/master/config-prod.yml
+5. 测试
+
+&emsp;http://localhost:3344/master/config-dev.yml
 
 ### （3）客户端配置与测试
 
 1. 建 mouble 
-   cloud-config-client3355
+   `cloud-config-client-3355`
 2. pom
 
 ```xml
@@ -2113,30 +2173,116 @@ eureka:
 </dependency>
 ```
 
-1. yml
+3. yml - bootstrap.yml
 
-```yml
+   > application.yml是用户级的资源配置项
+   >
+   > bootstrap.yml是系统级的，优先级更高
+   >
+   > bootstrap.yml比application.yml先加载，先公后私，先加载本地client的配置文件，再加载远程server读取的配置文件application.yml。
 
+```yaml
+server:
+  port: 3355
+
+spring:
+  application: #名称
+    name: config-client
+  cloud:
+    #config客户端配置
+    config:
+      label: master  #分支名称
+      name: config  #配置文件名称
+      profile: dev   # 读取后缀名称   上述3个综合：master分支上config-dev.yml 的配置文件被读取(http://config-3344.com:3344/master/fongig-dev.yml)
+      uri: http://localhost:3344   #配置中心地址
+
+#服务注册到eureka地址
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka
 ```
 
-1. 主启动
+4. 主启动
+
+   ```java
+   @EnableEurekaClient
+   @SpringBootApplication
+   public class ConfigClientMain3355 {
+       public static void main(String[] args) {
+           SpringApplication.run( ConfigClientMain3355.class,args);
+       }
+   }
+   ```
+
+5. controller
+
+   ```java
+   @RestController
+   public class ConfigClientController {
+
+       @Value("${config.info}")   //取服务端配置文件的：config:info
+       private String configInfo;
+
+       @GetMapping("/configInfo")
+       public String getConfigInfo(){
+           return configInfo;
+       }
+   }
+   ```
+
+6. 测试
+
+&emsp;http://localhost:3355/configInfo
+
+&emsp;成功通过客户端3355访问服务端3344获取Github的配置信息。
 
 ### （4）客户端动态刷新
 
-1. 避免每次更新配置都要更新客户端
-2. 步骤
-3. 添加 actuator 依赖
-4. 修改yml暴露端口
-5. @RefreshScope业务类controller修饰
-6. 刷新
+**问题：** 
 
-```
-​```
-curl -X POST "http://localhost:3355/actuator/refresh"
-​```
-```
+1. 避免每次更新配置都要更新客户端  
 
-7. 测试
+   （当修改Github上面的配置文件后，server端立即响应，但是客户端没有任何响应，不能及时更新到最新的配置，除非自己重启或者重新加载。)
+
+2. 难道每次运维修改配置文件，客户端都需要重启？？？？（噩梦）！！！！
+
+**解决：** 
+
+1. 添加 actuator 依赖
+
+   ```xml
+   <dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-actuator</artifactId>
+   </dependency>
+   ```
+
+2. 修改yml暴露端口
+
+   ```yaml
+   #暴露监控端点
+   management:
+     endpoints:
+       web:
+         exposure:
+           include: "*"  #此处有很多选项可以配置，为了省事 ,直接配置 *
+   ```
+
+3. `@RefreshScope`修饰业务类controller
+
+4. 刷新 ( 若运维人员修改了配置文件，需要运维人员发送POST请求，刷新3355，其实也就是运维人员多做一步)
+
+   ```shell
+   curl -X POST "http://localhost:3355/actuator/refresh"
+   ```
+
+5. 测试
+
+   若此时Github修改了配置文件，并发送刷新请求3355，那么此时3344显示为最新的配置，3355也显示为最新的配置。
+
+   <font color='red'> 此时方案还不是最优的，每次服务端更新，客户端都要Post刷新一次，那么如果有1000台客户端呢，一个个刷新吗？-------- 可否做到一次广播，处处生效？精准修改？所以继续学习后续的服务总线Bus</font>
+
 
 
 
@@ -2146,15 +2292,21 @@ curl -X POST "http://localhost:3355/actuator/refresh"
 
 #### > 是什么？
 
-Spring Cloud Bus将分布式系统的节点与轻量级消息代理链接
+&emsp;Spring Cloud Bus将分布式系统的节点与轻量级消息代理链接。**在微服务架构的系统中，通常会使用轻量级的消息代理来构建一个共用的消息主题，并让系统中所有的微服务实例都连接上来，由于该主题中产生的消息会被所有实例监听和消费，所以称它为消息总线。 **
 
 #### > 干什么
 
-这可以用于广播状态更改（例如配置更改）或其他管理指令。一个关键的想法是，Bus就像一个扩展的Spring Boot应用程序的分布式执行器，但也可以用作应用程序之间的通信渠道。当前唯一的实现是使用AMQP代理作为传输，但是相同的基本功能集（还有一些取决于传输）在其他传输的路线图上。
+&emsp;这可以用于广播状态更改（例如配置更改）或其他管理指令。一个关键的想法是，Bus就像一个扩展的Spring Boot应用程序的分布式执行器，但也可以用作应用程序之间的通信渠道。当前唯一的实现是使用AMQP代理作为传输，但是相同的基本功能集（还有一些取决于传输）在其他传输的路线图上。
+
+- **Bus 动态刷新，全局广播**
+- **Bus 动态刷新，定点通知**
+- **Spring cloud Bus配合 Spring cloud Config使用可以实现配置的动态刷新。** 
 
 #### > 官网资料
 
-https://www.springcloud.cc/spring-cloud-bus.html
+&emsp;https://www.springcloud.cc/spring-cloud-bus.html
+
+- **支持两种消息代理：RabbitMQ 和 Kafka** 
 
 ### （2）安装 RabbitMQ
 
@@ -2163,30 +2315,31 @@ https://www.springcloud.cc/spring-cloud-bus.html
    按照默认安装即可
 2. 下载RabbitMQ：https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.7.7/rabbitmq-server-3.7.7.exe
    按默认安装
-3. 进入sbin目录输入命令：rabbitmq-plugins enable rabbitmq_management 进行安装
+3. 进入RabbitMQ安装目录sbin目录输入命令：`rabbitmq-plugins enable rabbitmq_management` 启动管理功能-会安装一些工具。
 4. 查看是否安装成功：http://localhost:15672/
 5. 登录 guest guest
 
-```
-rabbitmq-server -detached 后台启动
-
-Rabbitmq-server 直接启动，如果你关闭窗口或者需要在改窗口使用其他命令时应用就会停止
-
- 关闭:rabbitmqctl stop
-```
+> 后台启动： rabbitmq-server -detached 
+>
+> 直接启动，如果你关闭窗口或者需要在改窗口使用其他命令时应用就会停止： Rabbitmq-server 
+>
+> 关闭：rabbitmqctl stop
 
 ### （3）全局广播
 
-#### > 新建项目 cloud-config-client3366，与3355一样
+#### > 新建项目 cloud-config-client-3366，与3355一样
 
 #### > 设计思想
 
-1. 利用消息总线触发一个客户端/bus/refresh从而刷新所有客户端配置
-2. 利用消息总线触发一个服务端 ConfigServer 的/bus/refresh端点从而刷新所有客户端
-3. 明显二更合适
-   1. 打破了微服务职责单一性
+1. 第一种：利用消息总线触发一个客户端 /bus/refresh 从而刷新所有客户端配置
+
+2. 第二种：利用消息总线触发一个服务端 ConfigServer 的 /bus/refresh 端点从而刷新所有客户端
+
+   **明显2更合适:** 
+
+   1. 第一种：打破了微服务职责单一性，因为微服务本身是业务模块，不应该承担配置刷新的职责。
    2. 破坏了微服务各节点的对等性
-   3. 有一定局限性 ，微服务歉意时网络地址常常发生变化
+   3. 有一定局限性 ，微服务迁移时网络地址常常发生变化
 
 #### > 实现
 
@@ -2200,18 +2353,31 @@ Rabbitmq-server 直接启动，如果你关闭窗口或者需要在改窗口使�
     <groupId>org.springframework.cloud</groupId>
     <artifactId>spring-cloud-starter-bus-amqp</artifactId>
 </dependency>
-
 ```
 
-1. yml
+2. yml
 
-```yml
-#rabbitmq配置
-rabbitmq:
-  host: localhost
-  port: 5672
-  username: guest
-  password: guest
+```yaml
+spring:
+  application:
+    name: cloud-config-center
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitee.com/MartinHub/springcloud-config.git
+          # 搜索目录.这个目录指的是github上的目录
+          search-paths:
+            - springcloud-config
+      ##读取分支
+      label: master
+  #添加mq相关支持
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  
 #暴露bus刷新配置端点
 management:
   endpoints:
@@ -2232,19 +2398,20 @@ management:
 </dependency>
 ```
 
-1. yml
+2. yml
 
-```yml 
+```yaml 
 spring:
-  application:
-    name: cloud-client
+  application: #名称
+    name: config-client
   cloud:
+    #config客户端配置
     config:
-      label: master
-      name: config
-      profile: dev
-      uri: http://localhost:3344
-  #rabbitmq配置,注意与服务端不同这个在spring下面
+      label: master  #分支名称
+      name: config  #配置文件名称
+      profile: dev   # 读取后缀名称   上述3个综合：master分支上config-dev.yml 的配置文件被读取(http://config-3344.com:3344/master/fongig-dev.yml)
+      uri: http://localhost:3344   #配置中心地址
+  #添加mq相关支持
   rabbitmq:
     host: localhost
     port: 5672
@@ -2254,27 +2421,61 @@ spring:
 
 **给cloud-config-client3366客户端提供消息总线支持** 
 
+1. pom
+
+   ```xml
+   <!-- 添加消息总线RabbitMQ支持 -->
+   <dependency>
+       <groupId>org.springframework.cloud</groupId>
+       <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+   </dependency>
+   ```
+
+2. yml
+
+   ```yaml
+   spring:
+     application: #名称
+       name: config-client
+     cloud:
+       #config客户端配置
+       config:
+         label: master  #分支名称
+         name: config  #配置文件名称
+         profile: dev   # 读取后缀名称   上述3个综合：master分支上config-dev.yml 的配置文件被读取(http://config-3344.com:3344/master/fongig-dev.yml)
+         uri: http://localhost:3344   #配置中心地址
+     #添加mq相关支持
+     rabbitmq:
+       host: localhost
+       port: 5672
+       username: guest
+       password: guest
+   ```
+
 **测试**
 
 1. 改变github内容
 
-2. 发送post请求：
+2. 服务端发送post请求，即可实现每一个客户端都刷新配置：
 
-   ```
+   ```shell
    curl -X POST "http://localhost:3344/actuator/bus-refresh"
    ```
 
-**动态刷新定点通知** 
+### （4）动态刷新定点通知 
 
 1. 使用
    curl -X POST "http://localhost:配置中心端口号/actuator/bus-refresh/{destination}"
+
 2. 本例中
-   curl -X POST "http://localhost:3344/actuator/bus-refresh/cloud-client:3355"
+   `curl -X POST "http://localhost:3344/actuator/bus-refresh/cloud-client:3355"`
    代表只通知3355
 
+   ​
 
 
-## 十五、Stream
+
+## 十五、消息驱动-Stream
 
 ### （1）简介
 
@@ -2282,50 +2483,54 @@ spring:
 
 https://spring.io/projects/spring-cloud-stream
 
+**中文手册**：https://m.wang1314.com/doc/webapp/topic/20971999.html
+
 #### > 是什么
 
-Spring Cloud Stream是一个框架，用于构建与共享消息传递系统连接的高度可扩展的事件驱动型微服务。
+&emsp;Spring Cloud Stream是一个框架，用于构建与共享消息传递系统连接的高度可扩展的事件驱动型微服务。
 
-应用程序通过 inputs 和 outputs 来与 Spring Cloud Stream 中的 binder 对象交互。而 Spring Cloud Stream 的 binder 对象负责与消息中间件交互。
+应用程序通过 inputs 和 outputs 来与 Spring Cloud Stream 中的 binder 对象交互。而 Spring Cloud Stream的
 
-**目前仅支持 RabbitMQ,Kafaka** 
+binder 对象负责与消息中间件交互。
+
+&emsp;**目前仅支持 RabbitMQ, Kafka** 
 
 #### > 解决了什么
 
-一个系统中采用多个消息中间件，解决不同消息中间件之间通信的问题。
+&emsp;一个系统中采用多个消息中间件，解决不同消息中间件之间通信的问题。
 
 #### > 消息中间件
 
-**种类**
+&emsp;**种类**
 
 1. ActiveMQ
 2. RabbitMQ
 3. RocketMQ
 4. Kafka
 
-**标准MQ**
+&emsp;**标准MQ**
 
 1. 生产者和消费者之间靠消息媒介传递消息内容？Message
 2. 消息必须走特定通道？MessageChannel
 3. 消息通道里的消息如何被消费？
    消息通道MessageChannel的子接口SubscribableChanner，由MessageHandler消息处理器所订阅
 
-**常用注解**
+&emsp;**常用注解**
 
-1. @Input
-   注解标识输入通道
-2. @Output
-   注解标识输出通道
-3. @StreamListener
+1. `@Input`
+   注解标识输入通道, 对于消费者
+2. `@Output`
+   注解标识输出通道，对于生产者
+3. `@StreamListener`
    监听队列，用于消费者的队列的消息接收
-4. @EnableBinding
+4. `@EnableBinding`
    channel和exchange绑定在一起
 
 ### （2）实操
 
 #### > 模块 cloud-stream-rabbitmq-provider8801
 
-1. pom
+1. **pom** 
 
 ```xml
 <dependency>
@@ -2334,9 +2539,9 @@ Spring Cloud Stream是一个框架，用于构建与共享消息传递系统连�
 </dependency>
 ```
 
-1. yml
+2. **yml**
 
-```yml
+```yaml
 server:
   port: 8801
 
@@ -2345,10 +2550,10 @@ spring:
     name: cloud-stream-provider
   cloud:
     stream:
-      binders: #在此配置要绑定的 rabbitmq的服务信息
-        defaultRabbit:  # 表示定义的名称，用于 binding整合
-          type: rabbit  # 消息组件类型
-          environment:  # 设置rabbitmq相关的环境配置
+      binders: # 在此处配置要绑定的rabbitmq的服务信息；
+        defaultRabbit  : # 表示定义的名称，用于于binding整合
+          type: rabbit # 消息组件类型
+          environment: # 设置rabbitmq的相关的环境配置
             spring:
               rabbitmq:
                 host: localhost
@@ -2356,29 +2561,31 @@ spring:
                 username: guest
                 password: guest
       bindings: # 服务的整合处理
-        output: # 输出通道的名称
-          destination: studyExchange  #表示要使用的 Exchange 名称定义
-          content-type: application/json  # 消息类型
-          binder: defaultRabbit
+        output: # 这个名字是一个通道的名称
+          destination: studyExchange # 表示要使用的Exchange名称定义
+          content-type: application/json # 设置消息类型，本次为json，文本则设置“text/plain”
+          default-binder: defaultRabbit
+          binder: defaultRabbit      # 设置要绑定的消息服务的具体设置(飘红：Settings->Editor->Inspections->Spring->Spring Boot->Spring Boot application.yml 对勾去掉)
+
 eureka:
-  client:
+  client: # 客户端进行Eureka注册的配置
     service-url:
       defaultZone: http://localhost:7001/eureka
   instance:
-    lease-renewal-interval-in-seconds: 2 # 设置心跳时间间隔默认30s
-    lease-expiration-duration-in-seconds: 5 # 如果超过了5秒的间隔默认90s
-    instance-id: send-8001.com  #信息列表显示主机名称
-    prefer-ip-address: true # 访问路径变为ip地址
+    lease-renewal-interval-in-seconds: 2 # 设置心跳的时间间隔（默认是30秒）
+    lease-expiration-duration-in-seconds: 5 # 如果现在超过了5秒的间隔（默认是90秒）
+    instance-id: send-8801.com  # 在信息列表时显示主机名称
+    prefer-ip-address: true     # 访问的路径变为IP地址
 ```
 
-1. main
+3. **main**
 
 ```java
 @SpringBootApplication
 @EnableEurekaClient
 ```
 
-1. service
+4. **service**
 
 ```java
 import org.springframework.messaging.MessageChannel;
@@ -2387,6 +2594,8 @@ import org.springframework.messaging.support.MessageBuilder;
 import javax.annotation.Resource;
 import java.util.UUID;
 
+//@EnableBinding 指信道channel和exchange绑定在一起
+//@EnableBinding(Source.class) 就是将 Source(源) 放到 Channel 的意思
 @EnableBinding(Source.class)//定义消息推送管道
 @Slf4j
 public class IMessageProviderImpl implements IMessageProvider {
@@ -2405,7 +2614,7 @@ public class IMessageProviderImpl implements IMessageProvider {
 }
 ```
 
-1. controller
+5. **controller**
 
 ```java
 @RestController
@@ -2420,18 +2629,19 @@ public class IMessageController {
 }
 ```
 
-1. 测试
-   1. 进入rabbitmq 查看Exchanges中有没有studyExchange对应 yml中的自定义名字
-   2. 多次访问http://localhost:8801/sendMessage
-   3. 查看rabbitmq 中overview中 Message rates 的折线变化
+6. **测试**
+
+1. 进入rabbitmq 查看Exchanges中有没有studyExchange对应 yml中的自定义名字
+2. 多次访问http://localhost:8801/sendMessage
+3. 查看rabbitmq 中overview中 Message rates 的折线变化
 
 #### > 消费者模块 cloud-stream-rabbitmq-consumer8802
 
-1. pom
+1. **pom** 
    同8801一样
-2. yml
+2. **yml**
 
-```yml
+```yaml
 server:
   port: 8802
 
@@ -2440,10 +2650,10 @@ spring:
     name: cloud-stream-consumer
   cloud:
     stream:
-      binders: #在此配置要绑定的 rabbitmq的服务信息
-        defaultRabbit:  # 表示定义的名称，用于 binding整合
-          type: rabbit  # 消息组件类型
-          environment:  # 设置rabbitmq相关的环境配置
+      binders: # 在此处配置要绑定的rabbitmq的服务信息；
+        defaultRabbit: # 表示定义的名称，用于于binding整合
+          type: rabbit # 消息组件类型
+          environment: # 设置rabbitmq的相关的环境配置
             spring:
               rabbitmq:
                 host: localhost
@@ -2451,45 +2661,57 @@ spring:
                 username: guest
                 password: guest
       bindings: # 服务的整合处理
-        input: # 输出通道的名称
-          destination: studyExchange  #表示要使用的 Exchange 名称定义
-          content-type: application/json  # 消息类型
-          binder: defaultRabbit
+        input: # 这个名字是一个通道的名称
+          destination: studyExchange # 表示要使用的Exchange名称定义
+          content-type: application/json # 设置消息类型，本次为json，文本则设置“text/plain”
+          binder: defaultRabbit  # 设置要绑定的消息服务的具体设置
+
 eureka:
-  client:
+  client: # 客户端进行Eureka注册的配置
     service-url:
       defaultZone: http://localhost:7001/eureka
   instance:
-    lease-renewal-interval-in-seconds: 2 # 设置心跳时间间隔默认30s
-    lease-expiration-duration-in-seconds: 5 # 如果超过了5秒的间隔默认90s
-    instance-id: receive-8002.com  #信息列表显示主机名称
-    prefer-ip-address: true # 访问路径变为ip地址
+    lease-renewal-interval-in-seconds: 2 # 设置心跳的时间间隔（默认是30秒）
+    lease-expiration-duration-in-seconds: 5 # 如果现在超过了5秒的间隔（默认是90秒）
+    instance-id: receive-8802.com  # 在信息列表时显示主机名称
+    prefer-ip-address: true     # 访问的路径变为IP地址
 ```
 
-1. main
-   @SpringBootApplication
-2. 业务类
+3. **main**
+
+```java
+@SpringBootApplication
+@EnableEurekaClient
+public class StreamMQMain8802 {
+
+    public static void main(String[] args) {
+        SpringApplication.run(StreamMQMain8802.class, args);
+    }
+}
+```
+
+4. **业务类**
 
 ```java
 @Component
-@Slf4j
-@EnableBinding(Sink.class)
-public class StreamController {
+@EnableBinding(Sink.class)  //与8801相反，Sink && Source
+public class ReceiveMessageListenerController {
     @Value("${server.port}")
     private String serverPort;
 
     @StreamListener(Sink.INPUT)
-    public void input(Message<String>message){
-        log.info("消费者1号接收到消息"+message.getPayload()+"\t port:"+serverPort);
+    public void input(Message<String> message) {
+        System.out.println("消费者1号，接收：" + message.getPayload() + "\t port:" + serverPort);
     }
 
 }
 ```
 
-1. 测试
-   1. 依次启动7001，8801,8802
-   2. 访问http://localhost:8801/sendMessage
-   3. 查看8801控制台是否有输出
+5. **测试**
+
+1. 依次启动7001，8801,8802
+2. 访问http://localhost:8801/sendMessage
+3. 查看8801控制台是否有输出
 
 #### > 消息重复消费
 
@@ -2497,55 +2719,80 @@ public class StreamController {
 2. 访问http://localhost:8801/sendMessage
 3. 8802与8803都可以访问消息
 
+**怎么解决重复消费问题？ =  消息分组与持久化** 
+
 ### （3）消息分组与持久化
 
 #### > 消息分组
 
 1. 将两个微服务分到一个组group中，保证消息只能被一个组中的一个应用消费一次，不同的组可以同时消费
-2. 配置8802与8803的yml如下
+2. 配置8802与8803的yml如下：设置分组group
 
-```yml
+```yaml
 spring:
   application:
     name: cloud-stream-consumer
   cloud:
     stream:
-      binders: #在此配置要绑定的 rabbitmq的服务信息
+      binders: # 在此处配置要绑定的rabbitmq的服务信息；
+        defaultRabbit: # 表示定义的名称，用于于binding整合
+          type: rabbit # 消息组件类型
+          environment: # 设置rabbitmq的相关的环境配置
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
       bindings: # 服务的整合处理
-        input: # 输出通道的名称
-          group: group1 # 将 8802与8803分为同一组，这样消息只有一个可以消费
+        input: # 这个名字是一个通道的名称
+          destination: studyExchange # 表示要使用的Exchange名称定义
+          content-type: application/json # 设置消息类型，本次为json，文本则设置“text/plain”
+          binder: defaultRabbit  # 设置要绑定的消息服务的具体设置
+          
+          # ==========================
+          # 请看这里！！！！！！！！！！！！
+          # ==========================
+          #group: groupB   # 设置Exchange下bind的分组名
+          group: groupA # 与8802设置为同一个分组，就不会出现重复消费情况，是竞争关系
 ```
 
 #### > 持久化
 
-1. 停掉8802,8803
-2. 使用8801发送消息
-3. 删除8803的分组 group 
-4. 启动8803与8802
-5. 发现8802可以接受到关闭时发送的消息，而8803不能
+1. 停掉8802,8803，并且删掉8802上的group
+
+2. 使用8801发送消息到RabbitMQ
+
+3. 先启动8802，无分组配置，后台没有收到消息（服务停机期间，发生消息丢失故障！！）
+
+4. 再启动8803，有分组配置，后台收到消息 （服务停机期间，消息正常收到）
+
+   **由此得出，分组配置在避免重复消费和持久化上面必不可少** 
+
+   ​
 
 
 
-## 十六、Sleuth
+## 十六、分布式请求链路追踪-Sleuth
 
 ### （1）简介
 
 #### > 官网
 
-https://spring.io/projects/spring-cloud-sleuth
+&emsp;https://spring.io/projects/spring-cloud-sleuth
 
 #### > 监控链路调用
 
-这包括将跟踪数据（跨度）报告到的位置，要保留（跟踪）多少个跟踪，是否发送了远程字段（行李）以及要跟踪哪些库。微服务中节点过多，使用它能更好的做监控。
+&emsp;这包括将跟踪数据（跨度）报告到的位置，要保留（跟踪）多少个跟踪，是否发送了远程字段（行李）以及要跟踪哪些库。**微服务中节点过多，使用它能更好的做监控，微服务调用时，可以得到完整的调用轨迹图。**
 
-#### > 安装Zipkin
+#### > 安装 Zipkin
 
-1. Sleuth 负责链路监控，Zipkin负责展现
+1. **Sleuth 负责链路监控，Zipkin 负责展现** 
 2. https://dl.bintray.com/openzipkin/maven/io/zipkin/java/zipkin-server/
 3. 下载 exec.jar
 4. 使用
    命令行打开到jar包所在目录
-   java -jar zipkin-server-2.12.9-exec.jar
+   `java -jar zipkin-server-2.12.9-exec.jar`
    成功后访问http://localhost:9411/
 
 ### （2）使用
@@ -2563,7 +2810,7 @@ https://spring.io/projects/spring-cloud-sleuth
 
 2. yml
 
-```yml
+```yaml
 spring:
   zipkin:
     # 放到 zipkin上
@@ -2595,8 +2842,8 @@ spring:
 
 5. 测试
 
-依次打开7001,8001,80
-访问80
+依次启动7001,8001,80
+访问 80
 访问http://localhost:9411/可以查看到访问的链路
 
 
@@ -2654,7 +2901,7 @@ Spring Cloud Alibaba 致力于提供微服务开发的一站式解决方案。�
 
 
 
-## 十八、Alibaba Nacos
+## 十八、注册&配置-Alibaba Nacos
 
 ### （1）简介
 
@@ -2718,7 +2965,7 @@ https://nacos.io/en-us/
 
 1. yml
 
-```yml
+```yaml
 server:
   port: 9001
 
@@ -2751,7 +2998,7 @@ management:
    同 9001 一样
 3. yml
 
-```yml
+```yaml
 server:
   port: 83
 spring:
@@ -2823,7 +3070,7 @@ public class OrderNacosController {
 1. yml：有application与bootstrap
    application
 
-```yml
+```yaml
 spring:
   profiles:
     active: dev # 表示开发环境
@@ -2831,7 +3078,7 @@ spring:
 
 bootstrap
 
-```yml
+```yaml
 server:
   port: 3377
 
@@ -2887,8 +3134,8 @@ public class ConfigClientController {
      ```
 
    - 配置 yaml 文件
-     <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/nacos-config1.png">
-      <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/nacos-config1.png">
+     <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/nacos-config1.png"> 
+      <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/nacos-config1.png"> 
 
    - 测试访问http://localhost:3377/config/info看是否得到配置信息
 
@@ -2896,8 +3143,8 @@ public class ConfigClientController {
 
 #### > 分组
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/nacos命名空间.png">
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/nacos分组.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/nacos命名空间.png"> 
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/nacos分组.png"> 
 
 1. Nacos默认的命名空间是 public ，Namespace主要实现隔离。
    比如说现在有三个环境：开发，测试，生产环境，就可以创建三个Namespace，不同的Namespace之间是隔离的。
@@ -2993,7 +3240,7 @@ spring:
 
 #### > 集群
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/nacos集群.jpeg"> 
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/nacos集群.jpeg">  
 
 **前提配置**
 
@@ -3063,7 +3310,7 @@ spring:
 
 
 
-## 十九、Alibaba Sentinel
+## 十九、服务降级/熔断/限流-Alibaba Sentinel
 
 ### （1）简介
 
@@ -3129,7 +3376,7 @@ https://github.com/alibaba/Sentinel/wiki/%E4%B8%BB%E9%A1%B5
 
 1. yml
 
-```yml
+```yaml
 server:
   port: 8401
 
@@ -3195,7 +3442,7 @@ management:
 
 #### > 流控模式
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/sentinel1.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/sentinel1.png"> 
 
 **直接**
 
@@ -3208,8 +3455,8 @@ management:
 1. 关联 testA 与 testB
 2. B达到阈值，限流A
 3. 使用 postman 模拟并发请求
-   <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/postman1.png">
-   <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/postman2.png">
+   <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/postman1.png"> 
+   <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/postman2.png"> 
    1. 先访问testB
    2. save到新建collection里
    3. 选择runner，选择testB，选择迭代次数和等待时长
@@ -3225,7 +3472,7 @@ management:
 
 **预热** 
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/sentinel2.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/sentinel2.png"> 
 
 1. 初始QPS = QPS/3
 2. 阈值从初始QPS主键增加到 QPS
@@ -3233,8 +3480,8 @@ management:
 
 **排队等待** 
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/排队等待1.png">
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/排队等待2.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/排队等待1.png"> 
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/排队等待2.png"> 
 
 为 testB 设置打印当前时间
 可以观察到一秒一个挨个执行
@@ -3257,7 +3504,7 @@ management:
 
 **平均响应时间** 
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/服务降级.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/服务降级.png"> 
 
 1. jmeter压力测试每秒10次，永远循环
 2. 如何 1s 内持续进了 N 个请求且 平均响应时间均超过阈值，那么下一个窗口期服务熔断
@@ -3271,7 +3518,7 @@ management:
 
 **异常数** 
 
-1. ==将窗口期超过 60s==
+1. **将窗口期超过 60s** 
 2. 模拟异常 10/0
 3. jmeter压测
 4. 进入熔断异常
@@ -3306,7 +3553,7 @@ management:
       }
 ```
 
-1. <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/hotkey1.png">
+1. <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/hotkey1.png"> 
 2. 多次访问 http://localhost:8401/testHotKey?p1=a 查看效果,可以生效
 3. 多次访问 http://localhost:8401/testHotKey?p1=a&p2=b 查看效果,可以生效
 4. 多次访问 http://localhost:8401/testHotKey?p2=a 查看效果,不能生效
@@ -3315,7 +3562,7 @@ management:
 
 #### > 参数特殊项
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/特殊参数项.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/特殊参数项.png"> 
 
 1. 当参数为特定值的时候拥有不同的阈值
 2. 即使其他参数项熔断，特定参数项也不会熔断
@@ -3351,7 +3598,7 @@ management:
 
 **怎么做** 
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/系统规则.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/系统规则.png"> 
 
 **简而言之就是对整个系统添加限流，不推荐使用** 
 
@@ -3583,7 +3830,7 @@ public class CircleBreakerController {
 2. 结果 
    ==没有在sentinel中配置服务降级只会报出异常界面，而fallback不需要配置sentinel==
 3. 再测试
-   <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/block降级.png">
+   <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/block降级.png"> 
    配置异常数为 2 ，单独点 1 次 爆异常界面，连续两次爆blockhandler的方法
 
 **配置fallback+blockHanlder** 
@@ -3592,8 +3839,10 @@ public class CircleBreakerController {
 
 **异常忽略** 
 
-``    @SentinelResource(value = "fallback",fallback = "handlerFallback",blockHandler = "blockHandler",exceptionsToIgnore = RuntimeException.class)
-``
+```java
+@SentinelResource(value = "fallback",fallback = "handlerFallback",blockHandler = "blockHandler",exceptionsToIgnore = RuntimeException.class)
+```
+
 忽略某种类型的异常
 
 ### （10）服务熔断OpenFeign
@@ -3612,7 +3861,7 @@ public class CircleBreakerController {
 
 1. yml
 
-```yml
+```yaml
   feign:
     sentinel:
       enabled: true
@@ -3686,7 +3935,7 @@ spring:
 ```
 
 1. nocos 8848 中新增配置
-   <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/sentinel持久化.png">
+   <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/sentinel持久化.png"> 
 
 ```json
 [
@@ -3706,7 +3955,7 @@ spring:
 
 
 
-## 二十、Alibaba-Seata
+## 二十、分布式事务-Alibaba-Seata
 
 ### （1）简介
 
@@ -3726,7 +3975,7 @@ http://seata.io/zh-cn/
 
 ### （2）处理过程
 
-<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/seata.png">
+<img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/seata.png"> 
 
 **一ID+三组件**
 
@@ -3845,14 +4094,11 @@ create table t_order(
 2. config.txt nacos-config.sh 上传配置
 
 
-
-
-
-## 二十一、seata配置
+### （5）seata配置
 
 本例使用seata1.2
 
-### （1）创建seata数据库
+#### > 创建seata数据库
 
 1. 找到 seata/conf 下的 README-zh.md
 2. 进入 [server](https://github.com/seata/seata/tree/develop/script/server)
@@ -3860,7 +4106,7 @@ create table t_order(
    2. 创建数据库 seata ，后执行mysql.sql
    3. mysql.sql中的三张表为 seata配置必须的表 
 
-### （2）创建业务必须数据库
+#### > 创建业务必须数据库
 
 用以做案例
 
@@ -3897,9 +4143,9 @@ insert into t_storage values(1,20);
 2. 进入 [client](https://github.com/seata/seata/tree/develop/script/client) 
 3. 找到db下的mysql.sql[client](https://github.com/seata/seata/tree/develop/script/client) 
 4. 其中为一建表sql
-5. ==每一个分布式业务数据库都需要这张表，即在新建的数据库 seata_order 与 seata_storage中新建该表==
+5. **每一个分布式业务数据库都需要这张表，即在新建的数据库 seata_order 与 seata_storage中新建该表**
 
-### （3）修改seata1.2
+#### > 修改seata1.2
 
 1. 找到 seata/conf/file.conf
    将 store 下的 mode 改为 db ，代表采用数据库配置
@@ -3937,7 +4183,7 @@ config {
 
 ```
 
-### （4）为nacos添加配置信息
+#### > 为nacos添加配置信息
 
 1. 访问 [config-center](https://github.com/seata/seata/tree/develop/script/config-center)
 2. 将 config.txt 拷贝到 seata/下
@@ -3966,7 +4212,7 @@ store.db.maxWait=5000
 3. 使用 Git Bash Here 切换到 seata/conf/ 下执行命令``sh nacos-config.sh``
 4. 查看nacos中是否有 seata 相关的配置信息。
 
-### （5）配置业务seata-order-service2001
+#### > 配置业务seata-order-service2001
 
 1. pom
 
@@ -4048,7 +4294,7 @@ store.db.maxWait=5000
 
 1. yml
 
-```yml
+```yaml
 # 端口号
 server:
   port: 2001
@@ -4155,7 +4401,7 @@ public interface StroageService {
     }
 ```
 
-### （6）配置业务模块seata-storage-service2003
+#### > 配置业务模块seata-storage-service2003
 
 1. pom 与上一模块相同
 2. yml 与上一模块相同
@@ -4193,7 +4439,7 @@ public class StorageController {
 }
 ```
 
-### （7）测试
+### （6）测试
 
 1. 正常启动两个模块
 2. 访问http://localhost:2001/test查看是否能成功访问
@@ -4209,7 +4455,7 @@ public class StorageController {
 12. 数据库 seata_order 的 undo_log 表数据消失
 13. 测试成功
 
-### （8）修改事务分组
+### （7）修改事务分组
 
 1. yml中
    seata:
@@ -4219,4 +4465,4 @@ public class StorageController {
    内容为 default
 3. service.vgroupMapping.test 的值为集群名称，test即事务分组 ，default代表无集群
 
-<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div>
+<div align="center"> <img  src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/images/weixin.png" width="200"/> </div> 
