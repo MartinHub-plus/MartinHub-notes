@@ -13,7 +13,7 @@ $ tar -zxf pcre-8.42.tar.gz
 $ cd pcre-8.42
 $ ./configure
 $ make
-$ sudo make install
+$ make install
 ```
 
 - **zlib** ：用于支持 header 头压缩，它主要被 NGINX Gzip 模块所依赖：
@@ -24,7 +24,7 @@ $ tar -zxf zlib-1.2.11.tar.gz
 $ cd zlib-1.2.11
 $ ./configure
 $ make
-$ sudo make install
+$ make install
 ```
 
 - **OpenSSL**：用于支持 HTTPS 协议，它主要被 NGINX SSL 模块和其他模块所依赖：
@@ -52,15 +52,15 @@ $ tar -zxvf nginx-1.16.1.tar.gz
 $ cd nginx-1.16.1
 
 $ ./configure   \
---prefix=/usr/app/nginx-1.16.1  \
---with-pcre=/usr/app/pcre-8.42  \
---with-zlib=/usr/app/zlib-1.2.11 \
+--prefix=/usr/app/nginx-1.16.1  \   # 这个路径是准备安装nginx在哪个地方的路径，不是下载nginx源码的路径
+--with-pcre=/usr/app/pcre-8.42  \   # 这个路径是pcre的下载路径
+--with-zlib=/usr/app/zlib-1.2.11 \ # 这个路径是zlib的下载路径
 --with-http_ssl_module \     # 启用HTTPS支持
 --with-stream  \         # 启用TCP和UDP代理功能
 --with-mail=dynamic         # 启用邮件代理功能
 
 $ make
-$ sudo make install
+$ make install
 ```
 
 #### > 配置环境变量
@@ -82,7 +82,15 @@ export PATH=${NGINX_HOME}/sbin:$PATH
 $ source /etc/profile
 ```
 
+#### > 启动
 
+查看80端口是否打开：`firewall-cmd --query-port=80/tcp`
+
+开启80端口：`firewall-cmd --add-port=80/tcp --permanent`
+
+重启防火墙：`systemctl restart firewalld` 
+
+--permanent   #永久生效，没有此参数重启后失效
 
 ## 二、Nginx 基础
 
