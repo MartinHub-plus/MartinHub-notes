@@ -702,7 +702,7 @@ spring:
   cloud:
     zookeeper:
       # ip地址为linux中的网络接口，2181为zookeeper的默认端口
-      connect-string: 192.168.111.44:2181
+      connect-string: IP地址:2181
 ```
 
 #### > 主启动类
@@ -790,7 +790,7 @@ Connecting to localhost:2181
 2. 改pom
 3. 建yml
 
-```yml
+```yaml
 server:
   port: 80
 spring:
@@ -798,7 +798,7 @@ spring:
     name: cloud-consumerzk-order80
   cloud:
     zookeeper:
-      connect-string: 192.168.150.66:2181
+      connect-string:  IP地址:2181
 ```
 
 4. 写主类
