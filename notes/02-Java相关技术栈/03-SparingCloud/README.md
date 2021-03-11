@@ -2528,7 +2528,7 @@ binder 对象负责与消息中间件交互。
 
 ### （2）实操
 
-#### > 模块 cloud-stream-rabbitmq-provider8801
+#### > 生产者模块 cloud-stream-rabbitmq-provider8801
 
 1. **pom** 
 
@@ -3511,30 +3511,31 @@ https://github.com/alibaba/Sentinel/wiki/%E4%B8%BB%E9%A1%B5
 
 **Hystrix**
 
-1. 需要自己搭建监控平台。
-2. 没有一套web界面可以进行更加细粒度的配置，流控，速率控制，服务熔断，服务降级。
+> 1. 需要自己搭建监控平台。
+> 2. 没有一套web界面可以进行更加细粒度的配置，流控，速率控制，服务熔断，服务降级。
 
 **Sentinel** 
 
-1. 单独一个组件，可以独立出来
-2. 页面化的细粒度统一配置
+> 1. 单独一个组件，可以独立出来
+> 2. 页面化的细粒度统一配置
 
 #### > 是什么
 
-随着微服务的流行，服务和服务之间的稳定性变得越来越重要。Sentinel 是面向分布式服务架构的流量控制组件，主要以流量为切入点，从限流、流量整形、熔断降级、系统负载保护、热点防护等多个维度来帮助开发者保障微服务的稳定性。
+> 随着微服务的流行，服务和服务之间的稳定性变得越来越重要。Sentinel 是面向分布式服务架构的流量控制组件，主要以流量为切入点，从限流、流量整形、熔断降级、系统负载保护、热点防护等多个维度来帮助开发者保障微服务的稳定性。
+>
 
 #### > 能干什么
 
-1. 流量控制
-2. 熔断降级
-3. 系统自适应保护
+> 1. 流量控制
+> 2. 熔断降级
+> 3. 系统自适应保护
 
 ### （2）Sentinel 控制台
 
 #### > 组件由两部分组成
 
-1. 核心库，jar包，不依赖任何框架，能够运行于所有Java运行的环境。
-2. 控制台，基于springboot开发，打包后直接运行，不需要额外的tomcat。
+> 1. 核心库，jar包，不依赖任何框架，能够运行于所有Java运行的环境。
+> 2. 控制台，基于springboot开发，打包后直接运行，不需要额外的tomcat。
 
 #### > 安装
 
@@ -3543,11 +3544,15 @@ https://github.com/alibaba/Sentinel/wiki/%E4%B8%BB%E9%A1%B5
 2. 命令行切换到jar包目录
 3. ``java -jar sentinel-dashboard-1.7.2.jar``
 4. http://localhost:8080/
-5. 账号密码 sentinel
+5. 账号密码 : sentinel
+
+![img](./images/sentinel界面.PNG) 
 
 ### （3）使用
 
-#### > 建模块cloud-alibaba-sentinel-service8401
+#### > 建模块
+
+`cloud-ali-sentinel-service-8401`
 
 1. pom
 
@@ -3563,7 +3568,7 @@ https://github.com/alibaba/Sentinel/wiki/%E4%B8%BB%E9%A1%B5
 </dependency>
 ```
 
-1. yml
+2. yml
 
 ```yaml
 server:
@@ -3591,43 +3596,73 @@ management:
         include: '*'
 ```
 
-1. main
-   @SpringBootApplication
-   @EnableDiscoveryClient
-2. controller
+3. main
 
 ```java
+@EnableDiscoveryClient
+@SpringBootApplication
+public class Sentinel8401 {
+    public static void main(String[] args) {
+        SpringApplication.run(Sentinel8401.class, args);
+    }
+}
+```
+
+4. controller
+
+```java
+@RestController
+@Slf4j
+public class FlowLimitController {
     @GetMapping("/testA")
-    public String testA(){
-        return "testA";
+    public String testA() {
+        return "------testA";
     }
 
     @GetMapping("/testB")
-    public String testB(){
-        return "testB";
+    public String testB() {
+
+        return "------testB";
     }
+}
+
 ```
 
-1. 启动 nacos，sentinel，启动模块
-2. 访问模块，观察 sentinel里变化
+5. 启动 nacos，启动sentinel，启动模块main8401
+
+6. 访问模块`localhost:8401/testA`，观察 sentinel里变化
+
+   ![img](./images/sentinel监控.PNG) 
 
 ### （4）流控规则
 
 #### > 介绍
 
-1. 资源名：唯一名称，默认请求路径
-2. 针对来源：Sentinel可以针对调用者进行限流 ，填写微服务名，默认 default
-3. 阈值类型
+1. **资源名**
+
+   唯一名称，默认请求路径
+
+2. **针对来源**
+
+   Sentinel可以针对调用者进行限流 ，填写微服务名，默认 default
+
+3. **阈值类型**
    - QPS（每秒请求数量）：当调用api的QPS达到阈值后进行限流
    - 线程数：调用该api的线程数达到阈值后进行限流
-4. 是否集群：不需要集群
-5. 流控模式：
+
+4. **是否集群**
+
+   不需要集群
+
+5. **流控模式** 
    - 直接：api达到限流条件时直接限流
    - 关联：当关联的资源达到阈值时就限流自己
    - 链路：只记录指定链路上的流量（指定资源从入口资源进来的流量，如果达到阈值就进行限流）
-6. 流控效果
+
+6. **流控效果**
    - 快速失败：直接失败，抛异常
    - Warm Up：根据codeFactor（冷加热因子，默认3）的值，从阈值 codeFactor，经过预热时长，才达到设定的QPS阈值。
+   - 排队等待
 
 #### > 流控模式
 
@@ -3636,8 +3671,8 @@ management:
 **直接**
 
 1. 按上图设置QPS为1，然后访问 testA 观察效果
-2. 达到阈值快速失败
-3. 自定义报错信息
+2. 达到阈值快速失败：`Blocked by Sentinel (flow limiting)`
+3. 显示报错不友好，自定义报错信息，设置兜底方法。
 
 **关联** 
 
@@ -3649,32 +3684,41 @@ management:
    1. 先访问testB
    2. save到新建collection里
    3. 选择runner，选择testB，选择迭代次数和等待时长
-4. 启动postman，再访问testA查看效果
+   4. 启动postman，再访问testA查看效果
 
 **链路** 
 
-1. 两个入口a，b调用同一个资源，只记录a上的限流，而不关系心b的使用
+1. 两个入口a，b调用同一个资源，只记录a上的限流，而不关心b的使用
 
 #### > 流控效果
 
 **直接快速失败（默认）** 
 
-**预热** 
+&emsp;.........
+
+**Warm Up 预热** 
 
 <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/sentinel2.png"> 
 
-1. 初始QPS = QPS/3
-2. 阈值从初始QPS主键增加到 QPS
+1. 初始QPS = 设置的QPS / 3   (这里的3是冷加载因子）
+2. 经过5秒后，阈值从初始QPS增加到设置的QPS，起到一个缓冲的作用，这样就不会因为访问量的突增而将服务搞挂掉，将流量慢慢的放进来。
 3. 访问 testB 观察随时间变化错误的数量变化
 
 **排队等待** 
 
 <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/排队等待1.png"> 
+
+&emsp;实验设置postman 
+
 <img src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/02-Java相关技术栈/03-SparingCloud/images/排队等待2.png"> 
 
-为 testB 设置打印当前时间
-可以观察到一秒一个挨个执行
-即请求按照顺序依次执行
+结果：
+
+- 为 testB 设置打印当前时间
+
+
+- 可以观察到一秒一个挨个执行，匀速执行
+- 即请求按照顺序依次执行
 
 ### （5）熔断降级
 
