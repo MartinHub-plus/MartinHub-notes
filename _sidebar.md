@@ -21,21 +21,21 @@
   - [Azkaban](./notes/01-大数据相关技术栈/14-Azkaban/README.md)
   - <!--[Storm](./notes/01-大数据相关技术栈/15-Storm/README.md)-->
   - [DataX](./notes/01-大数据相关技术栈/16-DataX/README.md)
-  - [DataHub](./notes/01-大数据相关技术栈/17-DataHub/README.md)
-  - [Presto](./notes/01-大数据相关技术栈/18-Presto/README.md)
+  - <!--[DataHub](./notes/01-大数据相关技术栈/17-DataHub/README.md)-->
+  - <!--[Presto](./notes/01-大数据相关技术栈/18-Presto/README.md)-->
   - [运维笔记](./notes/01-大数据相关技术栈/运维笔记/README.md)
 - **Java相关** 
   - [Java基础](./notes/02-Java相关技术栈/01-Java基础/README.md)
   - [Spring Boot](./notes/02-Java相关技术栈/02-SparingBoot/README.md)
   - [SparingCloud](./notes/02-Java相关技术栈/03-SparingCloud/README.md)
-  - [SpringSecurity](./notes/02-Java相关技术栈/04-SpringSecurity/README.md)
+  - <!--[SpringSecurity](./notes/02-Java相关技术栈/04-SpringSecurity/README.md)-->
   - [MyBatis-Plus](./notes/02-Java相关技术栈/05-MyBatis-Plus/README.md)
   - [Swagger-UI](./notes/02-Java相关技术栈/06-Swagger-UI/README.md)
-  - [JWT](./notes/02-Java相关技术栈/07-JWT/README.md)
-  - [Druid](./notes/02-Java相关技术栈/08-Druid/README.md)
+  - <!--[JWT](./notes/02-Java相关技术栈/07-JWT/README.md)-->
+  - <!--[Druid](./notes/02-Java相关技术栈/08-Druid/README.md)-->
   - [RabbitMq](./notes/02-Java相关技术栈/09-RabbitMq/README.md)
   - [Lombok](./notes/02-Java相关技术栈/10-Lombok/README.md)
-  - [Nacos](./notes/02-Java相关技术栈/11-Nacos/README.md)
+  - <!--[Nacos](./notes/02-Java相关技术栈/11-Nacos/README.md)-->
   - [报错记录](./notes/02-Java相关技术栈/报错记录/README.md)
   - [日常记录](./notes/02-Java相关技术栈/日常记录/README.md)
 - **数据库相关** 

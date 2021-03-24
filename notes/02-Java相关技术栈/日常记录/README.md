@@ -617,6 +617,61 @@ public class OrderController {
 
 
 
+## Maven依赖中scope的含义
+
+&emsp;scope元素的作用：控制 dependency 元素的使用范围。通俗的讲，就是控制 Jar 包在哪些范围被加载和使用。
+
+&emsp;scope具体含义如下：
+
+### compile（默认）
+
+含义：compile 是默认值，如果没有指定 scope 值，该元素的默认值为 compile。被依赖项目需要参与到当前项目的编译，测试，打包，运行等阶段。打包的时候通常会包含被依赖项目。
+
+### provided
+
+含义：被依赖项目理论上可以参与编译、测试、运行等阶段，相当于compile，但是再打包阶段做了exclude的动作。
+适用场景：例如， 如果我们在开发一个web 应用，在编译时我们需要依赖 servlet-api.jar，但是在运行时我们不需要该 jar 包，因为这个 jar 包已由应用服务器提供，此时我们需要使用 provided 进行范围修饰。
+
+### runtime
+
+含义：表示被依赖项目无需参与项目的编译，但是会参与到项目的测试和运行。与compile相比，被依赖项目无需参与项目的编译。
+适用场景：例如，在编译的时候我们不需要 JDBC API 的 jar 包，而在运行的时候我们才需要 JDBC 驱动包。
+
+### test
+
+含义： 表示被依赖项目仅仅参与测试相关的工作，包括测试代码的编译，执行。
+适用场景：例如，Junit 测试。
+
+### system
+
+含义：system 元素与 provided 元素类似，但是被依赖项不会从 maven 仓库中查找，而是从本地系统中获取，systemPath 元素用于制定本地系统中 jar 文件的路径。例如：
+
+```xml
+<dependency>
+    <groupId>org.open</groupId>
+    <artifactId>open-core</artifactId>
+    <version>1.5</version>
+    <scope>system</scope>
+    <systemPath>${basedir}/WebContent/WEB-INF/lib/open-core.jar</systemPath>
+</dependency>
+```
+
+### import
+
+它只使用在< dependencyManagement >中，表示从其它的pom中导入dependency的配置，例如 (B项目导入A项目中的包配置)：
+
+想必大家在做 SpringBoot 应用的时候，都会有如下代码：
+
+```xml
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>1.3.3.RELEASE</version>
+</parent>
+```
+
+
+
 
 
 

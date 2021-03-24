@@ -151,6 +151,7 @@ dependencyManagement只是声明依赖，并不实现引入，一次子项目需
 1. 建module
     1. 新建maven工程，不使用任何模板，改jdk为1.8。
     2. 写入项目name即可。
+
 2. 改POM
     1. 主POM内增加 moudle
     2. 子项目引入依赖
@@ -160,50 +161,53 @@ dependencyManagement只是声明依赖，并不实现引入，一次子项目需
     1. 将第一个子模块支付模块的实体类包复制过来
     2. 新建Controller类
 6. 使用 RestTemplate 进行两个模块之间的调用，由消费者订单模块调用支付模块。
-    1. 新建配置类，注册 RestTemplate bean
-        ```java
-        @Configuration
-        public class ApplicationContextConfig {
-            @Bean
-            public RestTemplate getRestTemplate(){
-                return new RestTemplate();
-            }
-        }
-        ```
 
-
-2. 写Controller方法
+    新建配置类，注册 RestTemplate bean
     ```java
-    public class OrderController {
-        public static final String PAYMENT_URL = "http://localhost:8001";
-
-        @Resource
-        private RestTemplate restTemplate;
-
-        @GetMapping("/consumer/payment/create")
-        public CommonResult<Payment> create(Payment payment){
-            return restTemplate.postForObject(PAYMENT_URL+"/payment/create",payment,CommonResult.class);
-        }
-
-        @GetMapping("/consumer/payment/get/{id}")
-        public CommonResult<Payment> getPayment(@PathVariable("id")Long id){
-            return restTemplate.getForObject(PAYMENT_URL+"/payment/get/"+id,CommonResult.class);
+    @Configuration
+    public class ApplicationContextConfig {
+        @Bean
+        public RestTemplate getRestTemplate(){
+            return new RestTemplate();
         }
     }
     ```
-3. 启动  
-    1. 先启动8001
-    2. 再启动 80 
-    3. idea右下角弹出窗口，选择show，共同管理两个端口号
-    4. 使用http://localhost/consumer/payment/get/31访问，80为默认端口号可省略不写
+
+7. 写Controller方法
+
+
+```java
+public class OrderController {
+    public static final String PAYMENT_URL = "http://localhost:8001";
+
+    @Resource
+    private RestTemplate restTemplate;
+
+    @GetMapping("/consumer/payment/create")
+    public CommonResult<Payment> create(Payment payment){
+        return restTemplate.postForObject(PAYMENT_URL+"/payment/create",payment,CommonResult.class);
+    }
+
+    @GetMapping("/consumer/payment/get/{id}")
+    public CommonResult<Payment> getPayment(@PathVariable("id")Long id){
+        return restTemplate.getForObject(PAYMENT_URL+"/payment/get/"+id,CommonResult.class);
+    }
+}
+```
+8. 启动  
+
+1. 先启动 8001
+2. 再启动 80 
+3. idea右下角弹出窗口，选择show，共同管理两个端口号
+4. 使用http://localhost/consumer/payment/get/31访问，80为默认端口号可省略不写
 
 ### （4） 工程重建
 
 1. 问题项目中有重复部分：两个工程中有完全相同的实体类
 2. 新建公共项目 cloud-api-commons 将公共有的实体类包括工具类等放到里面，所有模块都可以使用
-   - 导入依赖 lombok devtools 以及 hutool 工具包
+   - 导入依赖 lombok、devtools 以及 hutool 工具包
    - 将实体类包导入到项目中
-3. maven clean install
+3. `maven clean install`
    - 点击上面的闪电 跳过测试
    - 进入 maven 找到新建模块，进入 Lifecycle 先clean再  install重新安装
    - 注意观察公共模块 pom 文件中必须含有独立的 groupid 和 artifactid
@@ -950,14 +954,14 @@ CAP理论关注粒度是数据，而不是整体系统设计的
 
 &emsp;https://github.com/Netflix/ribbon
 
-#### > 能干什么？
+#### > 能干什么？ 
 
 1. **负载均衡**
    - 负载均衡(Load Balance)是什么
      将用户的请求平摊的分配到多个服务上，从而达到HA(高可用)，常见的负载均衡有 Nginx,LVS,硬件 F5等。
    - Ribbon 本地负载均衡客户端 VS Nginx 服务端负载均衡
      Nginx 是服务器 负载均衡，客户端所有请求都会交给 nginx，然后由 nginx实现请求转发。即负载均衡是由服务端实现的。
-     Ribbon 是本地负载均衡，在微服务调用接口时，在注册中心上获取注册信息服务列表 之后缓存在JVM本地，从而实现本地RPC远程服务调用技术。
+     Ribbon 是本地负载均衡，在微服务调用接口时，在注册中心上获取注册信息服务列表之后缓存在JVM本地，从而实现本地RPC远程服务调用技术。
 2. **实现** 
    负载均衡 + RestTemplate 调用
 
