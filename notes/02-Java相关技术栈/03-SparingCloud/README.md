@@ -196,10 +196,10 @@ public class OrderController {
 ```
 8. 启动  
 
-1. 先启动 8001
-2. 再启动 80 
-3. idea右下角弹出窗口，选择show，共同管理两个端口号
-4. 使用http://localhost/consumer/payment/get/31访问，80为默认端口号可省略不写
+9. 先启动 8001
+10. 再启动 80 
+11. idea右下角弹出窗口，选择show，共同管理两个端口号
+12. 使用http://localhost/consumer/payment/get/31访问，80为默认端口号可省略不写
 
 ### （4） 工程重建
 
@@ -2972,11 +2972,11 @@ https://nacos.io/en-us/
     <dependencies>
         <!--spring cloud alibaba 2.2.1.RELEASE-->
         <dependency>
-        <groupId>com.alibaba.cloud</groupId>
-        <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-        <version>2.2.1.RELEASE</version>
-        <type>pom</type>
-        <scope>import</scope>
+          <groupId>com.alibaba.cloud</groupId>
+          <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+          <version>2.2.1.RELEASE</version>
+          <type>pom</type>
+          <scope>import</scope>
         </dependency>
     </dependencies>
   </dependencyManagement>
@@ -2985,17 +2985,17 @@ https://nacos.io/en-us/
 3. **子 pom**
 
 ```xml
-        <!--引入 nacos-discovery 依赖-->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
-        <!--引入ali json工具包-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.62</version>
-        </dependency>
+<!--引入 nacos-discovery 依赖-->
+<dependency>
+  <groupId>com.alibaba.cloud</groupId>
+  <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+</dependency>
+<!--引入ali json工具包-->
+<dependency>
+  <groupId>com.alibaba</groupId>
+  <artifactId>fastjson</artifactId>
+  <version>1.2.62</version>
+</dependency>
 ```
 
 4. **yml**
@@ -3011,7 +3011,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:8848 #配置Nacos地址
+        server-addr: localhost:8848 # 配置Nacos地址
 
 # 暴露端口
 management:
