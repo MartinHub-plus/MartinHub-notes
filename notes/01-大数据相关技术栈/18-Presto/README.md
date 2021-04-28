@@ -18,11 +18,11 @@
 
 ### （3）Presto架构
 
-![img](src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/19-Hudi/images/架构.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/18-Presto/images/架构.png)
 
 ### （4）Presto 优缺点
 
-![img](src="https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/19-Hudi/images/优缺点.png)
+![img](https://gitee.com/MartinHub/MartinHub-notes/raw/master/notes/01-大数据相关技术栈/18-Presto/images/优缺点.png)
 
 ### （5）Presto、Impala性能比较
 
