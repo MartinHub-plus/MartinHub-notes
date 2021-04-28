@@ -2,7 +2,7 @@
 
 # MartinHub-Notes
 
-- **大数据开发笔记** （包括：Hadoop，HDFS，MR，YARN，Hive，HBase，Phoenix，Scala，Spark，Flink，Kafka，Flume，Sqoop，Azkaban，DataX等）
+- **大数据开发笔记** （包括：Hadoop，HDFS，MR，YARN，Hive，HBase，Phoenix，Scala，Spark，Flink，Kafka，Flume，Sqoop，Azkaban，DataX，DataHub，Presto，Hudi等）
 
 - **Java开发笔记** （Java基础，Spring Boot，Spring Cloud，Spring Security，MyBatis-plus，Swagger-UI，Lombok等）
 
