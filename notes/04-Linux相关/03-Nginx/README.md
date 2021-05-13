@@ -210,7 +210,13 @@ http {
     keepalive_timeout  65;
 
     # 开启文件压缩
-       gzip  on;
+    gzip  on;
+    gzip_min_length 1k;
+    gzip_comp_level 9;
+    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;
+    gzip_vary on;
+    gzip_disable "MSIE [1-6]\.";
+
 
     # 配置nginx服务器(虚拟主机)
     server {
@@ -222,12 +228,26 @@ http {
         charset koi8-r;
         # 配置当前虚拟主机的访问日志的存放位置
         access_log  logs/host.access.log  main;
+       
+        root         /usr/share/nginx/html/bigdata;
         
         # 虚拟主机对应的映射目录
-        location / {
-            root   html;
-            index  index.html index.htm;
+        location ^~/api/ {
+            proxy_pass http://127.0.0.1:8080/api/;
         }
+        location ^~/oss-manager/ {
+            proxy_pass http://127.0.0.1:8080/oss-manager/;
+        }
+        location ^~/datahub/ {
+            proxy_pass http://127.0.0.1:8080/datahub/;
+        }
+        location ^~/ambari/ {
+            proxy_pass http://127.0.0.1:8080/ambari/;
+        }
+        location ^~/etl-service/ {
+            proxy_pass http://127.0.0.1:8080/etl-service/;
+        }
+
             
         # 错误重定向页面
         # error_page  404              /404.html;
